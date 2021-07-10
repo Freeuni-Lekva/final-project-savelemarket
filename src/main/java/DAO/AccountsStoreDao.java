@@ -1,8 +1,10 @@
-package model;
+package DAO;
+
+import model.Account;
 
 import java.util.ArrayList;
 
-public class AccountsStoreDao implements AccountsStore{
+public class AccountsStoreDao implements AccountsStore {
     ///// It will be better if this file move to another package where Dao class objects will be stored.
 
 

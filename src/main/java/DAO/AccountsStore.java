@@ -1,4 +1,6 @@
-package model;
+package DAO;
+
+import model.Account;
 
 import java.util.ArrayList;
 
