@@ -29,18 +29,32 @@
             </div>
             <div class="location">
                 <a class="input_name">ლოკაცია</a>
-                <input type="text" name="location" class="registration_input" id="location"/>
+                <select name="location" class="locations">
+                    <option class="choose">...</option>
+                    <option class="location">ძეგვი</option>
+                    <option class="location">სანებელი</option>
+                    <option class="location">გორი</option>
+                </select>
+            </div>
+            <div class="session">
+                <a class="input_name">ნაკადი</a>
+                <select name="session_numbers" class="session_numbers">
+                    <option class="session_number">1</option>
+                    <option class="session_number">2</option>
+                    <option class="session_number">3</option>
+                </select>
+
             </div>
             <div class="mail">
                 <a class="input_name">მეილი</a>
                 <input type="text" name="mail" class="registration_input"/>
             </div>
             <div class="password">
-                <a class="input_name">პასვორდი</a>
+                <a class="input_name">პაროლი</a>
                 <input type="password" name="password" class="login_input" />
             </div>
             <div class="password">
-                <a class="input_name">გაიმეორეთ პასვორდი</a>
+                <a class="input_name">გაიმეორეთ პაროლი</a>
                 <input type="password" name="password" class="login_input" />
             </div>
             <input type="submit" value="რეგისტრაცია" class="registration_btn_1"/>

@@ -4,7 +4,6 @@
 }
 
 .login_header{
-    width: 1500px;
     text-align: left;
     margin-left: 30px;
 }
@@ -52,7 +51,7 @@ body{
     padding-bottom: 20px;
 }
 
-.username, .password, .name, .second_name, .location, .mail{
+.username, .password, .name, .second_name, .location, .mail, .session{
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -110,10 +109,11 @@ body{
     border-radius: 10px;
     margin-top: 30px;
     width: 400px;
-    height: 530px;
+    height: 580px;
     background-color: var(--color-freeuni);
     box-shadow: 6px 6px #caee5b;
     padding: 30px;
+    margin-bottom: 40px;
 }
 
 .registration_btn_1{
@@ -137,3 +137,30 @@ body{
     color: var(--color-agruni);
     text-decoration: none;
 }
+
+.session_numbers{
+    height: 30px;
+    width: 78px;
+    font-size: 20px;
+    margin-top: 5px;
+
+    border-radius: 5px;
+}
+
+.session_number{
+    font-size: 20px;
+    text-align: center;
+}
+
+.locations{
+    height: 30px;
+    width: 220px;
+    font-size: 20px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+select{
+    text-align: center;
+}
+

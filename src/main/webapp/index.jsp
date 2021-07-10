@@ -18,7 +18,7 @@
                     <input type="text" name="username" class="login_input" />
                 </div>
                 <div class="password">
-                    <a class="input_name">პასვორდი</a>
+                    <a class="input_name">პაროლი</a>
                     <input type="password" name="password" class="login_input" />
                 </div>
                 <input type="submit" value="შესვლა" class="input_btn"/>
