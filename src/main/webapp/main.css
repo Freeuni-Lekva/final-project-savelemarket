@@ -1,0 +1,166 @@
+* {
+    padding: 0;
+    margin: 0;
+}
+
+.login_header{
+    text-align: left;
+    margin-left: 30px;
+}
+
+body{
+    --color-freeuni: yellow;
+    --color-agruni: green;
+    --color-background: #f1f180;
+    background: var(--color-background);
+}
+
+.header_title{
+    color: var(--color-agruni);
+    margin-top: 20px;
+}
+.body{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.inputs{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid;
+    border-color: var(--color-agruni);
+    border-radius: 10px;
+    margin-top: 150px;
+    width: 400px;
+    height: 360px;
+    background-color: var(--color-freeuni);
+    box-shadow: 6px 6px #caee5b;
+}
+
+.login_form, .registration_form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-bottom: 1px solid;
+    padding-bottom: 20px;
+}
+
+.username, .password, .name, .second_name, .location, .mail, .session{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.password{
+    margin-top: 20px;
+}
+
+.input_name{
+    font-size: 1.5em;
+    color: #044f04;
+}
+
+.login_input, .registration_input{
+    width: 220px;
+    height: 30px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.input_btn{
+    width: 120px;
+    height: 40px;
+    color: white;
+    margin-top: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: var(--color-agruni);
+    font-size: 20px;
+    cursor: pointer;
+
+}
+
+.registration_btn{
+    width: 150px;
+    height: 40px;
+    color: white;
+    margin-top: 30px;
+    border: none;
+    border-top: 1px solid;
+    border-radius: 5px;
+    background-color: #3140d6;
+    font-size: 20px;
+    cursor: pointer;
+}
+.registration_inputs{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid;
+    border-color: var(--color-agruni);
+    border-radius: 10px;
+    margin-top: 30px;
+    width: 400px;
+    height: 580px;
+    background-color: var(--color-freeuni);
+    box-shadow: 6px 6px #caee5b;
+    padding: 30px;
+    margin-bottom: 40px;
+}
+
+.registration_btn_1{
+    width: 150px;
+    height: 40px;
+    color: white;
+    margin-top: 30px;
+    border: none;
+    border-top: 1px solid;
+    border-radius: 5px;
+    background-color: var(--color-agruni);
+    font-size: 20px;
+    cursor: pointer;
+}
+
+.registration_form{
+    border: none;
+}
+
+.cancel{
+    color: var(--color-agruni);
+    text-decoration: none;
+}
+
+.session_numbers{
+    height: 30px;
+    width: 78px;
+    font-size: 20px;
+    margin-top: 5px;
+
+    border-radius: 5px;
+}
+
+.session_number{
+    font-size: 20px;
+    text-align: center;
+}
+
+.locations{
+    height: 30px;
+    width: 220px;
+    font-size: 20px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+select{
+    text-align: center;
+}
+
