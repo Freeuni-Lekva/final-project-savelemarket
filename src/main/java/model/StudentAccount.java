@@ -2,12 +2,16 @@ package model;
 
 import DAO.AccountsStore;
 
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Objects;
 
 public class StudentAccount implements Account {
+    private String lastName;
+    private String mail;
+
 
     private String name;
     private byte[] passwordBytes;
@@ -18,7 +22,7 @@ public class StudentAccount implements Account {
 
     //assumes this account name is unique (need to check for store.hasAccount(name) before creating account
     //assumes password is valid
-    public StudentAccount(AccountsStore store, String name, String password, Location location) {
+    public StudentAccount(String name, String lastName, String password, String mail, Location location) {
         try {
             md = MessageDigest.getInstance("SHA-256");
             MessageDigest mdc = (MessageDigest) md.clone();
@@ -29,12 +33,42 @@ public class StudentAccount implements Account {
         }
         this.name = name;
         this.location = location;
-        store.addAccount(this); //hopefully works
+
+        // changes made after adding another fields
+        this.lastName = lastName;
+        this.mail = mail;
+
+    }
+
+    public StudentAccount(String name, String lastName, byte[] passwordBytes, String mail, Location location) {
+        this.name = name;
+        this.location = location;
+        this.passwordBytes = passwordBytes;
+
+        // changes made after adding another fields
+        this.lastName = lastName;
+        this.mail = mail;
+
     }
 
     @Override
     public String getName() {
         return name;
+    }
+
+    @Override
+    public String getLastName() {
+        return lastName;
+    }
+
+    @Override
+    public String getMail() {
+        return mail;
+    }
+
+    @Override
+    public byte[] getPasswordHash() {
+        return passwordBytes;
     }
 
     @Override
@@ -70,5 +104,11 @@ public class StudentAccount implements Account {
         int result = Objects.hash(name, location);
         result = 31 * result + Arrays.hashCode(passwordBytes);
         return result;
+    }
+
+    @Override
+    public String toString(){
+        return "name: " + name + "  last_name: "+ lastName + "  mail: "+ mail
+                + "  location: "+location.getName() + "  session: "+ location.getSessionNumber();
     }
 }
