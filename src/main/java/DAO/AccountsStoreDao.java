@@ -1,6 +1,7 @@
 package DAO;
 
 import model.Account;
+import model.Location;
 
 import java.util.ArrayList;
 
@@ -16,6 +17,16 @@ public class AccountsStoreDao implements AccountsStore {
     @Override
     public void removeAccount(Account account) {
 
+    }
+
+    @Override
+    public void updateLocation(Account account, Location location) {
+
+    }
+
+    @Override
+    public boolean hasAccount(String name) {
+        return true;
     }
 
     @Override
