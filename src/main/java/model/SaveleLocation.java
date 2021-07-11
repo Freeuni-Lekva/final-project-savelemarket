@@ -3,12 +3,12 @@ package model;
 import DAO.AccountsStore;
 import DAO.AccountsStoreDao;
 
-public class FieldLocation implements Location{
+public class SaveleLocation implements Location{
     private int sessionNumber;
     private String name;
     private AccountsStore accountsStore;
 
-    public FieldLocation(String name, int sessionNumber){
+    public SaveleLocation(String name, int sessionNumber){
         this.name = name;
         this.sessionNumber = sessionNumber;
         accountsStore = new AccountsStoreDao();
