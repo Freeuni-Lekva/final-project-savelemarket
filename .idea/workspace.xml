@@ -4,10 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="b832c11b-1c29-4c88-93fb-d15c9f543b58" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SaveleMarket.iml" beforeDir="false" afterPath="$PROJECT_DIR$/SaveleMarket.iml" afterDir="false" />
-    </list>
+    <list default="true" id="b832c11b-1c29-4c88-93fb-d15c9f543b58" name="Default Changelist" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -16,8 +13,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -25,7 +22,7 @@
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectId" id="1v2jvluBXQIEhpr6kHTGBTHCFLC" />
-  <component name="ProjectLevelVcsManager">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="ProjectViewState">
@@ -51,7 +48,7 @@
       <recent name="" />
     </key>
   </component>
-  <component name="RunManager" selected="Maven.SaveleMarket [tomcat7:run]">
+  <component name="RunManager" selected="JUnit.AccountTest">
     <configuration name="testHello" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="testHello" />
       <module name="SaveleMarket" />
@@ -59,26 +56,47 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
           <option name="containerStateName" value="" />
         </value>
       </option>
-      <option name="TEST_OBJECT" value="CLASS" />
-      <properties />
-      <listeners />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccountTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SaveleMarket" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="AccountTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="AccountTest.baseTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SaveleMarket" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="AccountTest" />
+      <option name="METHOD_NAME" value="baseTest" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
       <item itemvalue="Application.testHello" />
+      <item itemvalue="JUnit.AccountTest.baseTest" />
+      <item itemvalue="JUnit.AccountTest" />
       <item itemvalue="Maven.SaveleMarket [tomcat7:run]" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.AccountTest" />
         <item itemvalue="Application.testHello" />
+        <item itemvalue="JUnit.AccountTest.baseTest" />
       </list>
     </recent_temporary>
   </component>
@@ -95,7 +113,8 @@
       <workItem from="1625816056561" duration="1779000" />
       <workItem from="1625852810533" duration="1474000" />
       <workItem from="1625854803102" duration="906000" />
-      <workItem from="1625912852264" duration="6972000" />
+      <workItem from="1625912852264" duration="9959000" />
+      <workItem from="1625962985029" duration="733000" />
     </task>
     <servers />
   </component>
@@ -112,5 +131,6 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
   </component>
 </project>
