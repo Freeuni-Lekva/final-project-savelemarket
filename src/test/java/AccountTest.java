@@ -1,6 +1,7 @@
 import DAO.AccountsStore;
 import DAO.AccountsStoreDao;
 import model.Account;
+import model.SaveleLocation;
 import model.Location;
 import model.StudentAccount;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,7 @@ public class AccountTest {
     public void baseTest(){
         String name = "name";
         String password = "pass";
-        Location location = new saveleLocation();
+        Location location = new SaveleLocation("lokacia",2);
         AccountsStore store = new AccountsStoreDao();
         Account acc = new StudentAccount(store,name,password,location);
         assertEquals(name,acc.getName());
