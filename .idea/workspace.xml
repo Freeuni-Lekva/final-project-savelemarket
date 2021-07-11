@@ -20,17 +20,6 @@
     <ConfirmationsSetting value="1" id="Add" />
   </component>
   <component name="RunManager" selected="Maven.SaveleMarket [tomcat7:run]">
-    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
-      <option name="arquillianRunConfiguration">
-        <value>
-          <option name="containerStateName" value="" />
-        </value>
-      </option>
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="JUnit.AccountTest" />
       <item itemvalue="Maven.SaveleMarket [tomcat7:run]" />

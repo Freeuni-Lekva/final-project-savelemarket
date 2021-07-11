@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class studentAccount implements Account {
+public class StudentAccount implements Account {
 
     private String name;
     private byte[] passwordBytes;
@@ -18,7 +18,7 @@ public class studentAccount implements Account {
 
     //assumes this account name is unique (need to check for store.hasAccount(name) before creating account
     //assumes password is valid
-    public studentAccount(AccountsStore store, String name, String password, Location location) {
+    public StudentAccount(AccountsStore store, String name, String password, Location location) {
         try {
             md = MessageDigest.getInstance("SHA-256");
             MessageDigest mdc = (MessageDigest) md.clone();
@@ -61,7 +61,7 @@ public class studentAccount implements Account {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        studentAccount that = (studentAccount) o;
+        StudentAccount that = (StudentAccount) o;
         return name.equals(that.name) && Arrays.equals(passwordBytes, that.passwordBytes) && location.equals(that.location);
     }
 

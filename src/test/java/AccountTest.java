@@ -2,8 +2,7 @@ import DAO.AccountsStore;
 import DAO.AccountsStoreDao;
 import model.Account;
 import model.Location;
-import model.saveleLocation;
-import model.studentAccount;
+import model.StudentAccount;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -16,7 +15,7 @@ public class AccountTest {
         String password = "pass";
         Location location = new saveleLocation();
         AccountsStore store = new AccountsStoreDao();
-        Account acc = new studentAccount(store,name,password,location);
+        Account acc = new StudentAccount(store,name,password,location);
         assertEquals(name,acc.getName());
         assertEquals(location,acc.getLocation());
         acc.setLocation(store,null);
