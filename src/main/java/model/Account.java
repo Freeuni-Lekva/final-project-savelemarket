@@ -9,5 +9,8 @@ public interface Account {
     Location getLocation();
     /** setters **/
     void setLocation(AccountsStore store, Location loc);
+
+    String toString();
+    int hashCode();
     // add private chat
 }

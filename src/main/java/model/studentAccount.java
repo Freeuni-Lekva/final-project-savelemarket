@@ -5,6 +5,7 @@ import DAO.AccountsStore;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
+import java.util.Objects;
 
 public class studentAccount implements Account {
 
@@ -54,5 +55,20 @@ public class studentAccount implements Account {
     public void setLocation(AccountsStore store, Location location) {
         store.updateLocation(this,location);
         this.location = location;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        studentAccount that = (studentAccount) o;
+        return name.equals(that.name) && Arrays.equals(passwordBytes, that.passwordBytes) && location.equals(that.location);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = Objects.hash(name, location);
+        result = 31 * result + Arrays.hashCode(passwordBytes);
+        return result;
     }
 }
