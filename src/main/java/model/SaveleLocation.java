@@ -4,37 +4,26 @@ import DAO.AccountsStore;
 import DAO.AccountsStoreDao;
 
 public class SaveleLocation implements Location{
+
     private int sessionNumber;
     private String name;
-    private AccountsStore accountsStore;
 
     public SaveleLocation(String name, int sessionNumber){
         this.name = name;
         this.sessionNumber = sessionNumber;
-        this.accountsStore = null;
     }
 
+
+    /** Works when AccountStore object is already set. */
     @Override
-    public void setAccountStore(AccountsStore accountsStore) {
-        this.accountsStore = accountsStore;
+    public void addAccount(AccountsStore accountsStore, Account account) {
+        accountsStore.addAccount(account);
     }
 
     /** Works when AccountStore object is already set. */
     @Override
-    public AccountsStore getAccountStore() {
-        return accountsStore;
-    }
-
-    /** Works when AccountStore object is already set. */
-    @Override
-    public void addAccount(Account account) {
-        if(accountsStore != null) accountsStore.addAccount(account);
-    }
-
-    /** Works when AccountStore object is already set. */
-    @Override
-    public void removeAccount(Account account) {
-        if(accountsStore != null) accountsStore.removeAccount(account);
+    public void removeAccount(AccountsStore accountsStore, Account account) {
+        accountsStore.removeAccount(account);
     }
 
     @Override
