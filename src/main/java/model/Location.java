@@ -9,5 +9,5 @@ public interface Location {
     AccountsStore getAccountStore();
     String getName();
     int getSessionNumber();
-    int getId();
+    //int getId();
 }

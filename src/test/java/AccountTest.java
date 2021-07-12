@@ -16,8 +16,7 @@ public class AccountTest {
         String lastName = "last_name";
         String password = "pass";
         String mail = "mail@"; // added
-        int locationId = 3; // added
-        Location location = new SaveleLocation("lokacia",2,locationId); ///added location id
+        Location location = new SaveleLocation("lokacia",2);
         //AccountsStore store = new AccountsStoreDao(); // commented temporarily
         AccountsStore store = null;
 
