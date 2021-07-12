@@ -111,9 +111,8 @@ public class StudentAccount implements Account {
                 "lastName='" + lastName + '\'' +
                 ", mail='" + mail + '\'' +
                 ", name='" + name + '\'' +
-                ", passwordBytes=" + Arrays.toString(passwordBytes) +
                 ", location=" + location +
-                ", md=" + md +
+                ", passwordBytes=" + Arrays.toString(passwordBytes) +
                 '}';
     }
 }
