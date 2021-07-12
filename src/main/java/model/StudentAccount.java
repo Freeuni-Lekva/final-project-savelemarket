@@ -86,8 +86,7 @@ public class StudentAccount implements Account {
 
     @Override
     //might change
-    public void setLocation(AccountsStore store, Location location) {
-        store.updateLocation(this,location);
+    public void setLocation(Location location) {
         this.location = location;
     }
 

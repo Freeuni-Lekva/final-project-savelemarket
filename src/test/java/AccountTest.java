@@ -24,7 +24,7 @@ public class AccountTest {
         store.addAccount(acc);
         assertEquals(name,acc.getName());
         assertEquals(location,acc.getLocation());
-        acc.setLocation(store,null);
+        acc.setLocation(null);
         assertNull(acc.getLocation());
         assertTrue(acc.isValidPassword(password));
         for(int i = 0;i<10;i++) {

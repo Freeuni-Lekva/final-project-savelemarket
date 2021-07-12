@@ -18,7 +18,7 @@ public interface Account {
     Location getLocation();
 
     /** setters **/
-    void setLocation(AccountsStore store, Location loc);
+    void setLocation(Location loc);
 
     String toString();
     int hashCode();

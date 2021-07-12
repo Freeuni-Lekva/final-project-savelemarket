@@ -5,29 +5,36 @@ import DAO.AccountsStoreDao;
 
 public class SaveleLocation implements Location{
     private int sessionNumber;
-//    private int id;
     private String name;
     private AccountsStore accountsStore;
 
     public SaveleLocation(String name, int sessionNumber){
         this.name = name;
         this.sessionNumber = sessionNumber;
-//        this.id = id;
+        this.accountsStore = null;
     }
 
+    @Override
+    public void setAccountStore(AccountsStore accountsStore) {
+        this.accountsStore = accountsStore;
+    }
+
+    /** Works when AccountStore object is already set. */
     @Override
     public AccountsStore getAccountStore() {
         return accountsStore;
     }
 
+    /** Works when AccountStore object is already set. */
     @Override
     public void addAccount(Account account) {
-        accountsStore.addAccount(account);
+        if(accountsStore != null) accountsStore.addAccount(account);
     }
 
+    /** Works when AccountStore object is already set. */
     @Override
     public void removeAccount(Account account) {
-        accountsStore.removeAccount(account);
+        if(accountsStore != null) accountsStore.removeAccount(account);
     }
 
     @Override
@@ -40,8 +47,9 @@ public class SaveleLocation implements Location{
         return sessionNumber;
     }
 
-//    @Override
-//    public int getId() {
-//        return id;
-//    }
+
+    @Override
+    public String toString(){
+        return "location name: "+name+"  session: "+sessionNumber;
+    }
 }
