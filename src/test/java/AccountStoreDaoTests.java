@@ -7,10 +7,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import DAO.AccountsStoreDao;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
-import java.sql.Statement;
+import java.sql.*;
 import java.util.List;
 
 
@@ -28,13 +25,13 @@ public class AccountStoreDaoTests {
 
     private AccountsStoreDao accountsStoreDao;
 
-    private SaveleLocation locations[] = {  new SaveleLocation("Kazbegi", 1, 1),
-                                            new SaveleLocation("Kazbegi", 2, 2),
-                                            new SaveleLocation("Kazbegi", 3, 3),
-                                            new SaveleLocation("Tusheti", 1, 4),
-                                            new SaveleLocation("Tusheti", 2, 5),
-                                            new SaveleLocation("Svaneti", 1, 6),
-                                            new SaveleLocation("Marelisi", 1, 7)
+    private SaveleLocation locations[] = {  new SaveleLocation("Kazbegi", 1),
+                                            new SaveleLocation("Kazbegi", 2),
+                                            new SaveleLocation("Kazbegi", 3),
+                                            new SaveleLocation("Tusheti", 1),
+                                            new SaveleLocation("Tusheti", 2),
+                                            new SaveleLocation("Svaneti", 1),
+                                            new SaveleLocation("Marelisi", 1)
                                             };
 
     @BeforeEach
@@ -44,7 +41,7 @@ public class AccountStoreDaoTests {
     }
 
     @Test
-    public void test1(){
+    public void test1() throws SQLException {
         Account account1 = new StudentAccount("Levana","Iremashvili","dzegvi123", "lirem",locations[4]);
         Account account2 = new StudentAccount("Nika","Shugliashvili","gori123", "nshug",locations[1]);
         Account account3 = new StudentAccount("Tornike","Totladze","sanebeli123", "ttotl",locations[6]);
@@ -63,9 +60,6 @@ public class AccountStoreDaoTests {
         for(Account acc : allAccounts2){
             System.out.println(acc);
         }
-//        assertTrue(accountsStoreDao.hasAccount(account1.getMail()));
-//        assertFalse(accountsStoreDao.hasAccount(account2.getMail()));
-//        assertTrue(accountsStoreDao.hasAccount(account3.getMail()));
     }
 
 
@@ -122,11 +116,10 @@ public class AccountStoreDaoTests {
             psInit.executeUpdate();
             for(int i =0; i < locations.length; i++){
                 PreparedStatement addLocation = connection.prepareStatement(
-                        "INSERT INTO locations (location_name, sess,location_id) " +
-                                "VALUES (?,?,?);", Statement.RETURN_GENERATED_KEYS);
+                        "INSERT INTO locations (location_name, sess) " +
+                                "VALUES (?,?);", Statement.RETURN_GENERATED_KEYS);
                 addLocation.setString(1, locations[i].getName());
                 addLocation.setInt(2, locations[i].getSessionNumber());
-                addLocation.setInt(3, locations[i].getId());
                 addLocation.executeUpdate();
             }
         } catch (SQLException throwables) { throwables.printStackTrace(); }

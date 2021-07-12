@@ -5,15 +5,14 @@ import DAO.AccountsStoreDao;
 
 public class SaveleLocation implements Location{
     private int sessionNumber;
-    private int id;
+//    private int id;
     private String name;
     private AccountsStore accountsStore;
 
-    public SaveleLocation(String name, int sessionNumber, int id){
+    public SaveleLocation(String name, int sessionNumber){
         this.name = name;
         this.sessionNumber = sessionNumber;
-        this.id = id;
-        //accountsStore = new AccountsStoreDao();
+//        this.id = id;
     }
 
     @Override
@@ -41,8 +40,8 @@ public class SaveleLocation implements Location{
         return sessionNumber;
     }
 
-    @Override
-    public int getId() {
-        return id;
-    }
+//    @Override
+//    public int getId() {
+//        return id;
+//    }
 }

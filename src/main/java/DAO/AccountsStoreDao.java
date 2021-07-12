@@ -27,10 +27,11 @@ public class AccountsStoreDao implements AccountsStore {
                     connection.prepareStatement("" +
                             "INSERT INTO accounts (first_name, last_name, mail, location_id, pass) " +
                             "VALUES (?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
+            int locId = getLocationId(connection, account);
             statement.setString(1, account.getName());
             statement.setString(2, account.getLastName());
             statement.setString(3, account.getMail());
-            statement.setInt(4, account.getLocation().getId());
+            statement.setInt(4, locId);
             statement.setBytes(5, account.getPasswordHash());
             statement.executeUpdate();
         } catch (SQLException throwables) {
@@ -127,17 +128,43 @@ public class AccountsStoreDao implements AccountsStore {
     }
 
 
+    /**
+     * Reads all fields from DataBase associated with location ID, converts them
+     * to location object and returns it.
+     */
     private Location getLocationById(Connection connection, int locationId){
         Location result = null;
         try {
-            Statement st = connection.createStatement();
-            ResultSet rs = st.executeQuery("SELECT location_name, sess FROM locations WHERE location_id = "+locationId);
+            PreparedStatement statement = connection.prepareStatement("SELECT location_name, sess FROM locations WHERE location_id = ?");
+            statement.setInt(1, locationId);
+            ResultSet rs = statement.executeQuery();
             if(rs.next()){
-                result = new SaveleLocation(rs.getString(1), rs.getInt(2), locationId);
+                result = new SaveleLocation(rs.getString(1), rs.getInt(2));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
         return result;
+    }
+
+
+    /** Returns primary key of the account's location form Data Base. */
+    private int getLocationId(Connection conn, Account account){
+        PreparedStatement statement = null;
+        try {
+            String locationName = account.getLocation().getName();
+            int sessionNum = account.getLocation().getSessionNumber();
+            statement = conn.prepareStatement("SELECT location_id FROM locations WHERE  sess = ? AND location_name = ?;");
+            statement.setInt(1, sessionNum);
+            statement.setString(2, locationName);
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+            return -1;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return -1;
     }
 }
