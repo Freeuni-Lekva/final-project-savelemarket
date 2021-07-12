@@ -7,10 +7,7 @@ import model.StudentAccount;
 
 import javax.sql.DataSource;
 import javax.ws.rs.NotFoundException;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,6 +32,14 @@ public class LocationStoreDao implements LocationStore{
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
 
         return null;
@@ -54,6 +59,14 @@ public class LocationStoreDao implements LocationStore{
             return result;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
         return null;
     }
@@ -76,6 +89,14 @@ public class LocationStoreDao implements LocationStore{
             return result;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
         return null;
     }
@@ -94,7 +115,38 @@ public class LocationStoreDao implements LocationStore{
             return result;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
         return null;
+    }
+
+    @Override
+    public void addLocation(Location location) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO locations (location_name, sess) " +
+                    "VALUES (?,?);");
+            statement.setString(1, location.getName());
+            statement.setInt(2, location.getSessionNumber());
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }
     }
 }
