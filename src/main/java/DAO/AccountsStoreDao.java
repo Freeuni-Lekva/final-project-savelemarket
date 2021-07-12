@@ -27,7 +27,7 @@ public class AccountsStoreDao implements AccountsStore {
                     connection.prepareStatement("" +
                             "INSERT INTO accounts (first_name, last_name, mail, location_id, pass) " +
                             "VALUES (?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
-            int locId = getLocationId(connection, account);
+            int locId = getLocationId(connection, account.getLocation().getName(), account.getLocation().getSessionNumber());
             statement.setString(1, account.getName());
             statement.setString(2, account.getLastName());
             statement.setString(3, account.getMail());
@@ -71,32 +71,66 @@ public class AccountsStoreDao implements AccountsStore {
 
     @Override
     public void updateLocation(Account account, Location location) {
-
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement statement =
+                    connection.prepareStatement("" +
+                            "UPDATE accounts SET location_id = ? WHERE mail = ?");
+            int locId = getLocationId(connection, location.getName(), location.getSessionNumber());
+            statement.setInt(1, locId);
+            statement.setString(2, account.getMail());
+            statement.executeUpdate();
+            account.setLocation(location);
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }
     }
 
+    /**
+     * Returns true if accounts store data table contains
+     * account with private key 'mail'. Otherwise returns false.
+     * @param mail
+     * @return
+     */
     @Override
-    public boolean hasAccount(String mail) {
-//        Connection conn = null;
-//        try {
-//            conn = dataSource.getConnection();
-//            Statement stm = conn.createStatement();
-//            ResultSet rs = stm.executeQuery(
-//                    "SELECT first_name, last_name, mail, location_id, pass FROM accounts WHERE mail = "+mail);
-//            if(rs.next()) return true;
-//            return false;
-//        } catch (SQLException throwables) { throwables.printStackTrace();
-//        } finally {
-//            if (conn != null) {
-//                try {
-//                    conn.close();
-//                } catch (SQLException throwables) {
-//                    throwables.printStackTrace();
-//                }
-//            }
-//        }
+    public boolean containsAccount(String mail) {
+        Connection conn = null;
+        try {
+            conn = dataSource.getConnection();
+            PreparedStatement statement = conn.prepareStatement("SELECT first_name, last_name, mail, location_id, pass FROM accounts WHERE mail = ?;");
+            statement.setString(1, mail);
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()) return true;
+            return false;
+        } catch (SQLException throwables) { throwables.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }
         return false;
     }
 
+    /**
+     * Reads all fields from AccountStore database table,
+     * turns them into appropriate account objects
+     * and returns their list;
+     * Useful for testing and showing data.
+     * @return List<Account>
+     */
     @Override
     public List<Account> getAllAccounts() {
         Connection conn = null;
@@ -149,11 +183,9 @@ public class AccountsStoreDao implements AccountsStore {
 
 
     /** Returns primary key of the account's location form Data Base. */
-    private int getLocationId(Connection conn, Account account){
+    private int getLocationId(Connection conn, String locationName, int sessionNum){
         PreparedStatement statement = null;
         try {
-            String locationName = account.getLocation().getName();
-            int sessionNum = account.getLocation().getSessionNumber();
             statement = conn.prepareStatement("SELECT location_id FROM locations WHERE  sess = ? AND location_name = ?;");
             statement.setInt(1, sessionNum);
             statement.setString(2, locationName);

@@ -10,9 +10,7 @@ import DAO.AccountsStoreDao;
 import java.sql.*;
 import java.util.List;
 
-
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class AccountStoreDaoTests {
     /** These fields must be changed from another pc */
@@ -40,8 +38,34 @@ public class AccountStoreDaoTests {
         initLocationsStore();
     }
 
+
     @Test
-    public void test1() throws SQLException {
+    public void containsAccountTest(){
+        Account account1 = new StudentAccount("Levana","Iremashvili","dzegvi123", "lirem",locations[4]);
+        Account account2 = new StudentAccount("Nika","Shugliashvili","gori123", "nshug",locations[1]);
+        Account account3 = new StudentAccount("Tornike","Totladze","sanebeli123", "ttotl",locations[6]);
+        Account account4 = new StudentAccount("Alexa","Inauri","gori1234", "Ainau",locations[3]);
+        accountsStoreDao.addAccount(account1);
+        accountsStoreDao.addAccount(account2);
+        accountsStoreDao.addAccount(account3);
+        assertTrue(accountsStoreDao.containsAccount(account1.getMail()));
+        assertTrue(accountsStoreDao.containsAccount(account2.getMail()));
+        assertTrue(accountsStoreDao.containsAccount(account3.getMail()));
+        assertFalse(accountsStoreDao.containsAccount(account4.getMail()));
+        // remove some accounts
+        accountsStoreDao.removeAccount(account1);
+        accountsStoreDao.removeAccount(account2);
+        assertFalse(accountsStoreDao.containsAccount(account1.getMail()));
+        assertFalse(accountsStoreDao.containsAccount(account2.getMail()));
+        assertTrue(accountsStoreDao.containsAccount(account3.getMail()));
+        // add account4
+        accountsStoreDao.addAccount(account4);
+        assertTrue(accountsStoreDao.containsAccount(account4.getMail()));
+        assertFalse(accountsStoreDao.containsAccount(account2.getMail()));
+    }
+
+    @Test
+    public void getAllAccountsTest() throws SQLException {
         Account account1 = new StudentAccount("Levana","Iremashvili","dzegvi123", "lirem",locations[4]);
         Account account2 = new StudentAccount("Nika","Shugliashvili","gori123", "nshug",locations[1]);
         Account account3 = new StudentAccount("Tornike","Totladze","sanebeli123", "ttotl",locations[6]);
@@ -49,23 +73,64 @@ public class AccountStoreDaoTests {
         accountsStoreDao.addAccount(account2);
         accountsStoreDao.addAccount(account3);
         List<Account> allAccounts1 = accountsStoreDao.getAllAccounts();
-        System.out.println("accounts list is: ");
+        assertEquals(3, allAccounts1.size());
+        System.out.println("!!!!   accounts list is:     !!!!");
         for(Account acc : allAccounts1){
             System.out.println(acc);
         }
         accountsStoreDao.removeAccount(account2);
         System.out.println("deleting account "+ account2);
-        System.out.println("now accounts list is: ");
+        System.out.println("!!!!    now accounts list is:     !!!!");
         List<Account> allAccounts2 = accountsStoreDao.getAllAccounts();
+        assertEquals(2, allAccounts2.size());
         for(Account acc : allAccounts2){
             System.out.println(acc);
+        }
+    }
+
+    @Test
+    public void getLocationTest(){
+        Account account1 = new StudentAccount("Levana","Iremashvili","dzegvi123", "lirem",locations[4]);
+        Account account2 = new StudentAccount("Nika","Shugliashvili","gori123", "nshug",locations[1]);
+        accountsStoreDao.addAccount(account1);
+        accountsStoreDao.addAccount(account2);
+        List<Account> allAccounts = accountsStoreDao.getAllAccounts();
+        assertTrue(allAccounts.get(0).getLocation().toString().equals("location name: Tusheti  session: 2"));
+        assertTrue(allAccounts.get(1).getLocation().toString().equals("location name: Kazbegi  session: 2"));
+    }
+
+    @Test
+    public void changeLocationTest(){
+        Account account1 = new StudentAccount("Levana","Iremashvili","dzegvi123", "lirem",locations[4]);
+        Account account2 = new StudentAccount("Nika","Shugliashvili","gori123", "nshug",locations[1]);
+        Account account3 = new StudentAccount("Tornike","Totladze","sanebeli123", "ttotl",locations[6]);
+        Account account4 = new StudentAccount("Alexa","Inauri","gori1234", "Ainau",locations[3]);
+        accountsStoreDao.addAccount(account1);
+        accountsStoreDao.addAccount(account2);
+        accountsStoreDao.addAccount(account3);
+        accountsStoreDao.addAccount(account4);
+        List<Account> allAccounts1 = accountsStoreDao.getAllAccounts();
+        System.out.println("!!!  before updates  !!!");
+        for(Account acc : allAccounts1){
+            System.out.println(acc +"  "+ acc.getLocation());
+        }
+        // update some locations
+        accountsStoreDao.updateLocation(account1, locations[1]);
+        accountsStoreDao.updateLocation(account3, locations[5]);
+        List<Account> allAccounts2 = accountsStoreDao.getAllAccounts();
+        System.out.println("!!!  update some locations  !!!");
+        for(Account acc : allAccounts2){
+            System.out.println(acc +"  "+ acc.getLocation());
         }
     }
 
 
 
 
-
+    /**
+     * Drops accounts store table down from data base
+     * if it exists and then create new one.
+     */
     private void initAccountsStore(){
         MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
         ds.setServerName(serverName);
