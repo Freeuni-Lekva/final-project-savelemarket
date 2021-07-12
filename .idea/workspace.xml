@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="fd4fad58-2116-4cb8-b2b9-8685da6617dd" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,7 +27,7 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="1" id="Add" />
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="JUnit.All in SaveleMarket">
     <configuration default="true" type="ArquillianTestNG" factoryName="" nameIsGenerated="true">
       <option name="arquillianRunConfiguration">
         <value>
@@ -40,6 +41,33 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="AccountStoreDaoTests" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="SaveleMarket" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="MAIN_CLASS_NAME" value="AccountStoreDaoTests" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="All in SaveleMarket" type="JUnit" factoryName="JUnit" nameIsGenerated="true">
+      <module name="SaveleMarket" />
+      <option name="PACKAGE_NAME" value="" />
+      <option name="TEST_OBJECT" value="package" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="JUnit.All in SaveleMarket" />
+      <item itemvalue="JUnit.AccountStoreDaoTests" />
+      <item itemvalue="Maven.SaveleMarket [tomcat7:run]" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.AccountStoreDaoTests" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="TaskManager">
     <servers />
