@@ -106,8 +106,14 @@ public class StudentAccount implements Account {
     }
 
     @Override
-    public String toString(){
-        return "name: " + name + "  last_name: "+ lastName + "  mail: "+ mail
-                + "  location: "+location.getName() + "  session: "+ location.getSessionNumber();
+    public String toString() {
+        return "StudentAccount{" +
+                "lastName='" + lastName + '\'' +
+                ", mail='" + mail + '\'' +
+                ", name='" + name + '\'' +
+                ", passwordBytes=" + Arrays.toString(passwordBytes) +
+                ", location=" + location +
+                ", md=" + md +
+                '}';
     }
 }
