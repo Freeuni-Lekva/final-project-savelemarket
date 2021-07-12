@@ -11,6 +11,6 @@ public interface LocationStore {
     void setLocation(AccountsStore accountsStore, Account account);
     List<Location> getAllLocations();
     List<Account> getStudents(Location location);
-
+    List<String> getUniqueLocations();
 
 }
