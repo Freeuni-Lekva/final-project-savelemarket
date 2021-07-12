@@ -5,7 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fd4fad58-2116-4cb8-b2b9-8685da6617dd" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/src/main/java/DAO/LocationStore.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/DAO/LocationStore.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
