@@ -41,6 +41,12 @@ public class StudentAccount implements Account {
     }
 
     public StudentAccount(String name, String lastName, byte[] passwordBytes, String mail, Location location) {
+
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
         this.name = name;
         this.location = location;
         this.passwordBytes = passwordBytes;
