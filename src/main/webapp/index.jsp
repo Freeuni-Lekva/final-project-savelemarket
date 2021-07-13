@@ -12,7 +12,7 @@
 </header>
     <body class="body">
         <div class="inputs">
-            <form action="servletis_saxeli" method="post" class="login_form">
+            <form action="LoginServlet" method="post" class="login_form">
                 <div class="username">
                     <a class="input_name">უნივერსიტეტის მეილი</a>
                     <input type="text" name="username" class="login_input" />
@@ -24,7 +24,7 @@
                 <input type="submit" value="შესვლა" class="input_btn"/>
 
             </form>
-            <form method="get" action="/registration.jsp">
+            <form method="post" action="/registration.jsp">
                 <input type="submit" value="რეგისტრაცია" class="registration_btn"/>
             </form>
 
