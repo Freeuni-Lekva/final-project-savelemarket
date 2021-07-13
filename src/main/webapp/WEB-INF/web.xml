@@ -4,21 +4,26 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+
   <servlet>
     <servlet-name>registration-servlet</servlet-name>
     <servlet-class>web.RegistrationServlet</servlet-class>
   </servlet>
+
   <servlet>
     <servlet-name>login-servlet</servlet-name>
     <servlet-class>web.LoginServlet</servlet-class>
   </servlet>
-  
+
   <servlet-mapping>
     <servlet-name>login-servlet</servlet-name>
-    <url-pattern>/Login</url-pattern>
+    <url-pattern>/login</url-pattern>
   </servlet-mapping>
+
   <servlet-mapping>
     <servlet-name>registration-servlet</servlet-name>
-    <url-pattern>/Registration</url-pattern>
+    <url-pattern>/registration</url-pattern>
   </servlet-mapping>
+
+
 </web-app>

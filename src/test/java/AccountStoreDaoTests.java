@@ -18,9 +18,9 @@ public class AccountStoreDaoTests {
     /** These fields must be changed from another pc */
     private final String serverName = "localhost";
     private final int port = 3306;
-    private final String dbName = "myDataBase";
+    private final String dbName = "myDatabase";
     private final String user = "root";
-    private final String password = "rootroot";
+    private final String password = "";
     ///
 
     private AccountsStoreDao accountsStoreDao;

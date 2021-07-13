@@ -22,13 +22,12 @@ public class LocationStoreDao implements LocationStore{
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement("select location_name, sess from accounts inner join locations using (location_id) where mail=?;");
+            PreparedStatement statement = connection.prepareStatement(
+                    "select location_name, sess from accounts inner join locations using (location_id) where mail=?;");
             statement.setString(1, account.getMail());
             ResultSet rs = statement.executeQuery();
             if(rs.next()){
                 return new SaveleLocation(rs.getString(1), rs.getInt(2));
-            }else{
-                throw new NotFoundException();
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
