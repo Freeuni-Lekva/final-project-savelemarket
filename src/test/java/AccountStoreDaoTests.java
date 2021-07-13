@@ -31,7 +31,9 @@ public class AccountStoreDaoTests {
                                             new SaveleLocation("Tusheti", 1),
                                             new SaveleLocation("Tusheti", 2),
                                             new SaveleLocation("Svaneti", 1),
-                                            new SaveleLocation("Marelisi", 1)
+                                            new SaveleLocation("Marelisi", 1),
+                                            new SaveleLocation("ციმბირი", 2)
+
                                             };
 
     @BeforeEach
@@ -131,10 +133,12 @@ public class AccountStoreDaoTests {
         Account account1 = new StudentAccount("Levana","Iremashvili","dzegvi123", "lirem18@freeuni.edu.ge",locations[4]);
         Account account2 = new StudentAccount("Nika","Shugliashvili","gori123", "nshug",locations[1]);
         Account account3 = new StudentAccount("Tornike","Totladze","sanebeli123", "ttotl",locations[6]);
+        Account account4 = new StudentAccount("იოსებ","ჯუღაშვილი","gori123", "stalini@freeuni.edu.ge",locations[7]);
+
         accountsStoreDao.addAccount(account1);
         accountsStoreDao.addAccount(account2);
         accountsStoreDao.addAccount(account3);
-
+        accountsStoreDao.addAccount(account4);
         System.out.println(accountsStoreDao.getAccount("lirem18@freeuni.edu.ge"));
         accountsStoreDao.removeAccount(account1);
         assertEquals(null, accountsStoreDao.getAccount("lirem18@freeuni.edu.ge"));
