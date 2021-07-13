@@ -1,3 +1,5 @@
+CREATE DATABASE IF NOT EXISTS myDatabase;
+USE myDatabase;
 
 CREATE TABLE IF NOT EXISTS locations (
      `location_name` VARCHAR(64) NOT NULL,
