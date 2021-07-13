@@ -25,8 +25,7 @@ public class LoginServlet extends HttpServlet {
         if(session.getAttribute("current-account") == null) //gaakete ragaca
         accountsStore = (AccountsStoreDao) request.getServletContext().getAttribute("accounts-store");
         String userName = request.getParameter("username");
-        byte[] hash = getHash(request.getParameter("password"));
-        Account requiredAccount = accountsStore.getAccount(userName, hash);
+        Account requiredAccount = accountsStore.getAccount(userName);
         if(requiredAccount == null){
             request.setAttribute("try-again", true);
             request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -36,18 +35,4 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-
-    private byte[] getHash(String password){
-        MessageDigest md = null;
-        byte[] result = null;
-        try {
-            md = MessageDigest.getInstance("SHA-256");
-            MessageDigest mdc = (MessageDigest) md.clone();
-            result = mdc.digest(password.getBytes());
-        } catch (NoSuchAlgorithmException | CloneNotSupportedException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return result;
-    }
 }

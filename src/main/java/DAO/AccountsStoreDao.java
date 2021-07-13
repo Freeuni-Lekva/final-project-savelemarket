@@ -125,14 +125,13 @@ public class AccountsStoreDao implements AccountsStore {
     }
 
     @Override
-    public Account getAccount(String mail, byte[] hash) {
+    public Account getAccount(String mail) {
         Connection conn = null;
         try {
             conn = dataSource.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT first_name, last_name, mail, location_id, " +
-                    "pass FROM accounts WHERE mail = ? AND  pass = ?");
+            PreparedStatement statement = conn.prepareStatement(
+                    "SELECT first_name, last_name, mail, location_id, pass FROM accounts WHERE mail = ?");
             statement.setString(1, mail);
-            statement.setBytes(2, hash);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 String firstName = rs.getString(1);

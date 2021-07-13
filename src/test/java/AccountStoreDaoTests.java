@@ -135,9 +135,9 @@ public class AccountStoreDaoTests {
         accountsStoreDao.addAccount(account2);
         accountsStoreDao.addAccount(account3);
 
-        System.out.println(accountsStoreDao.getAccount("lirem18@freeuni.edu.ge", getHash("dzegvi123")));
+        System.out.println(accountsStoreDao.getAccount("lirem18@freeuni.edu.ge"));
         accountsStoreDao.removeAccount(account1);
-        assertEquals(null, accountsStoreDao.getAccount("lirem18@freeuni.edu.ge", getHash("dzegvi123")));
+        assertEquals(null, accountsStoreDao.getAccount("lirem18@freeuni.edu.ge"));
     }
 
 
@@ -198,29 +198,13 @@ public class AccountStoreDaoTests {
             for(int i =0; i < locations.length; i++){
                 PreparedStatement addLocation = connection.prepareStatement(
                         "INSERT INTO locations (location_name, sess) " +
-                                "VALUES (?,?);", Statement.RETURN_GENERATED_KEYS);
+                                "VALUES (?,?);");
                 addLocation.setString(1, locations[i].getName());
                 addLocation.setInt(2, locations[i].getSessionNumber());
                 addLocation.executeUpdate();
             }
         } catch (SQLException throwables) { throwables.printStackTrace(); }
     }
-
-
-    private byte[] getHash(String password){
-        MessageDigest md = null;
-        byte[] result = null;
-        try {
-            md = MessageDigest.getInstance("SHA-256");
-            MessageDigest mdc = (MessageDigest) md.clone();
-            result = mdc.digest(password.getBytes());
-        } catch (NoSuchAlgorithmException | CloneNotSupportedException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return result;
-    }
-
 
 
 }
