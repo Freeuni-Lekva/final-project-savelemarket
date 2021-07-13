@@ -29,7 +29,7 @@ public class LoginServlet extends HttpServlet {
         Account requiredAccount = accountsStore.getAccount(userName, hash);
         if(requiredAccount == null){
             request.setAttribute("try-again", true);
-            request.getRequestDispatcher("igive-failis-saxeli").forward(request, response);
+            request.getRequestDispatcher("index.jsp").forward(request, response);
         }else{
             session.setAttribute("current-account", requiredAccount);
             request.getRequestDispatcher("accountis-gverdi").forward(request, response);
