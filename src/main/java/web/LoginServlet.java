@@ -25,8 +25,10 @@ public class LoginServlet extends HttpServlet {
         if(session.getAttribute("current-account") == null) //gaakete ragaca
         accountsStore = (AccountsStoreDao) request.getServletContext().getAttribute("accounts-store");
         String userName = request.getParameter("username");
+        String password = request.getParameter("password");
         Account requiredAccount = accountsStore.getAccount(userName);
-        if(requiredAccount == null){
+
+        if(requiredAccount.isValidPassword(password)){
             request.setAttribute("try-again", true);
             request.getRequestDispatcher("index.jsp").forward(request, response);
         }else{
