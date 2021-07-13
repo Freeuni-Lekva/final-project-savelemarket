@@ -14,17 +14,15 @@ public class PrivateChat implements Chat{
 
     /**
      * receives initialized ChatStore Object that has database initialized with chat ID
-     * @param db
-     * @param sender
-     * @param receiver
+     * basically chat exists in database before this constructor is called
      */
 
     public PrivateChat(ChatStore db, Account sender, Account receiver) {
         this.db = db;
         this.sender = sender;
         this.receiver = receiver;
-        this.id = db.getChatID();
-        db.addAccounts(Arrays.asList(sender,receiver));
+        this.id = db.getPrivateChatID(sender,receiver);
+        db.addAccounts(Arrays.asList(sender,receiver),id);
 
     }
 
