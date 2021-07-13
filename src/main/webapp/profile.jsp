@@ -32,7 +32,9 @@
     </section>
 </header>
 <body class="body">
-    <h1 class="profile-name">სახელი გვარი</h1>
+    <h1 class="profile-name">
+        <%out.println(((Account)session.getAttribute("current-account")).getName() + " " + ((Account) session.getAttribute("current-account")).getLastName());%>
+    </h1>
     <div class="profile-info">
         <div class="info-titles">
             <a class="info-title">მეილი:</a>
@@ -41,13 +43,13 @@
         </div>
         <div class="info-texts">
             <a class="info-text">
-                lirem18@freeuni.edu.ge
+                <%out.println(((Account)session.getAttribute("current-account")).getMail());%>
             </a>
             <a class="info-text">
-                ილიურთა
+                <%out.println(((Account)session.getAttribute("current-account")).getLocation().getName());%>
             </a>
             <a class="info-text">
-                2
+                <%out.println(((Account)session.getAttribute("current-account")).getLocation().getSessionNumber());%>
             </a>
         </div>
     </div>
