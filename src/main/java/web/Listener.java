@@ -21,9 +21,9 @@ public class Listener implements ServletContextListener, HttpSessionListener, Ht
         MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
         ds.setServerName("localhost");
         ds.setPort(3306);
-        ds.setDatabaseName("mydatabase");
+        ds.setDatabaseName("myDataBase");
         ds.setUser("root");
-        ds.setPassword("");
+        ds.setPassword("rootroot");
         AccountsStore accountsStore = new AccountsStoreDao(ds);
 
         LocationStore locationStore = new LocationStoreDao(ds);

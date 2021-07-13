@@ -13,4 +13,7 @@ public interface LocationStore {
     List<Account> getStudents(Location location);
     List<String> getUniqueLocations();
     void addLocation(Location location);
+
+    //added
+    boolean hasLocation(String locationName, int sessionNumber);
 }
