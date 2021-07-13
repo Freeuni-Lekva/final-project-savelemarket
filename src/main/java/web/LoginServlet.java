@@ -35,18 +35,4 @@ public class LoginServlet extends HttpServlet {
         }
     }
 
-
-    private byte[] getHash(String password){
-        MessageDigest md = null;
-        byte[] result = null;
-        try {
-            md = MessageDigest.getInstance("SHA-256");
-            MessageDigest mdc = (MessageDigest) md.clone();
-            result = mdc.digest(password.getBytes());
-        } catch (NoSuchAlgorithmException | CloneNotSupportedException e) {
-            e.printStackTrace();
-            return null;
-        }
-        return result;
-    }
 }
