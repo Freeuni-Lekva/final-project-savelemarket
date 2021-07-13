@@ -11,6 +11,7 @@
     <h1 class="header_title">საველე პრაქტიკა 2021</h1>
 </header>
     <body class="body">
+
         <div class="inputs">
             <form action="/login" method="post" class="login_form">
                 <div class="username">
@@ -27,7 +28,11 @@
             <form method="post" action="/registration.jsp">
                 <input type="submit" value="რეგისტრაცია" class="registration_btn"/>
             </form>
-
+            <%
+                if (request.getAttribute("try-again") != null){
+                    out.println("<a class=\"try_again\" style=\"color: red\">მეილი ან პაროლი არასწორია, სცადეთ ხელახლა</a>");
+                }
+            %>
         </div>
     </body>
 </body>

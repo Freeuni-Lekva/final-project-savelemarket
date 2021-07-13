@@ -32,7 +32,7 @@ public class LoginServlet extends HttpServlet {
             request.getRequestDispatcher("index.jsp").forward(request, response);
         }else{
             session.setAttribute("current-account", requiredAccount);
-            request.getRequestDispatcher("accountis-gverdi").forward(request, response);
+            request.getRequestDispatcher("profile.jsp").forward(request, response);
         }
     }
 
