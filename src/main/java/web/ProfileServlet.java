@@ -19,7 +19,7 @@ public class ProfileServlet extends HttpServlet {
         }else{
             AccountsStore as = (AccountsStore) req.getServletContext().getAttribute("accounts-store");
             Account accToShow = as.getAccount("mail");
-             if(accToShow == null) {
+            if(accToShow == null) {
                 req.getRequestDispatcher("accNotFound.jsp").forward(req,resp);
             }
             // ეს ექაუნთი უნდა აჩვენო ლევან, რო ნახავ ეს კომენტარი წაშალე
