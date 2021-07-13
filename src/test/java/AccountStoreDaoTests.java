@@ -7,6 +7,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import DAO.AccountsStoreDao;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.List;
 
@@ -124,6 +126,20 @@ public class AccountStoreDaoTests {
         }
     }
 
+    @Test
+    public void testGetAccount(){
+        Account account1 = new StudentAccount("Levana","Iremashvili","dzegvi123", "lirem18@freeuni.edu.ge",locations[4]);
+        Account account2 = new StudentAccount("Nika","Shugliashvili","gori123", "nshug",locations[1]);
+        Account account3 = new StudentAccount("Tornike","Totladze","sanebeli123", "ttotl",locations[6]);
+        accountsStoreDao.addAccount(account1);
+        accountsStoreDao.addAccount(account2);
+        accountsStoreDao.addAccount(account3);
+
+        System.out.println(accountsStoreDao.getAccount("lirem18@freeuni.edu.ge", getHash("dzegvi123")));
+        accountsStoreDao.removeAccount(account1);
+        assertEquals(null, accountsStoreDao.getAccount("lirem18@freeuni.edu.ge", getHash("dzegvi123")));
+    }
+
 
 
 
@@ -189,6 +205,22 @@ public class AccountStoreDaoTests {
             }
         } catch (SQLException throwables) { throwables.printStackTrace(); }
     }
+
+
+    private byte[] getHash(String password){
+        MessageDigest md = null;
+        byte[] result = null;
+        try {
+            md = MessageDigest.getInstance("SHA-256");
+            MessageDigest mdc = (MessageDigest) md.clone();
+            result = mdc.digest(password.getBytes());
+        } catch (NoSuchAlgorithmException | CloneNotSupportedException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return result;
+    }
+
 
 
 }

@@ -124,6 +124,38 @@ public class AccountsStoreDao implements AccountsStore {
         return false;
     }
 
+    @Override
+    public Account getAccount(String mail, byte[] hash) {
+        Connection conn = null;
+        try {
+            conn = dataSource.getConnection();
+            PreparedStatement statement = conn.prepareStatement("SELECT first_name, last_name, mail, location_id, " +
+                    "pass FROM accounts WHERE mail = ? AND  pass = ?");
+            statement.setString(1, mail);
+            statement.setBytes(2, hash);
+            ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                String firstName = rs.getString(1);
+                String lastName = rs.getString(2);
+                String gmail = rs.getString(3);
+                int locationId = rs.getInt(4);
+                byte[] password = rs.getBytes(5);
+                return new StudentAccount(firstName,lastName,password,gmail,getLocationById(conn, locationId));
+            }
+            return null;
+        } catch (SQLException throwables) { throwables.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }
+        return null;
+    }
+
     /**
      * Reads all fields from AccountStore database table,
      * turns them into appropriate account objects
