@@ -19,7 +19,7 @@ public class ContextListener implements ServletContextListener {
         MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
         ds.setServerName("localhost");
         ds.setPort(3306);
-        ds.setDatabaseName("myDataBase");
+        ds.setDatabaseName("myDatabase");
         ds.setUser("root");
         ds.setPassword("");
         accountsStore = new AccountsStoreDao(ds);
