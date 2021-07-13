@@ -33,7 +33,7 @@ CREATE TABLE IF NOT EXISTS chat_users (
 CREATE TABLE IF NOT EXISTS message (
     `chat_id` INT NOT NULL,
     `is_picture` BOOL NOT NULL,
-    `message` VARCHAR(64) NOT NULL,
+    `message` VARCHAR(255) NOT NULL,
     `sender_mail` VARCHAR(64) NOT NULL,
     FOREIGN KEY (`chat_id`) REFERENCES chat(`chat_id`),
     FOREIGN KEY (`sender_mail`) REFERENCES accounts(`mail`)
