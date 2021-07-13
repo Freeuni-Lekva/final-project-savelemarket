@@ -13,7 +13,6 @@ import java.security.NoSuchAlgorithmException;
 
 
 public class LoginServlet extends HttpServlet {
-    AccountsStore accountsStore;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -22,8 +21,8 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
-        if(session.getAttribute("current-account") == null) //gaakete ragaca
-        accountsStore = (AccountsStoreDao) request.getServletContext().getAttribute("accounts-store");
+        AccountsStore accountsStore = (AccountsStoreDao) request.getServletContext().getAttribute("accounts-store");
+        if(session.getAttribute("current-account") == null){} //gaakete ragaca
         String userName = request.getParameter("username");
         String password = request.getParameter("password");
         Account requiredAccount = accountsStore.getAccount(userName);

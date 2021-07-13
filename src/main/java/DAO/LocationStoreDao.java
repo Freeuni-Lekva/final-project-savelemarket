@@ -148,4 +148,30 @@ public class LocationStoreDao implements LocationStore{
             }
         }
     }
+
+    @Override
+    public boolean hasLocation(String locationName, int sessionNumber) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement("select location_name, sess from locations where location_name = ? and sess = ?");
+            statement.setString(1, locationName);
+            statement.setInt(2, sessionNumber);
+            ResultSet rs = statement.executeQuery();
+            boolean res = rs.next();
+            return res;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
+
 }
