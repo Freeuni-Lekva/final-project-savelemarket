@@ -1,6 +1,10 @@
 * {
     padding: 0;
     margin: 0;
+
+}
+ul, li {
+    list-style: none;
 }
 
 .login_header{
@@ -40,6 +44,7 @@ body{
     height: 360px;
     background-color: var(--color-freeuni);
     box-shadow: 6px 6px #caee5b;
+    margin-bottom: 40px;
 }
 
 .login_form, .registration_form{
@@ -164,3 +169,83 @@ select{
     text-align: center;
 }
 
+.profile-info{
+    display: grid;
+    grid-template-columns: auto auto;
+}
+
+.info-titles, .info-texts{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.info-titles{
+    align-items: flex-end;
+    margin-right: 10px;
+    width: 200px;
+}
+.info-texts{
+    align-items: flex-start;
+}
+
+.profile-name{
+    margin-top: 20px;
+    color: var(--color-agruni);
+    font-size: 45px;
+    margin-bottom: 20px;
+}
+
+.info-title, .info-text{
+    color: var(--color-agruni);
+    font-size: 30px;
+    margin-top: 5px;
+
+}
+
+.info-title{
+    font-weight: bold;
+}
+
+.menu-section{
+    display: flex;
+    height: 60px;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--color-freeuni);
+    width: 100vw;
+}
+
+.menu-nav{
+    width: calc(100vw - 150px);
+}
+
+.menu-list{
+    display: flex;
+    align-items: center;
+}
+
+.menu-item{
+    font-size: 25px;
+
+}
+
+.menu-item:hover{
+    text-shadow: 1px 0px 0px var(--color-agruni);
+}
+
+.menu-item:not(:first-child){
+    margin-left: 35px;
+}
+
+.menu-link{
+    text-decoration: none;
+    color: var(--color-agruni);
+}
+
+.sing-out{
+    color: red;
+    margin-right: 20px;
+    font-size: 25px;
+    text-decoration: none;
+}
