@@ -1,6 +1,15 @@
 CREATE DATABASE IF NOT EXISTS myDatabase;
 USE myDatabase;
 
+
+# order to delete: messages first
+# DROP TABLE message;
+# DROP TABLE chat_users;
+# DROP TABLE chat;
+# # accounts
+# DROP TABLE accounts;
+# DROP TABLE locations;
+
 CREATE TABLE IF NOT EXISTS locations (
      `location_name` VARCHAR(64) NOT NULL,
      `sess` TINYINT NOT NULL,
