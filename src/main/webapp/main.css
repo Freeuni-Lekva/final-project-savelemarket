@@ -96,13 +96,14 @@ body{
     width: 150px;
     height: 40px;
     color: white;
-    margin-top: 30px;
+    margin-top: 20px;
     border: none;
     border-top: 1px solid;
     border-radius: 5px;
     background-color: #3140d6;
     font-size: 20px;
     cursor: pointer;
+    margin-bottom: 3px;
 }
 .registration_inputs{
     display: flex;
