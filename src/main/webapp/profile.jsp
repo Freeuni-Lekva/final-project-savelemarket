@@ -1,10 +1,4 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Qorbuda
-  Date: 7/10/2021
-  Time: 16:57
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="model.Account" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -38,7 +32,9 @@
     </section>
 </header>
 <body class="body">
-    <h1 class="profile-name">სახელი გვარი</h1>
+    <h1 class="profile-name">
+        <%out.println(((Account)session.getAttribute("current-account")).getName() + " " + ((Account) session.getAttribute("current-account")).getLastName());%>
+    </h1>
     <div class="profile-info">
         <div class="info-titles">
             <a class="info-title">მეილი:</a>
@@ -47,13 +43,13 @@
         </div>
         <div class="info-texts">
             <a class="info-text">
-                lirem18@freeuni.edu.ge
+                <%out.println(((Account)session.getAttribute("current-account")).getMail());%>
             </a>
             <a class="info-text">
-                ილიურთა
+                <%out.println(((Account)session.getAttribute("current-account")).getLocation().getName());%>
             </a>
             <a class="info-text">
-                2
+                <%out.println(((Account)session.getAttribute("current-account")).getLocation().getSessionNumber());%>
             </a>
         </div>
     </div>
