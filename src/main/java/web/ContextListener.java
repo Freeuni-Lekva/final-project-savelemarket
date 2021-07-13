@@ -21,7 +21,7 @@ public class ContextListener implements ServletContextListener {
         ds.setPort(3306);
         ds.setDatabaseName("myDataBase");
         ds.setUser("root");
-        ds.setPassword("rootroot");
+        ds.setPassword("");
         accountsStore = new AccountsStoreDao(ds);
         locationStore = new LocationStoreDao(ds);
         sce.getServletContext().setAttribute("accounts-store", accountsStore);
