@@ -80,7 +80,7 @@ public class ChatStoreDao implements ChatStore{
         return 0;
     }
     private PreparedStatement stringSetter(PreparedStatement st, String str, int index){
-//        st.s
+         return null;
     }
     @Override
     public int createPrivateChat(Account sender, Account receiver) {
