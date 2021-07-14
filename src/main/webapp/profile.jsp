@@ -12,13 +12,13 @@
         <nav class="menu-nav">
             <ul class="menu-list">
                 <li class="menu-item">
-                    <a class="menu-link" href="homelink.jsp">მთავარი</a>
+                    <a class="menu-link" href="home.jsp">მთავარი</a>
                 </li>
                 <li class="menu-item">
-                    <a class="menu-link" href="chatebi.jsp">წერილები</a>
+                    <a class="menu-link" href="messages.jsp">წერილები</a>
                 </li>
                 <li class="menu-item">
-                    <a class="menu-link" href="requests.jsp">შეტყობინებები</a>
+                    <a class="menu-link" href="notifications.jsp">შეტყობინებები</a>
                 </li>
                 <li class="menu-item">
                     <a class="menu-link" href="profile.jsp" style="font-weight: bold; color:#051c8f">პროფილი</a>
