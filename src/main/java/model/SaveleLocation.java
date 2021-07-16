@@ -15,6 +15,10 @@ public class SaveleLocation implements Location{
     }
 
     @Override
+    public int getChatID(){
+        return chatID;
+    }
+    @Override
     public void setChatID(int chatID){
         this.chatID = chatID;
     }

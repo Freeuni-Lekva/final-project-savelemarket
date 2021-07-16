@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -22,17 +23,22 @@ public class AccountTest {
         ds.setUser("shug");
         ds.setPassword("");
         Statement st = ds.getConnection().createStatement();
+        st.executeUpdate("delete from chat_users");
         st.executeUpdate("delete from accounts");
         st.executeUpdate("delete from locations");
-        AccountsStore dao = new AccountsStoreDao(ds);
+        st.executeUpdate("delete from chat");
+        AccountsStore accDao = new AccountsStoreDao(ds);
         Location l = new SaveleLocation("lokacia",2);
         ChatStore chatStore = new ChatStoreDao(ds);
         LocationStore locDao = new LocationStoreDao(ds);
+        Account acc1 = new StudentAccount("a","a","pass","m1",l);
+        Account acc2 = new StudentAccount("b","b","pass2","m2",l);
         locDao.addLocation(l,chatStore);
-        Account a = new StudentAccount("a","b","pass","mail", l);
-        dao.addAccount(a);
-        Account acc = dao.getAllAccounts().get(0);
-        System.out.println(a);
-        System.out.println(acc);
+        accDao.addAccount(acc1);
+        accDao.addAccount(acc2);
+        int id = l.getChatID();
+        chatStore.addAccounts(Arrays.asList(acc1,acc2),id);
+//        System.out.println(chatStore.getChatMembers(id));
+
     }
 }

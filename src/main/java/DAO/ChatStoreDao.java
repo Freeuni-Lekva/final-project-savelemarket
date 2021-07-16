@@ -1,11 +1,11 @@
 package DAO;
 
-import model.Account;
-import model.Message;
+import model.*;
 
 import javax.sql.DataSource;
 import javax.xml.transform.Result;
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ChatStoreDao implements ChatStore{
@@ -22,6 +22,8 @@ public class ChatStoreDao implements ChatStore{
     private static final String createPublicChat = "INSERT INTO chat(is_private) VALUES(false);";
     private static final String createPrivateChat = "INSERT INTO chat(is_private) VALUES(true);";
     private static final String insertIntoChatUsers ="INSERT INTO chat_users(chat_id,account_mail) VALUES(?,?) ";
+    //returns chat_id,account_mail,first_name,last_name,mail,location_id,pass blob
+    private static final String getChatAccounts = "SELECT * FROM chat_users c inner join accounts a on c.account_mail = a.mail inner join locations l on (a.location_id = l.location_id) WHERE c.chat_id = ?;";
 
     private static final int ID_DOESNT_EXIST = 0;
     private static final int WRONG_ID = -1;
@@ -63,17 +65,7 @@ public class ChatStoreDao implements ChatStore{
         return id;
     }
 
-    //might change this one
-    @Override
-    public int getPublicChatID(List<Account> accounts) {
-        try {
-            PreparedStatement st = dataSource.getConnection().prepareStatement(getPublicChatID);
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-        //do stuff here
-        return WRONG_ID;
-    }
+
     @Override
     public void addMessage(Message message, int id) {
         try {
@@ -108,6 +100,29 @@ public class ChatStoreDao implements ChatStore{
         }
     }
 
+    @Override
+    public List<Account> getChatMembers(int id){
+        List<Account> list= new ArrayList<>();
+        try {
+            PreparedStatement st = dataSource.getConnection().prepareStatement(getChatAccounts);
+            st.setInt(1,id);
+            ResultSet rs = st.executeQuery();
+            Location l = null;
+            while(rs.next()){
+                        // need to join to locations too...
+                if(l == null){
+                    l = new SaveleLocation(rs.getString("location_name"),rs.getInt("sess"));
+                }
+                Account acc = new StudentAccount(rs.getString("first_name"),rs.getString("last_name"),
+                        rs.getBytes("pass"),rs.getString("mail"),l);
+                list.add(acc);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return list;
+    }
     /**
      * if accounts == null, create public chat with nobody in it
      * returns id of chat and puts members in it
