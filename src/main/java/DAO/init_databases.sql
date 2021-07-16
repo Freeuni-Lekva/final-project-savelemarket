@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS chat_users (
 CREATE TABLE IF NOT EXISTS message (
     `chat_id` INT NOT NULL,
     `is_picture` BOOL NOT NULL,
-    `message_id` INT AUTO_INCREMENT NOT NULL, -- might make primary key but it's uselss
+    `message_id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
     `sent_time` VARCHAR(64) NOT NULL,
     `message` VARCHAR(255) NOT NULL,
     `sender_mail` VARCHAR(64) NOT NULL,
