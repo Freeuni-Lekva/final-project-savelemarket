@@ -27,8 +27,8 @@ public class AccountTest {
         AccountsStore dao = new AccountsStoreDao(ds);
         Location l = new SaveleLocation("lokacia",2);
         ChatStore chatStore = new ChatStoreDao(ds);
-        LocationStore locDao = new LocationStoreDao(ds,chatStore);
-        locDao.addLocation(l);
+        LocationStore locDao = new LocationStoreDao(ds);
+        locDao.addLocation(l,chatStore);
         Account a = new StudentAccount("a","b","pass","mail", l);
         dao.addAccount(a);
         Account acc = dao.getAllAccounts().get(0);

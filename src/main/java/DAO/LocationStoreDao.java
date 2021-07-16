@@ -13,10 +13,9 @@ import java.util.List;
 
 public class LocationStoreDao implements LocationStore{
     private DataSource dataSource;
-    private ChatStore chatStore;
-    public LocationStoreDao(DataSource dataSource, ChatStore chatStore){
+
+    public LocationStoreDao(DataSource dataSource){
         this.dataSource = dataSource;
-        this.chatStore = chatStore;
     }
     @Override
     public Location getLocation(Account account) {
@@ -128,7 +127,7 @@ public class LocationStoreDao implements LocationStore{
     }
 
     @Override
-    public void addLocation(Location location) {
+    public void addLocation(Location location, ChatStore chatStore) {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
