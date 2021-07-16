@@ -23,7 +23,7 @@ public class Listener implements ServletContextListener, HttpSessionListener, Ht
         ds.setPassword("");
         AccountsStore accountsStore = new AccountsStoreDao(ds);
         ChatStore chatStore = new ChatStoreDao(ds);
-        LocationStore locationStore = new LocationStoreDao(ds,chatStore);
+        LocationStore locationStore = new LocationStoreDao(ds);
         sce.getServletContext().setAttribute("chat-store",chatStore);
         sce.getServletContext().setAttribute("accounts-store", accountsStore);
         sce.getServletContext().setAttribute("locations-store", locationStore);
