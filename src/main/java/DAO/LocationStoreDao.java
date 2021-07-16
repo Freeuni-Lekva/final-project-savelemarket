@@ -13,9 +13,10 @@ import java.util.List;
 
 public class LocationStoreDao implements LocationStore{
     private DataSource dataSource;
-
-    public LocationStoreDao(DataSource dataSource){
+    private ChatStore chatStore;
+    public LocationStoreDao(DataSource dataSource, ChatStore chatStore){
         this.dataSource = dataSource;
+        this.chatStore = chatStore;
     }
     @Override
     public Location getLocation(Account account) {
@@ -131,10 +132,13 @@ public class LocationStoreDao implements LocationStore{
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO locations (location_name, sess) " +
-                    "VALUES (?,?);");
+            // probably needs to check for duplicates (location shouldn't exist in database)
+            int chatID = chatStore.createPublicChat(null); // creates empty public chat
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO locations (location_name, sess, chat_id) " +
+                    "VALUES (?,?,?);");
             statement.setString(1, location.getName());
             statement.setInt(2, location.getSessionNumber());
+            statement.setInt(3,chatID);
             statement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -158,8 +162,7 @@ public class LocationStoreDao implements LocationStore{
             statement.setString(1, locationName);
             statement.setInt(2, sessionNumber);
             ResultSet rs = statement.executeQuery();
-            boolean res = rs.next();
-            return res;
+            return rs.next();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }finally {

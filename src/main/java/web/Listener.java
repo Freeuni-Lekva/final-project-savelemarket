@@ -1,9 +1,6 @@
 package web;
 
-import DAO.AccountsStore;
-import DAO.AccountsStoreDao;
-import DAO.LocationStore;
-import DAO.LocationStoreDao;
+import DAO.*;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 
 import javax.servlet.*;
@@ -25,8 +22,9 @@ public class Listener implements ServletContextListener, HttpSessionListener, Ht
         ds.setUser("root");
         ds.setPassword("");
         AccountsStore accountsStore = new AccountsStoreDao(ds);
-
-        LocationStore locationStore = new LocationStoreDao(ds);
+        ChatStore chatStore = new ChatStoreDao(ds);
+        LocationStore locationStore = new LocationStoreDao(ds,chatStore);
+        sce.getServletContext().setAttribute("chat-store",chatStore);
         sce.getServletContext().setAttribute("accounts-store", accountsStore);
         sce.getServletContext().setAttribute("locations-store", locationStore);
     }

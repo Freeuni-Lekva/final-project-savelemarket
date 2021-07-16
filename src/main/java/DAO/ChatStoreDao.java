@@ -95,7 +95,7 @@ public class ChatStoreDao implements ChatStore{
     @Override
     public int createPublicChat(List<Account> accounts) {
         /**
-         * need to change this so that we somehow keep track of what location has what ID, otherwise it's going to be pain
+         * if accounts == null, create public chat with nobody in it
          */
         try {
             PreparedStatement st = dataSource.getConnection().prepareStatement(createPublicChat);

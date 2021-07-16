@@ -1,7 +1,4 @@
-import DAO.AccountsStore;
-import DAO.AccountsStoreDao;
-import DAO.LocationStore;
-import DAO.LocationStoreDao;
+import DAO.*;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import model.Account;
 import model.SaveleLocation;
@@ -29,7 +26,8 @@ public class AccountTest {
         st.executeUpdate("delete from locations");
         AccountsStore dao = new AccountsStoreDao(ds);
         Location l = new SaveleLocation("lokacia",2);
-        LocationStore locDao = new LocationStoreDao(ds);
+        ChatStore chatStore = new ChatStoreDao(ds);
+        LocationStore locDao = new LocationStoreDao(ds,chatStore);
         locDao.addLocation(l);
         Account a = new StudentAccount("a","b","pass","mail", l);
         dao.addAccount(a);
