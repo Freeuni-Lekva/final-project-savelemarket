@@ -13,7 +13,9 @@ USE myDatabase;
 CREATE TABLE IF NOT EXISTS locations (
      `location_name` VARCHAR(64) NOT NULL,
      `sess` TINYINT NOT NULL,
-     `location_id` INT AUTO_INCREMENT PRIMARY KEY NOT NULL
+     `chat_id` INT NOT NULL,
+     `location_id` INT AUTO_INCREMENT PRIMARY KEY NOT NULL,
+     FOREIGN KEY (`chat_id`) REFERENCES chat(`chat_id`) -- so that each location has its own chat
 );
 
 CREATE TABLE IF NOT EXISTS accounts (
@@ -44,6 +46,8 @@ CREATE TABLE IF NOT EXISTS chat_users (
 CREATE TABLE IF NOT EXISTS message (
     `chat_id` INT NOT NULL,
     `is_picture` BOOL NOT NULL,
+    `message_id` INT AUTO_INCREMENT NOT NULL, -- might make primary key but it's uselss
+    `sent_time` VARCHAR(64) NOT NULL,
     `message` VARCHAR(255) NOT NULL,
     `sender_mail` VARCHAR(64) NOT NULL,
     FOREIGN KEY (`chat_id`) REFERENCES chat(`chat_id`),
