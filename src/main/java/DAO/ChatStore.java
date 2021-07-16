@@ -11,6 +11,6 @@ public interface ChatStore {
     void addMessage(Message message, int id);
     void addAccounts(List<Account> accounts, int id);
     // returns chat id
-    int createPublicChat(List<Account> accounts);
+    int createPublicChat();
     int createPrivateChat(Account sender, Account receiver); // order doesn't matter here either
 }

@@ -18,8 +18,8 @@ public class ChatStoreDao implements ChatStore{
                     "on acc_1.account_mail = ? and acc_2.account_mail = ? and acc_1.chat_id = acc_2.chat_id and is_private = true;";
     private static final String getPublicChatID= "";
     private static final String addMessage = "";
-    private static final String addAccounts = "";
-    private static final String createPublicChat = "";
+    private static final String addAccounts = "INSERT INTO chat_users(chat_id,account_mail) VALUES ";
+    private static final String createPublicChat = "INSERT INTO chat(is_private) VALUES(false);";
     private static final String createPrivateChat = "INSERT INTO chat(is_private) VALUES(true);";
     private static final String insertIntoChatUsers ="INSERT INTO chat_users(chat_id,account_mail) VALUES(?,?) ";
 
@@ -86,23 +86,43 @@ public class ChatStoreDao implements ChatStore{
     @Override
     public void addAccounts(List<Account> accounts, int id) {
         try {
-            PreparedStatement st = dataSource.getConnection().prepareStatement(addAccounts);
+            String update = addAccounts;
+            for(int i = 0;i<accounts.size();i++){
+                update += "(?,?)";
+                if(i != accounts.size()-1) {
+                    update+=",";
+                }
+            }
+            update += ";";
+            PreparedStatement st = dataSource.getConnection().prepareStatement(update);
+            int i = 1;
+            for(Account acc : accounts){
+                st.setInt(i,id);
+                i++;
+                st.setString(i,acc.getMail());
+                i++;
+            }
+            st.executeUpdate();
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
     }
 
+    /**
+     * if accounts == null, create public chat with nobody in it
+     * returns id of chat and puts members in it
+     */
     @Override
-    public int createPublicChat(List<Account> accounts) {
-        /**
-         * if accounts == null, create public chat with nobody in it
-         */
+    public int createPublicChat() {
+        int id = WRONG_ID;
         try {
-            PreparedStatement st = dataSource.getConnection().prepareStatement(createPublicChat);
+            PreparedStatement st = dataSource.getConnection().prepareStatement(createPublicChat,Statement.RETURN_GENERATED_KEYS);
+            st.executeUpdate();
+            id = getID(st);
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
-        return WRONG_ID;
+        return id;
     }
     @Override
     public int createPrivateChat(Account sender, Account receiver) {

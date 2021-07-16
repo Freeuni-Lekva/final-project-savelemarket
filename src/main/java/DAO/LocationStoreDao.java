@@ -132,7 +132,8 @@ public class LocationStoreDao implements LocationStore{
         try {
             connection = dataSource.getConnection();
             // probably needs to check for duplicates (location shouldn't exist in database)
-            int chatID = chatStore.createPublicChat(null); // creates empty public chat
+            int chatID = chatStore.createPublicChat(); // creates empty public chat
+            location.setChatID(chatID);
             PreparedStatement statement = connection.prepareStatement("INSERT INTO locations (location_name, sess, chat_id) " +
                     "VALUES (?,?,?);");
             statement.setString(1, location.getName());
