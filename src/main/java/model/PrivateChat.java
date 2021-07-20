@@ -27,8 +27,8 @@ public class PrivateChat implements Chat{
     }
 
     @Override
-    public void sendMessage(Message message) {
-        db.addMessage(message);
+    public int sendMessage(Message message) {
+        return db.addMessage(message);
     }
 
     @Override

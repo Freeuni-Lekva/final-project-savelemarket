@@ -69,19 +69,21 @@ public class ChatStoreDao implements ChatStore{
 
 
     @Override
-    public void addMessage(Message message) {
+    public int addMessage(Message message) {
         try {
             // message(chat_id,is_picture,sent_time,message,sender_mail)
-            PreparedStatement st = dataSource.getConnection().prepareStatement(addMessage);
+            PreparedStatement st = dataSource.getConnection().prepareStatement(addMessage,Statement.RETURN_GENERATED_KEYS);
             st.setInt(1,message.getChatID());
             st.setBoolean(2,message.isPicture());
             st.setString(3,message.getSendTime());
             st.setString(4,message.getText()); // if isPicture, text is link to uploaded file which we should generate
             st.setString(5,message.getSender().getMail());
             st.executeUpdate();
+            return st.getGeneratedKeys().getInt("message_id");
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
+        return -1;
     }
 
     @Override

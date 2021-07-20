@@ -8,5 +8,6 @@ public interface Message {
     String getSendTime();
     boolean isPicture();
     int getChatID();
+    void setMessageID(int messageID);
 
 }

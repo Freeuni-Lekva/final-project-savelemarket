@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface ChatStore {
     int getPrivateChatID(Account sender, Account receiver); // doesn't matter which is which
-    void addMessage(Message message);
+    int addMessage(Message message);
     void addAccounts(List<Account> accounts, int id);
     // returns chat id
     List<Account> getChatMembers(int id);

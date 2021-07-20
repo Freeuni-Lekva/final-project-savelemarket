@@ -19,7 +19,7 @@ public class GeneralMessage implements Message{
         this.chatID = chatID;
         time = getCurrentTime();
     }
-    // this constructor is used when ading to Database because messageID is non-existent
+    // this constructor is used when adding to Database because messageID is non-existent
     public GeneralMessage(Account sender, String messageText, boolean isPicture, int chatID){
         this.sender = sender;
         this.messageText = messageText;
@@ -35,6 +35,10 @@ public class GeneralMessage implements Message{
         return df.format(dt);
     }
 
+    @Override
+    public void setMessageID(int messageID){
+        this.messageID = messageID;
+    }
     @Override
     public int messageID() {
         return messageID;
