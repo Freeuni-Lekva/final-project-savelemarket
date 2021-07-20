@@ -43,6 +43,8 @@ CREATE TABLE IF NOT EXISTS chat_users (
     FOREIGN KEY (`account_mail`) REFERENCES accounts(`mail`)
 );
 
+
+
 # messages for chat
 CREATE TABLE IF NOT EXISTS message (
     `chat_id` INT NOT NULL,

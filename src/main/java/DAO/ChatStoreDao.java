@@ -5,6 +5,7 @@ import model.*;
 import javax.sql.DataSource;
 import javax.xml.transform.Result;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,10 +15,10 @@ public class ChatStoreDao implements ChatStore{
 
     //queries and updates
     private static final String getPrivateChatID=
-            "select acc_1.chat_id from chat_users acc_1 inner join chat using (chat_id) join chat_users acc_2 " +
-                    "on acc_1.account_mail = ? and acc_2.account_mail = ? and acc_1.chat_id = acc_2.chat_id and is_private = true;";
-    private static final String getPublicChatID= "";
-    private static final String addMessage = "";
+            "SELECT acc_1.chat_id FROM chat_users acc_1 INNER JOIN chat USING (chat_id) JOIN chat_users acc_2 " +
+                    "ON acc_1.account_mail = ? AND acc_2.account_mail = ? AND acc_1.chat_id = acc_2.chat_id AND is_private = true;";
+//    private static final String getPublicChatID= "";
+    private static final String addMessage = "INSERT INTO message(chat_id,is_picture,sent_time,message,sender_mail) VALUES(?,?,?,?,?)";
     private static final String addAccounts = "INSERT INTO chat_users(chat_id,account_mail) VALUES ";
     private static final String createPublicChat = "INSERT INTO chat(is_private) VALUES(false);";
     private static final String createPrivateChat = "INSERT INTO chat(is_private) VALUES(true);";
@@ -43,6 +44,7 @@ public class ChatStoreDao implements ChatStore{
         }
         return WRONG_ID;
     }
+
     @Override
     public int getPrivateChatID(Account sender, Account receiver) {
         int id = ID_DOESNT_EXIST;
@@ -67,9 +69,16 @@ public class ChatStoreDao implements ChatStore{
 
 
     @Override
-    public void addMessage(Message message, int id) {
+    public void addMessage(Message message) {
         try {
+            // message(chat_id,is_picture,sent_time,message,sender_mail)
             PreparedStatement st = dataSource.getConnection().prepareStatement(addMessage);
+            st.setInt(1,message.getChatID());
+            st.setBoolean(2,message.isPicture());
+            st.setString(3,message.getSendTime());
+            st.setString(4,message.getText()); // if isPicture, text is link to uploaded file which we should generate
+            st.setString(5,message.getSender().getMail());
+            st.executeUpdate();
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
@@ -109,7 +118,6 @@ public class ChatStoreDao implements ChatStore{
             ResultSet rs = st.executeQuery();
             Location l = null;
             while(rs.next()){
-                        // need to join to locations too...
                 if(l == null){
                     l = new SaveleLocation(rs.getString("location_name"),rs.getInt("sess"));
                 }
@@ -124,8 +132,8 @@ public class ChatStoreDao implements ChatStore{
         return list;
     }
     /**
-     * if accounts == null, create public chat with nobody in it
-     * returns id of chat and puts members in it
+     * creates public chat with nobody in it
+     * returns id of chat
      */
     @Override
     public int createPublicChat() {
