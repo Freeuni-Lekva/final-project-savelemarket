@@ -7,25 +7,26 @@ import javax.xml.transform.Result;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ChatStoreDao implements ChatStore{
 
     private DataSource dataSource;
-
     //queries and updates
     private static final String getPrivateChatID=
             "SELECT acc_1.chat_id FROM chat_users acc_1 INNER JOIN chat USING (chat_id) JOIN chat_users acc_2 " +
                     "ON acc_1.account_mail = ? AND acc_2.account_mail = ? AND acc_1.chat_id = acc_2.chat_id AND is_private = true;";
-//    private static final String getPublicChatID= "";
+    //private static final String getPublicChatID= "";
     private static final String addMessage = "INSERT INTO message(chat_id,is_picture,sent_time,message,sender_mail) VALUES(?,?,?,?,?)";
     private static final String addAccounts = "INSERT INTO chat_users(chat_id,account_mail) VALUES ";
     private static final String createPublicChat = "INSERT INTO chat(is_private) VALUES(false);";
     private static final String createPrivateChat = "INSERT INTO chat(is_private) VALUES(true);";
-    private static final String insertIntoChatUsers ="INSERT INTO chat_users(chat_id,account_mail) VALUES(?,?) ";
+    private static final String insertIntoChatUsers ="INSERT INTO chat_users(chat_id,account_mail) VALUES(?,?);";
     //returns chat_id,account_mail,first_name,last_name,mail,location_id,pass blob
     private static final String getChatAccounts = "SELECT * FROM chat_users c inner join accounts a on c.account_mail = a.mail inner join locations l on (a.location_id = l.location_id) WHERE c.chat_id = ?;";
-
+    private static final String getAllChats = "SELECT * FROM message WHERE chat_id = ? ORDER BY message_id;";
     private static final int ID_DOESNT_EXIST = 0;
     private static final int WRONG_ID = -1;
     private static final int MORE_THAN_ONE_PRIVATE = -2;
@@ -180,6 +181,31 @@ public class ChatStoreDao implements ChatStore{
 
     @Override
     public List<Message> getAllChatMessages(int id) {
-        return null;
+        List<Message> list= new ArrayList<>(); // might make linkedlist and add at 0 index if messages from ResultSet are in reverse order
+        AccountsStore accStore = new AccountsStoreDao(dataSource);
+        Map<String, Account> accs= new HashMap<>(); // mail -> account mapping. keeps all accounts that are in chat.
+        try {
+            PreparedStatement st = dataSource.getConnection().prepareStatement(getAllChats);
+            st.setInt(1,id);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                Account acc;
+                String senderMail = rs.getString("sender_mail");
+                if(accs.containsKey(senderMail)){ // account is already in map
+                    acc = accs.get(senderMail);
+                }else{ // account isn't in map yet
+                    acc = accStore.getAccount(senderMail);
+                    accs.put(senderMail,acc);
+                }
+                Message message = new GeneralMessage(rs.getInt("message_id"),acc,rs.getString("message"),
+                        rs.getBoolean("is_picture"),rs.getInt("chat_id"),rs.getString("sent_time"));
+
+                list.add(message);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+
+        return list;
     }
 }

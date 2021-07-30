@@ -11,15 +11,17 @@ public class GeneralMessage implements Message{
     private int chatID;
 
     // this constructor is used when displaying messages and getting them from Database
-    public GeneralMessage(int messageID, Account sender, String messageText, boolean isPicture, int chatID) {
+    public GeneralMessage(int messageID, Account sender, String messageText, boolean isPicture, int chatID, String time) {
         this.messageID = messageID;
         this.sender = sender;
         this.messageText = messageText;
         this.isPicture = isPicture;
         this.chatID = chatID;
-        time = getCurrentTime();
+        this.time = time;
     }
+
     // this constructor is used when adding to Database because messageID is non-existent
+    // needs to set messageID after adding to db
     public GeneralMessage(Account sender, String messageText, boolean isPicture, int chatID){
         this.sender = sender;
         this.messageText = messageText;
@@ -36,6 +38,7 @@ public class GeneralMessage implements Message{
     }
 
     @Override
+    // always should be called after adding to database
     public void setMessageID(int messageID){
         this.messageID = messageID;
     }
@@ -68,4 +71,17 @@ public class GeneralMessage implements Message{
     public int getChatID() {
         return chatID;
     }
+
+    @Override
+    public String toString() {
+        return "GeneralMessage{" +
+                "messageID=" + messageID +
+                ", sender_mail=" + sender.getMail() +
+                ", messageText='" + messageText + '\'' +
+                ", time='" + time + '\'' +
+                ", isPicture=" + isPicture +
+                ", chatID=" + chatID +
+                '}';
+    }
+
 }
