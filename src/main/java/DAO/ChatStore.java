@@ -13,4 +13,5 @@ public interface ChatStore {
     List<Account> getChatMembers(int id);
     int createPublicChat();
     int createPrivateChat(Account sender, Account receiver); // order doesn't matter here either
+    List<Message> getAllChatMessages(int id); // returns list of messages indexed 0 to size, 0 being the oldest.
 }

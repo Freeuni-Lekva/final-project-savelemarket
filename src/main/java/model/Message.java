@@ -6,7 +6,7 @@ public interface Message {
     // Need to check for image somehow and think of how to implement images in Message
     String getText();
     String getSendTime();
-    boolean isPicture();
+    boolean isPicture(); // if isPicture, text could save file path or something like that.
     int getChatID();
     void setMessageID(int messageID);
 

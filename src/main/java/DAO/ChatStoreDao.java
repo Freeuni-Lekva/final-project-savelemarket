@@ -177,4 +177,9 @@ public class ChatStoreDao implements ChatStore{
         }
         return id;
     }
+
+    @Override
+    public List<Message> getAllChatMessages(int id) {
+        return null;
+    }
 }
