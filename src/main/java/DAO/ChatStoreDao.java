@@ -181,7 +181,7 @@ public class ChatStoreDao implements ChatStore{
 
     @Override
     public List<Message> getAllChatMessages(int id) {
-        List<Message> list= new ArrayList<>(); // might make linkedlist and add at 0 index if messages from ResultSet are in reverse order
+        List<Message> list= new ArrayList<>(); // might need sorting, currently works as should without.
         AccountsStore accStore = new AccountsStoreDao(dataSource);
         Map<String, Account> accs= new HashMap<>(); // mail -> account mapping. keeps all accounts that are in chat.
         try {
