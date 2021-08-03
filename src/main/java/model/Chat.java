@@ -6,7 +6,8 @@ import java.util.List;
 public interface Chat {
 
     // Removed add members for interface to work in private too (private chat doesn't need add/remove methods)
-    void sendMessage(Message message);
+    //returns id of sent message, might need it for something idk
+    int sendMessage(Message message);
     //void deleteMessage(int id); // No need for it yet
     int getMemberCount();
 

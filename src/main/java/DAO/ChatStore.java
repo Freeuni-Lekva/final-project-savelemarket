@@ -6,11 +6,12 @@ import model.Message;
 import java.util.List;
 
 public interface ChatStore {
-    int getPublicChatID(List<Account> accounts);
     int getPrivateChatID(Account sender, Account receiver); // doesn't matter which is which
-    void addMessage(Message message, int id);
+    int addMessage(Message message);
     void addAccounts(List<Account> accounts, int id);
     // returns chat id
-    int createPublicChat(List<Account> accounts);
+    List<Account> getChatMembers(int id);
+    int createPublicChat();
     int createPrivateChat(Account sender, Account receiver); // order doesn't matter here either
+    List<Message> getAllChatMessages(int id); // returns list of messages indexed 0 to size, 0 being the oldest.
 }

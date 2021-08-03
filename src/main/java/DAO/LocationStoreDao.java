@@ -127,14 +127,18 @@ public class LocationStoreDao implements LocationStore{
     }
 
     @Override
-    public void addLocation(Location location) {
+    public void addLocation(Location location, ChatStore chatStore) {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO locations (location_name, sess) " +
-                    "VALUES (?,?);");
+            // probably needs to check for duplicates (location shouldn't exist in database)
+            int chatID = chatStore.createPublicChat(); // creates empty public chat
+            location.setChatID(chatID);
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO locations (location_name, sess, chat_id) " +
+                    "VALUES (?,?,?);");
             statement.setString(1, location.getName());
             statement.setInt(2, location.getSessionNumber());
+            statement.setInt(3,chatID);
             statement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -158,8 +162,7 @@ public class LocationStoreDao implements LocationStore{
             statement.setString(1, locationName);
             statement.setInt(2, sessionNumber);
             ResultSet rs = statement.executeQuery();
-            boolean res = rs.next();
-            return res;
+            return rs.next();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }finally {

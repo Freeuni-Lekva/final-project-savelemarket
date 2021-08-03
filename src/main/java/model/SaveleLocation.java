@@ -7,13 +7,21 @@ public class SaveleLocation implements Location{
 
     private int sessionNumber;
     private String name;
+    private int chatID;
 
     public SaveleLocation(String name, int sessionNumber){
         this.name = name;
         this.sessionNumber = sessionNumber;
     }
 
-
+    @Override
+    public int getChatID(){
+        return chatID;
+    }
+    @Override
+    public void setChatID(int chatID){
+        this.chatID = chatID;
+    }
     /** Works when AccountStore object is already set. */
     @Override
     public void addAccount(AccountsStore accountsStore, Account account) {
