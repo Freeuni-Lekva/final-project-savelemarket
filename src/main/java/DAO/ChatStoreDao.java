@@ -1,5 +1,6 @@
 package DAO;
 
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import model.*;
 
 import javax.sql.DataSource;
@@ -27,9 +28,14 @@ public class ChatStoreDao implements ChatStore{
     //returns chat_id,account_mail,first_name,last_name,mail,location_id,pass blob
     private static final String getChatAccounts = "SELECT * FROM chat_users c inner join accounts a on c.account_mail = a.mail inner join locations l on (a.location_id = l.location_id) WHERE c.chat_id = ?;";
     private static final String getAllChats = "SELECT * FROM message WHERE chat_id = ? ORDER BY message_id;";
+    private static final String getMemberCount = "SELECT COUNT(chat_id) AS count FROM chat_users WHERE chat_id = ?";
     private static final int ID_DOESNT_EXIST = 0;
     private static final int WRONG_ID = -1;
     private static final int MORE_THAN_ONE_PRIVATE = -2;
+    private static final int ERROR_CODE = -3;
+
+    private Map<Integer,ResultSet>  resultSetMap; // null if not getting messages by number. not null if query is done and fetching by some amounts
+
     public ChatStoreDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
@@ -189,17 +195,7 @@ public class ChatStoreDao implements ChatStore{
             st.setInt(1,id);
             ResultSet rs = st.executeQuery();
             while(rs.next()){
-                Account acc;
-                String senderMail = rs.getString("sender_mail");
-                if(accs.containsKey(senderMail)){ // account is already in map
-                    acc = accs.get(senderMail);
-                }else{ // account isn't in map yet
-                    acc = accStore.getAccount(senderMail);
-                    accs.put(senderMail,acc);
-                }
-                Message message = new GeneralMessage(rs.getInt("message_id"),acc,rs.getString("message"),
-                        rs.getBoolean("is_picture"),rs.getInt("chat_id"),rs.getString("sent_time"));
-
+                Message message = getMessage(rs,accs,accStore);
                 list.add(message);
             }
         } catch (SQLException sqlException) {
@@ -207,5 +203,72 @@ public class ChatStoreDao implements ChatStore{
         }
 
         return list;
+    }
+    private Message getMessage(ResultSet rs, Map<String, Account> accs, AccountsStore accStore) throws SQLException {
+        Account acc;
+        String senderMail = rs.getString("sender_mail");
+        if(accs.containsKey(senderMail)){ // account is already in map
+            acc = accs.get(senderMail);
+        }else{ // account isn't in map yet
+            acc = accStore.getAccount(senderMail);
+            accs.put(senderMail,acc);
+        }
+        Message message = new GeneralMessage(rs.getInt("message_id"),acc,rs.getString("message"),
+                rs.getBoolean("is_picture"),rs.getInt("chat_id"),rs.getString("sent_time"));
+        return message;
+    }
+
+    //after first call, just fetches older ones, not new ones.
+    @Override
+    public List<Message> getMessages(int id, int number) {
+        Map<String, Account> accs= new HashMap<>(); // same mail -> account mapping as getAllChats. keeps all accounts that are in chat.
+        AccountsStore accStore = new AccountsStoreDao(dataSource);
+        if(resultSetMap.getOrDefault(id,null) == null){
+            try {
+                PreparedStatement st = dataSource.getConnection().prepareStatement(getAllChats);
+                st.setInt(1,id);
+                ResultSet set = st.executeQuery();
+                set.next(); // initial next, so it gets to first element
+                resultSetMap.put(id,set);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+        List<Message> messages = new ArrayList<>(number);
+        ResultSet rs = resultSetMap.get(id);
+        try {
+            for(int i = 0;i<number;i++) {
+                Message message = getMessage(rs, accs, accStore);
+                messages.add(message);
+                if(!rs.next()){
+                    break;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return messages;
+    }
+
+    @Override
+    public void updateMessages(int id) {
+        resultSetMap.put(id,null);
+    }
+
+    @Override
+    public int getMemberCount(int id) {
+        int output = ERROR_CODE;
+        try{
+            PreparedStatement st = dataSource.getConnection().prepareStatement(getMemberCount);
+            st.setInt(1,id);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                output = rs.getInt("count");
+                rs.close();
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return output;
     }
 }

@@ -27,9 +27,12 @@ public class ChatStoreDaoTest {
 //        Account receiver = accStore.getAccount("mail2");
 //        int id = chatStore.createPrivateChat(sender,receiver);
 //        assertTrue(id != -1);
-        List<Message> lst = chatStore.getAllChatMessages(12);
-        for (Message m : lst){
-            System.out.println("(" + m.getSendTime() + ")"+ m.getSender().getMail() + ": " + m.getText());
-        }
+//        List<Message> lst = chatStore.getAllChatMessages(12);
+//        for (Message m : lst){
+//            System.out.println("(" + m.getSendTime() + ")"+ m.getSender().getMail() + ": " + m.getText());
+//        }
+//        System.out.println(chatStore.getMemberCount(12));
+//        System.out.println(chatStore.getMemberCount(3));
+
     }
 }
