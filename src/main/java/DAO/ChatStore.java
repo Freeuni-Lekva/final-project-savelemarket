@@ -1,6 +1,7 @@
 package DAO;
 
 import model.Account;
+import model.Chat;
 import model.Message;
 
 import java.util.List;
@@ -17,4 +18,6 @@ public interface ChatStore {
     List<Message> getMessages(int id, int number); // keep resultset and iterate over that one. if null then do new query.
     void updateMessages(int id); // makes getMessages return new information
     int getMemberCount(int id);
+    Chat getPrivateChat(int id);
+    Chat getPublicChat(int id);
 }

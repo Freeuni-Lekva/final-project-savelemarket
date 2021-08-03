@@ -8,10 +8,28 @@ public class SaveleLocation implements Location{
     private int sessionNumber;
     private String name;
     private int chatID;
+    private Chat chat; // location chat
 
+    //need to set chat after creating it
+    public SaveleLocation(String name, int sessionNumber,Chat chat){
+        this.name = name;
+        this.sessionNumber = sessionNumber;
+        this.chat = chat;
+    }
     public SaveleLocation(String name, int sessionNumber){
         this.name = name;
         this.sessionNumber = sessionNumber;
+    }
+
+    @Override
+    public void setChat(Chat chat) {
+        this.chat = chat;
+
+    }
+
+    @Override
+    public Chat getChat() {
+        return chat;
     }
 
     @Override

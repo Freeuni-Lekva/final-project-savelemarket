@@ -1,9 +1,6 @@
 package DAO;
 
-import model.Account;
-import model.Location;
-import model.SaveleLocation;
-import model.StudentAccount;
+import model.*;
 
 import javax.sql.DataSource;
 import java.io.InputStream;
@@ -200,11 +197,13 @@ public class AccountsStoreDao implements AccountsStore {
     private Location getLocationById(Connection connection, int locationId){
         Location result = null;
         try {
-            PreparedStatement statement = connection.prepareStatement("SELECT location_name, sess FROM locations WHERE location_id = ?");
+            PreparedStatement statement = connection.prepareStatement("SELECT location_name, sess, chat_id FROM locations WHERE location_id = ?");
             statement.setInt(1, locationId);
             ResultSet rs = statement.executeQuery();
+            ChatStore chatStore = new ChatStoreDao(dataSource);
             if(rs.next()){
-                result = new SaveleLocation(rs.getString(1), rs.getInt(2));
+                Chat ch = chatStore.getPublicChat(rs.getInt("chat_id"));
+                result = new SaveleLocation(rs.getString(1), rs.getInt(2),ch); // needs to get chat too
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

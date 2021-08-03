@@ -271,4 +271,18 @@ public class ChatStoreDao implements ChatStore{
         }
         return output;
     }
+
+    //these are more like convenience methods than actual methods
+    @Override
+    public Chat getPrivateChat(int id) {
+        List<Account> accounts = getChatMembers(id);
+        Chat ch = new PrivateChat(this,accounts.get(0),accounts.get(1));
+        return ch;
+    }
+    @Override
+    public Chat getPublicChat(int id){
+        List<Account> accounts = getChatMembers(id);
+        Chat ch = new LocationChat(this,accounts,id);
+        return ch;
+    }
 }

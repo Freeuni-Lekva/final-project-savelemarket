@@ -11,7 +11,7 @@ public class PrivateChat implements Chat{
     private Account sender;
     private Account receiver;
     private int id;
-    private static final String privateName = "Private Chat";
+    private  String chatName;
     /**
      * receives initialized ChatStore Object that has database initialized with chat ID
      * basically chat exists in database before this constructor is called
@@ -23,7 +23,7 @@ public class PrivateChat implements Chat{
         this.receiver = receiver;
         this.id = db.getPrivateChatID(sender,receiver);
         db.addAccounts(Arrays.asList(sender,receiver),id);
-
+        this.chatName = "Private Chat";
     }
 
     @Override
@@ -33,7 +33,7 @@ public class PrivateChat implements Chat{
 
     @Override
     public String getChatName() {
-        return privateName;
+        return chatName;
     }
 
     @Override
@@ -49,5 +49,10 @@ public class PrivateChat implements Chat{
     @Override
     public int getMemberCount(){
         return 2;
+    }
+
+    @Override
+    public void setChatName(String chatName) {
+        this.chatName = chatName;
     }
 }

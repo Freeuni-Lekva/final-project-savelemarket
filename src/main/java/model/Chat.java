@@ -13,5 +13,5 @@ public interface Chat {
     int sendMessage(Message message);
     //void deleteMessage(int id); // No need for it yet
     int getMemberCount();
-
+    void setChatName(String chatName);
 }

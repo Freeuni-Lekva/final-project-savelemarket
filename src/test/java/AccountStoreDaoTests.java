@@ -25,14 +25,14 @@ public class AccountStoreDaoTests {
 
     private AccountsStoreDao accountsStoreDao;
 
-    private SaveleLocation locations[] = {  new SaveleLocation("Kazbegi", 1),
-                                            new SaveleLocation("Kazbegi", 2),
-                                            new SaveleLocation("Kazbegi", 3),
-                                            new SaveleLocation("Tusheti", 1),
-                                            new SaveleLocation("Tusheti", 2),
-                                            new SaveleLocation("Svaneti", 1),
-                                            new SaveleLocation("Marelisi", 1),
-                                            new SaveleLocation("ციმბირი", 2)
+    private SaveleLocation locations[] = {  new SaveleLocation("Kazbegi", 1,null),
+                                            new SaveleLocation("Kazbegi", 2,null),
+                                            new SaveleLocation("Kazbegi", 3,null),
+                                            new SaveleLocation("Tusheti", 1,null),
+                                            new SaveleLocation("Tusheti", 2,null),
+                                            new SaveleLocation("Svaneti", 1,null),
+                                            new SaveleLocation("Marelisi", 1,null),
+                                            new SaveleLocation("ციმბირი", 2,null)
 
                                             };
 
