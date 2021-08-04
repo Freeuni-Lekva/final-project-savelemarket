@@ -13,17 +13,17 @@ public class ShoppingStoreDao implements ShoppingStore {
     }
 
     @Override
-    public void addAdvertisement(ShopItem shopItem) {
+    public void addItem(ShopItem shopItem) {
 
     }
 
     @Override
-    public void removeAdvertisement(int shopItemId) {
+    public void removeItem(int shopItemId) {
 
     }
 
     @Override
-    public List<ShopItem> getAllAdvertisements() {
+    public List<ShopItem> getAllItems() {
         return null;
     }
 }
