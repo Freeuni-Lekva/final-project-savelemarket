@@ -60,7 +60,9 @@ public class LocationChat implements Chat{
     public String getChatName() {
         return chatName;
     }
-
+    public void updateChatMembers(){
+        accounts = db.getChatMembers(id);
+    }
     @Override
     public List<Message> getMessages(int number) {
         return null;
