@@ -61,8 +61,10 @@ CREATE TABLE IF NOT EXISTS message (
 # shopping db
 CREATE TABLE IF NOT EXISTS shop_store(
     `shop_item_id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    `writer_mail` VARCHAR(64) NOT NULL,
     `price` DOUBLE NOT NULL,
-    FOREIGN KEY (`writer_mail`) REFERENCES accounts(`mail`),
-    FOREIGN KEY (`des_location_id`) REFERENCES locations(`location_id`),
+    `location_name` VARCHAR(64),
+    `location_sess_num` INT,
+    FOREIGN KEY (`writer_mail`) REFERENCES accounts(`mail`)
 );
 

@@ -1,6 +1,6 @@
 package model;
 
-public interface ShopItem {
+public interface ShoppingItem {
     void setId(int id);
 
     Location getDesiredLocation();
