@@ -14,9 +14,11 @@ public class SaveleShopItem implements ShopItem {
         this.price = price;
     }
 
-    @Override
-    public void setId(int id) {
+    public SaveleShopItem(int id, Account account, Location desiredLocation, double price){
         this.id = id;
+        this.writerAccount = account;
+        this.desiredLocation = desiredLocation;
+        this.price = price;
     }
 
     @Override
