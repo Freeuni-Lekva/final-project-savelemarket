@@ -1,6 +1,7 @@
 package model;
 
 import java.text.SimpleDateFormat;
+import java.util.Objects;
 
 public class GeneralMessage implements Message{
     private int messageID;
@@ -84,4 +85,16 @@ public class GeneralMessage implements Message{
                 '}';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        GeneralMessage that = (GeneralMessage) o;
+        return messageID == that.messageID && isPicture == that.isPicture && chatID == that.chatID && sender.equals(that.sender) && messageText.equals(that.messageText) && time.equals(that.time);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(messageID, sender, messageText, time, isPicture, chatID);
+    }
 }
