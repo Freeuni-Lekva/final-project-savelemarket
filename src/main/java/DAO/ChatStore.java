@@ -20,4 +20,5 @@ public interface ChatStore {
     int getMemberCount(int id);
     Chat getPrivateChat(int id);
     Chat getPublicChat(int id);
+    List<Chat> getUserChats(String mail);
 }

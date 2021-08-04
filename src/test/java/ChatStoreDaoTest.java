@@ -4,6 +4,7 @@ import DAO.ChatStore;
 import DAO.ChatStoreDao;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import model.Account;
+import model.Chat;
 import model.Message;
 import org.junit.jupiter.api.Test;
 
@@ -33,6 +34,10 @@ public class ChatStoreDaoTest {
 //        }
 //        System.out.println(chatStore.getMemberCount(12));
 //        System.out.println(chatStore.getMemberCount(3));
+//        List<Chat> chats = chatStore.getUserChats("m2");
+//        for(Chat ch : chats){
+//            System.out.println(ch);
+//        }
 
     }
 }

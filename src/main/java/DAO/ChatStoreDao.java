@@ -26,9 +26,10 @@ public class ChatStoreDao implements ChatStore{
     private static final String createPrivateChat = "INSERT INTO chat(is_private) VALUES(true);";
     private static final String insertIntoChatUsers ="INSERT INTO chat_users(chat_id,account_mail) VALUES(?,?);";
     //returns chat_id,account_mail,first_name,last_name,mail,location_id,pass blob
-    private static final String getChatAccounts = "SELECT * FROM chat_users c inner join accounts a on c.account_mail = a.mail inner join locations l on (a.location_id = l.location_id) WHERE c.chat_id = ?;";
+    private static final String getChatAccounts = "SELECT * FROM chat_users c inner join accounts a on c.account_mail = a.mail INNER JOIN locations l ON (a.location_id = l.location_id) WHERE c.chat_id = ?;";
     private static final String getAllChats = "SELECT * FROM message WHERE chat_id = ? ORDER BY message_id;";
     private static final String getMemberCount = "SELECT COUNT(chat_id) AS count FROM chat_users WHERE chat_id = ?";
+    private static final String getUserChats = "SELECT * FROM chat_users c INNER JOIN chat ch ON c.chat_id = ch.chat_id INNER JOIN accounts a ON c.account_mail = a.mail INNER JOIN locations l ON (a.location_id = l.location_id) WHERE a.mail = ?;";
     private static final int ID_DOESNT_EXIST = 0;
     private static final int WRONG_ID = -1;
     private static final int MORE_THAN_ONE_PRIVATE = -2;
@@ -276,7 +277,7 @@ public class ChatStoreDao implements ChatStore{
     @Override
     public Chat getPrivateChat(int id) {
         List<Account> accounts = getChatMembers(id);
-        Chat ch = new PrivateChat(this,accounts.get(0),accounts.get(1));
+        Chat ch = new PrivateChat(accounts.get(0),accounts.get(1),this);
         return ch;
     }
     @Override
@@ -284,5 +285,34 @@ public class ChatStoreDao implements ChatStore{
         List<Account> accounts = getChatMembers(id);
         Chat ch = new LocationChat(this,accounts,id);
         return ch;
+    }
+
+    @Override
+    // returns chats without messages for now
+    public List<Chat> getUserChats(String mail) {
+        List<Chat> chats = new ArrayList<>();
+        try {
+            PreparedStatement st = dataSource.getConnection().prepareStatement(getUserChats);
+            st.setString(1,mail);
+            ResultSet rs = st.executeQuery();
+            while(rs.next()){
+                Chat ch;
+                int chat_id = rs.getInt("chat_id");
+                if(rs.getBoolean("is_private") == true){
+                    List<Account> accs = getChatMembers(chat_id);
+                    if(mail.equals(accs.get(0).getMail())) {
+                        ch = new PrivateChat( accs.get(0), accs.get(1),this);
+                    }else{
+                        ch = new PrivateChat(accs.get(1),accs.get(0),this);
+                    }
+                }else{
+                    ch = getPublicChat(chat_id);
+                }
+                chats.add(ch);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return chats;
     }
 }

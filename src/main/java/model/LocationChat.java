@@ -5,6 +5,14 @@ import DAO.ChatStore;
 import java.util.List;
 
 public class LocationChat implements Chat{
+    @Override
+    public String toString() {
+        return "LocationChat{" +
+                "accounts=" + accounts +
+                ", id=" + id +
+                ", chatName='" + chatName + '\'' +
+                '}';
+    }
 
     private ChatStore db;
     private List<Account> accounts;
