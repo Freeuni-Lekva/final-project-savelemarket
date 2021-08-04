@@ -19,10 +19,11 @@ public class AccountTest {
         MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
         ds.setServerName("localhost");
         ds.setPort(3306);
-        ds.setDatabaseName("myDatabase");
-        ds.setUser("shug");
+        ds.setDatabaseName("testDatabase");
+        ds.setUser("root");
         ds.setPassword("");
         Statement st = ds.getConnection().createStatement();
+        st.executeUpdate("delete from message");
         st.executeUpdate("delete from chat_users");
         st.executeUpdate("delete from accounts");
         st.executeUpdate("delete from locations");

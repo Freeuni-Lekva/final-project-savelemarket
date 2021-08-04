@@ -7,6 +7,8 @@ public interface Location {
     void removeAccount(AccountsStore accountsStore, Account account);
     void setChatID(int chatID);
     int getChatID();
+    void setChat(Chat chat);
+    Chat getChat();
     String getName();
     int getSessionNumber();
 }

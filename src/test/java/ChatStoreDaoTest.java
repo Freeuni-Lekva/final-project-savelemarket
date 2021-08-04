@@ -4,6 +4,7 @@ import DAO.ChatStore;
 import DAO.ChatStoreDao;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import model.Account;
+import model.Chat;
 import model.Message;
 import org.junit.jupiter.api.Test;
 
@@ -27,9 +28,16 @@ public class ChatStoreDaoTest {
 //        Account receiver = accStore.getAccount("mail2");
 //        int id = chatStore.createPrivateChat(sender,receiver);
 //        assertTrue(id != -1);
-        List<Message> lst = chatStore.getAllChatMessages(12);
-        for (Message m : lst){
-            System.out.println("(" + m.getSendTime() + ")"+ m.getSender().getMail() + ": " + m.getText());
-        }
+//        List<Message> lst = chatStore.getAllChatMessages(12);
+//        for (Message m : lst){
+//            System.out.println("(" + m.getSendTime() + ")"+ m.getSender().getMail() + ": " + m.getText());
+//        }
+//        System.out.println(chatStore.getMemberCount(12));
+//        System.out.println(chatStore.getMemberCount(3));
+//        List<Chat> chats = chatStore.getUserChats("m2");
+//        for(Chat ch : chats){
+//            System.out.println(ch);
+//        }
+
     }
 }
