@@ -4,6 +4,7 @@ import DAO.ChatStore;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 
 public class PrivateChat implements Chat{
 
@@ -72,5 +73,20 @@ public class PrivateChat implements Chat{
                 ", id=" + id +
                 ", chatName='" + chatName + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PrivateChat that = (PrivateChat) o;
+        return id == that.id &&
+                ((sender.equals(that.sender)  && receiver.equals(that.receiver)) || (sender.equals(that.receiver) && receiver.equals(that.sender)))
+                && chatName.equals(that.chatName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sender, receiver, id, chatName);
     }
 }

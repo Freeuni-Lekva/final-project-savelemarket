@@ -3,6 +3,7 @@ package model;
 import DAO.ChatStore;
 
 import java.util.List;
+import java.util.Objects;
 
 public class LocationChat implements Chat{
 
@@ -70,5 +71,18 @@ public class LocationChat implements Chat{
                 ", id=" + id +
                 ", chatName='" + chatName + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LocationChat that = (LocationChat) o;
+        return id == that.id && Objects.equals(chatName, that.chatName);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, chatName);
     }
 }
