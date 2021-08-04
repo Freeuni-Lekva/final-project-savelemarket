@@ -22,6 +22,11 @@ public class SaveleShopItem implements ShopItem {
     }
 
     @Override
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    @Override
     public Location getDesiredLocation() {
         return desiredLocation;
     }
