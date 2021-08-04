@@ -40,7 +40,6 @@ public class LocationStoreDao implements LocationStore{
                 }
             }
         }
-
         return null;
     }
 

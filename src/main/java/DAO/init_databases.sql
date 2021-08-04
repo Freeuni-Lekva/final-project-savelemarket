@@ -56,3 +56,13 @@ CREATE TABLE IF NOT EXISTS message (
     FOREIGN KEY (`chat_id`) REFERENCES chat(`chat_id`),
     FOREIGN KEY (`sender_mail`) REFERENCES accounts(`mail`)
 );
+
+
+# shopping db
+CREATE TABLE IF NOT EXISTS shop_store(
+    `shop_item_id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+    `price` DOUBLE NOT NULL,
+    FOREIGN KEY (`writer_mail`) REFERENCES accounts(`mail`),
+    FOREIGN KEY (`des_location_id`) REFERENCES locations(`location_id`),
+);
+
