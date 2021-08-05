@@ -41,6 +41,11 @@ public class LocationChat implements Chat{
     }
 
     @Override
+    public boolean isPrivate() {
+        return false;
+    }
+
+    @Override
     public List<Message> getAllMessages() {
         return db.getAllChatMessages(id);
     }

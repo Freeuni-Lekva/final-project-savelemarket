@@ -15,4 +15,5 @@ public interface Chat {
     //void deleteMessage(int id); // No need for it yet
     int getMemberCount();
     void setChatName(String chatName);
+    boolean isPrivate();
 }
