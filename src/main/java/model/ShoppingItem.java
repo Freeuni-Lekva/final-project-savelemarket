@@ -5,6 +5,6 @@ public interface ShoppingItem {
 
     Location getDesiredLocation();
     Account getWriterAccount();
-    int getAdvertId();
+    int getItemId();
     double getPrice();
 }

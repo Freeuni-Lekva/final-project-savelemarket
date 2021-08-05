@@ -7,6 +7,7 @@ import org.junit.jupiter.api.Test;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
+import java.util.List;
 
 public class ShoppingStoreTests {
     private final String serverName = "localhost";
@@ -50,15 +51,44 @@ public class ShoppingStoreTests {
     }
 
     @Test
-    public void addShoppingItemTest(){
+    public void complexShoppingItemTest(){
+        System.out.println("::::: tests :::::");
         ShoppingItem item1 = new SaveleShoppingItem(accounts[0], locations[1], 100);
         shoppingStore.addItem(item1);
+        List<ShoppingItem> items1 = shoppingStore.getAllItemsForAccount(accounts[0].getMail());
+        for(ShoppingItem sI : items1){
+            System.out.println(sI);
+            shoppingStore.removeItem(sI.getItemId());
+        }
+        System.out.println("-------");
+        accountsStoreDao.updateLocation(accounts[0], locations[1]);
+        Account upDtAcc1 = accountsStoreDao.getAccount(accounts[0].getMail());
+        ShoppingItem item2 = new SaveleShoppingItem(upDtAcc1, locations[5], 200);
+        shoppingStore.addItem(item2);
+        List<ShoppingItem> items2 = shoppingStore.getAllItemsForAccount(upDtAcc1.getMail());
+        for(ShoppingItem sI : items2){
+            System.out.println(sI);
+            shoppingStore.removeItem(sI.getItemId());
+        }
+        System.out.println("-------");
+        accountsStoreDao.updateLocation(upDtAcc1, locations[5]);
+        Account upDtAcc2 = accountsStoreDao.getAccount(accounts[0].getMail());
+        ShoppingItem item3 = new SaveleShoppingItem(upDtAcc2, locations[7], 400);
+        shoppingStore.addItem(item3);
+        List<ShoppingItem> items3 = shoppingStore.getAllItemsForAccount(upDtAcc2.getMail());
+        for(ShoppingItem sI : items3){
+            System.out.println(sI);
+            shoppingStore.removeItem(sI.getItemId());
+        }
+        System.out.println("-------");
     }
 
-    
+
     private void initDbs(MysqlConnectionPoolDataSource ds){
         try {
             Connection connection = ds.getConnection();
+            PreparedStatement resetShoppingStore = connection.prepareStatement("DROP TABLE IF EXISTS shop_store;");
+            resetShoppingStore.executeUpdate();
             PreparedStatement psReset1 = connection.prepareStatement("DROP TABLE IF EXISTS accounts;");
             psReset1.executeUpdate();
             PreparedStatement psReset2 = connection.prepareStatement("DROP TABLE IF EXISTS locations;");
@@ -92,17 +122,15 @@ public class ShoppingStoreTests {
             for(int i =0; i < accounts.length; i++){
                 accountsStoreDao.addAccount(accounts[i]);
             }
-            PreparedStatement resetShoppingStore = connection.prepareStatement("DROP TABLE IF EXISTS shop_store;");
             PreparedStatement initShoppingStore = connection.prepareStatement(
                     "CREATE TABLE IF NOT EXISTS shop_store("+
                     "`shop_item_id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL," +
                     "`writer_mail` VARCHAR(64) NOT NULL," +
+                    "`location_id` INT NOT NULL,"+
                     "`price` DOUBLE NOT NULL," +
-                    "`location_name` VARCHAR(64)," +
-                    "`location_sess_num` INT," +
-                    "FOREIGN KEY (`writer_mail`) REFERENCES accounts(`mail`));"
+                    "FOREIGN KEY (`writer_mail`) REFERENCES accounts(`mail`)," +
+                    "FOREIGN KEY (`location_id`) REFERENCES locations(`location_id`));"
             );
-            resetShoppingStore.executeUpdate();
             initShoppingStore.executeUpdate();
         } catch (SQLException throwables) { throwables.printStackTrace(); }
     }

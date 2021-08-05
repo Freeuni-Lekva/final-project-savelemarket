@@ -37,7 +37,7 @@ public class SaveleShoppingItem implements ShoppingItem {
     }
 
     @Override
-    public int getAdvertId() {
+    public int getItemId() {
         return id;
     }
 
@@ -50,9 +50,9 @@ public class SaveleShoppingItem implements ShoppingItem {
     @Override
     public String toString(){
         return  writerAccount.getMail() + " wants to change " +
-                writerAccount.getLocation().getName() + " " +
+                writerAccount.getLocation().getName() + "" +
                 writerAccount.getLocation().getSessionNumber() + " to " +
-                desiredLocation.getName() + " "+
-                desiredLocation.getSessionNumber() + " for "+ price;
+                desiredLocation.getName() + ""+
+                desiredLocation.getSessionNumber() + " for "+ price + "$";
     }
 }

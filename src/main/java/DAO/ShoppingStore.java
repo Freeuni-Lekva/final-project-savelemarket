@@ -7,5 +7,6 @@ import java.util.List;
 public interface ShoppingStore {
     void addItem(ShoppingItem shoppingItem);
     void removeItem(int shopItemId);
+    List<ShoppingItem> getAllItemsForAccount(String accountMail);
     List<ShoppingItem> getAllItems();
 }
