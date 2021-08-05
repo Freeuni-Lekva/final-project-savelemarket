@@ -4,7 +4,6 @@ import model.Account;
 import model.Location;
 import model.SaveleLocation;
 
-import java.sql.Connection;
 import java.util.List;
 
 public interface LocationStore {
@@ -15,9 +14,7 @@ public interface LocationStore {
     List<String> getUniqueLocations();
     //creates chat with location.
     void addLocation(Location location, ChatStore chatStore);
-    int getLocationId(Connection conn, String locationName, int sessionNum);
-    Location getLocationById(Connection connection, int locationId);
-    Location getLocation(String locationName, int locationSession);
+
     //added
     boolean hasLocation(String locationName, int sessionNumber);
 }
