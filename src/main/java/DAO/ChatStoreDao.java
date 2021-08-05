@@ -130,7 +130,11 @@ public class ChatStoreDao implements ChatStore{
             Location l = null;
             while(rs.next()){
                 if(l == null){
-                    l = new SaveleLocation(rs.getString("location_name"),rs.getInt("sess"));
+                    int chat_id = rs.getInt("chat_id");
+                    if(chat_id == 0){
+                        System.out.println("------------------chat_id is 0 -----------------------");
+                    }
+                    l = new SaveleLocation(rs.getString("location_name"),rs.getInt("sess"),rs.getInt("chat_id"));
                 }
                 Account acc = new StudentAccount(rs.getString("first_name"),rs.getString("last_name"),
                         rs.getBytes("pass"),rs.getString("mail"),l);

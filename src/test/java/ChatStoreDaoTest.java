@@ -36,14 +36,18 @@ public class ChatStoreDaoTest {
         accStore = new AccountsStoreDao(ds);
         locStore = new LocationStoreDao(ds);
     }
+
     private void addAccounts(List<Account> accounts){
         for(Account acc : accounts){
             accStore.addAccount(acc);
+            chatStore.addAccounts(List.of(acc),acc.getLocation().getChatID());
+            // ექაუნთის შექმნის მერე ამ ეტეაპზე ხელით ვამატებთ ბაზაში ექაუნთს ჩატზე.
         }
     }
     private void addLocations(List<Location> locations){
         for(Location loc : locations){
-            locStore.addLocation(loc,chatStore);
+            int id = locStore.addLocation(loc,chatStore);
+            loc.setChatID(id);
         }
     }
     private void addMessages(List<Message> messages){
@@ -84,6 +88,16 @@ public class ChatStoreDaoTest {
 
     @Test
     public void publicChatTest(){
-
+        // 7 is alone, 5,6 are together, 1,2,3,4 are together
+        List<Account> accounts = Arrays.asList(acc1,acc2,acc3,acc4,acc5,acc6,acc7);
+        List<Location> locations = Arrays.asList(loc1_1,loc1_2,loc2);
+        addLocations(locations); // these accounts have only chat_id, no Chat chat.
+        addAccounts(accounts);
+        List<Account> firstAccs = chatStore.getChatMembers(loc1_1.getChatID());
+        assertEquals(Arrays.asList(acc1,acc2,acc3,acc4),firstAccs);
+        List<Account> secondAccs = chatStore.getChatMembers(loc1_2.getChatID());
+        assertEquals(Arrays.asList(acc5,acc6),secondAccs);
+        List<Account> thirdAcc = chatStore.getChatMembers(loc2.getChatID());
+        assertEquals(Arrays.asList(acc7),thirdAcc);
     }
 }
