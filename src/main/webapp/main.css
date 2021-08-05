@@ -170,6 +170,8 @@ select{
     text-align: center;
 }
 
+
+
 .profile-info{
     display: grid;
     grid-template-columns: auto auto;
@@ -195,6 +197,7 @@ select{
     color: var(--color-agruni);
     font-size: 45px;
     margin-bottom: 20px;
+    margin-left: 20px;
 }
 
 .info-title, .info-text{
@@ -245,10 +248,14 @@ select{
 }
 
 .sing-out{
-    color: red;
+    color: white;
+    background-color: red;
     margin-right: 20px;
     font-size: 25px;
     text-decoration: none;
+    padding: 5px 10px ;
+    border-radius: 15px;
+    font-size: 23px;
 }
 
 .chat-menu-section{
@@ -265,6 +272,7 @@ select{
     background-color: #daf6b5;
     padding: 5px 10px;
     border-radius: 15px;
+    font-size: 18px;
 }
 
 .chat-name{
@@ -403,4 +411,243 @@ select{
     font-size: 20px;
     color: #044f04;
     padding: 3px;
+}
+
+.send-private-message{
+    background-color: #00e1ff;
+    border: none;
+    margin-left: 80px;
+    margin-top: 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.profile-body{
+    display: flex;
+    flex-direction: row;
+}
+
+.posts-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    overflow: scroll;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    background-color: #f3f3ad;
+    width: 700px;
+    margin-left: 30px;
+    height: calc(100vh - 90px);
+}
+
+.profile-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    width: 500px;
+    height: 300px;
+    background-color: #ceee6f;
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.post{
+    display: flex;
+    flex-direction: column;
+    background-color: #e1e99a;
+    border-radius: 10px;
+    box-shadow: #abc5f3 2px 3px;
+    height: 230px;
+    width: 600px;
+    padding: 10px;
+    margin-top: 20px;
+}
+
+.post-author{
+    font-size: 23px;
+    color: green;
+}
+
+.post-time{
+    margin: 3px 10px 10px;
+    color: #6e6b6b;
+    font-size: 15px;
+    font-style: italic;
+}
+
+.location-from{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    margin-left: 80px;
+    background-color: #ceee6f;
+    padding: 5px 20px;
+    width: 400px;
+    box-shadow: #47d247 2px 2px 2px 2px;
+
+}
+
+.location-to{
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    margin-left: 80px;
+    background-color: #ef7979;
+    padding: 5px 20px;
+    width: 400px;
+    box-shadow: #f32c7c 2px 2px 2px 2px;
+
+}
+
+.location-parameter{
+    font-size: 18px;
+    color: #044f04;
+
+}
+
+.post-location{
+    font-size: 20px;
+    margin-left: 10px;
+    color: #0d1d69;
+}
+
+.post-price{
+    margin-left: 20px;
+    margin-top: 10px;
+    font-size: 20px;
+    color: #e00c0c;
+    font-weight: bold;
+}
+
+.post-footer{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.send-request{
+    margin-left: 200px;
+    margin-top: 10px;
+    font-size: 20px;
+    padding: 0px 10px 5px;
+    border-radius: 10px;
+    border: none;
+    background-color: #51cb21;
+    color: #a40505;
+    cursor: pointer;
+}
+
+.post-author-date{
+    display: flex;
+    flex-direction: column;
+}
+
+.post-header{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.post-delete{
+    margin-right: 20px;
+    margin-top: 10px;
+    font-size: 20px;
+    padding: 0px 10px 5px;
+    border-radius: 10px;
+    border: none;
+    background-color: #f50321;
+    color: #ffffff;
+    cursor: pointer;
+}
+
+.make-post{
+    background-color: #00e1ff;
+    border: none;
+    margin-left: 80px;
+    margin-top: 20px;
+    font-size: 20px;
+    border-radius: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
+    text-decoration: none;
+    color: white;
+}
+
+.filter-section{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 500px;
+    height: 200px;
+    background-color: #ceee6f;
+    padding: 10px;
+    border-radius: 10px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.gel-symbol{
+    font-size: 20px;
+    font-weight: bold;
+    color: red;
+}
+
+.amount-input{
+    width: 60px;
+    height: 30px;
+    margin-top: 5px;
+    border-radius: 5px;
+}
+
+.amount-filter, .session-filter, .filter-btn{
+    margin-top: 10px;
+}
+
+.filter-btn{
+    margin-top: 10px;
+    font-size: 20px;
+    padding: 0px 10px 5px;
+    border-radius: 10px;
+    border: none;
+    background-color: #1e39c8;
+    color: #eee6e6;
+    cursor: pointer;
+    box-shadow: #a9b6f5 2px 2px;
+}
+
+.post-inputs{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 20px;
+    border: 2px solid;
+    border-color: var(--color-agruni);
+    border-radius: 10px;
+    margin-top: 70px;
+    width: 500px;
+    height: 250px;
+    background-color: var(--color-freeuni);
+    box-shadow: 6px 6px #caee5b;
+}
+
+.addPost-btn{
+    margin-top: 30px;
+    font-size: 20px;
+    padding: 0px 10px 5px;
+    border-radius: 10px;
+    border: none;
+    background-color: #1e39c8;
+    color: #eee6e6;
+    cursor: pointer;
+    box-shadow: #a9b6f5 2px 2px;
+    margin-left: 150px;
 }

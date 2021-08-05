@@ -20,7 +20,7 @@
     <header>
         <section class="chat-menu-section">
             <li>
-                <a class="leave-chat" href="messages.jsp">ჩათის დატოვება</a>
+                <a class="leave-chat" href="messages.jsp">უკან დაბრუნება</a>
             </li>
             <a class="chat-name">ჩათის სახელი</a>
         </section>
