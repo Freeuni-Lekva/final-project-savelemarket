@@ -22,7 +22,8 @@ public class ShoppingStoreDao implements ShoppingStore {
             PreparedStatement statement = connection.prepareStatement("INSERT INTO shop_store (price, location_id, writer_mail) " +
                     "VALUES (?,?,?);");
             statement.setDouble(1, shoppingItem.getPrice());
-            statement.setInt(2, LocationStoreDao.getLocationId(connection, shoppingItem.getDesiredLocation().getName(),
+            LocationStore locStore = new LocationStoreDao(dataSource);
+            statement.setInt(2, locStore.getLocationId(shoppingItem.getDesiredLocation().getName(),
                     shoppingItem.getDesiredLocation().getSessionNumber()));
             statement.setString(3, shoppingItem.getWriterAccount().getMail());
             statement.executeUpdate();
@@ -150,7 +151,8 @@ public class ShoppingStoreDao implements ShoppingStore {
                 String lastName = rs.getString(2);
                 String mail = rs.getString(3);
                 byte[] pass = rs.getBytes(4);
-                result = new StudentAccount(name, lastName, pass, mail, LocationStoreDao.getLocation(connection,mail));
+                LocationStore locStore = new LocationStoreDao(dataSource);
+                result = new StudentAccount(name, lastName, pass, mail, locStore.getLocation(mail));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

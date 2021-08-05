@@ -9,14 +9,14 @@ import java.util.List;
 
 public interface LocationStore {
 
-    Location getLocation(Account account);
+    Location getLocation(String mail);
     List<Location> getAllLocations();
     List<Account> getStudents(Location location);
     List<String> getUniqueLocations();
     //creates chat with location.
     void addLocation(Location location, ChatStore chatStore);
-    int getLocationId(Connection conn, String locationName, int sessionNum);
-    Location getLocationById(Connection connection, int locationId);
+    int getLocationId(String locationName, int sessionNum);
+    Location getLocationById(int locationId);
     Location getLocation(String locationName, int locationSession);
     //added
     boolean hasLocation(String locationName, int sessionNumber);

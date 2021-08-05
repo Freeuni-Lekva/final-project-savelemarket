@@ -6,7 +6,8 @@ import java.sql.Statement;
 
 public class DatabaseInitializer {
 
-    public static final String dropAllTables = "DROP TABLE IF EXISTS message;" +
+    public static final String dropAllTables = "DROP TABLE IF EXISTS shop_store;" +
+            "DROP TABLE IF EXISTS message;" +
             "DROP TABLE IF EXISTS chat_users;" +
             "DROP TABLE IF EXISTS accounts;" +
             "DROP TABLE IF EXISTS locations;" +
@@ -48,17 +49,28 @@ public class DatabaseInitializer {
             "    FOREIGN KEY (`chat_id`) REFERENCES chat(`chat_id`)," +
             "    FOREIGN KEY (`sender_mail`) REFERENCES accounts(`mail`)" +
             ");";
-    public static final String initializeDatabase = createChat + createLocations + createAccounts + createChatUsers + createMessage;
+    public static final String createShopStore = "CREATE TABLE IF NOT EXISTS shop_store(" +
+            "    `shop_item_id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL," +
+            "    `writer_mail` VARCHAR(64) NOT NULL," +
+            "    `location_id` INT NOT NULL," +
+            "    `price` DOUBLE NOT NULL," +
+            "    FOREIGN KEY (`writer_mail`) REFERENCES accounts(`mail`)," +
+            "    FOREIGN KEY (`location_id`) REFERENCES locations(`location_id`)" +
+            ");";
+
+    public static final String initializeDatabase = createChat + createLocations + createAccounts + createChatUsers + createMessage + createShopStore;
     public static final String recreateDatabase = dropAllTables + initializeDatabase;
 
     public static void recreateDatabase(DataSource ds){
         try {
             Statement c = ds.getConnection().createStatement();
             c.execute(recreateDatabase);
-            c.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public static void initialize(){
+        recreateDatabase(createDataSource());
     }
     public static MysqlConnectionPoolDataSource createDataSource(){
         MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();

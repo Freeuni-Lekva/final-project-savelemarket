@@ -15,16 +15,18 @@ public class LocationStoreDao implements LocationStore{
         this.dataSource = dataSource;
     }
     @Override
-    public Location getLocation(Account account) {
+    public Location getLocation(String mail) {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(
-                    "select location_name, sess from accounts inner join locations using (location_id) where mail=?;");
-            statement.setString(1, account.getMail());
+                    "select location_name, sess, chat_id from accounts inner join locations using (location_id) where mail=?;");
+            statement.setString(1, mail);
             ResultSet rs = statement.executeQuery();
+            ChatStore chatStore = new ChatStoreDao(dataSource);
             if(rs.next()){
-                return new SaveleLocation(rs.getString(1), rs.getInt(2));
+                Chat ch = chatStore.getPublicChat(rs.getInt("chat_id"));
+                return new SaveleLocation(rs.getString(1), rs.getInt(2),ch);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -174,28 +176,23 @@ public class LocationStoreDao implements LocationStore{
     }
 
 
+
     @Override
-    /**
-     * Reads all fields from Database associated with location ID, converts them
-     * to location object and returns it.
-     */
-    public Location getLocationById(Connection connection, int locationId){
-        Location result = null;
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT location_name, sess, chat_id FROM locations WHERE location_id = ?");
-            statement.setInt(1, locationId);
-            ResultSet rs = statement.executeQuery();
-            ChatStore chatStore = new ChatStoreDao(dataSource);
+    public Location getLocation(String locationName, int locationSession) {
+        Location loc = null;
+        try{
+            PreparedStatement st = dataSource.getConnection().prepareStatement("SELECT location_name,sess,chat_id,location_id FROM locations WHERE location_name = ? AND sess = ?");
+            st.setString(1,locationName);
+            st.setInt(2,locationSession);
+            ResultSet rs = st.executeQuery();
             if(rs.next()){
-                Chat ch = chatStore.getPublicChat(rs.getInt("chat_id"));
-                result = new SaveleLocation(rs.getString(1), rs.getInt(2),ch); // needs to get chat too
+                loc = new SaveleLocation(rs.getString("location_name"),rs.getInt("sess"),rs.getInt("chat_id"));
             }
-        } catch (SQLException throwables) {
+        } catch (SQLException throwables){
             throwables.printStackTrace();
         }
-        return result;
+        return loc;
     }
-
 
     @Override
     /////////// added 2 static methods /////
@@ -203,9 +200,10 @@ public class LocationStoreDao implements LocationStore{
     /** Returns primary key of the location from Data Base suitable for the given
      *  location name and session number.
      */
-    public static int getLocationId(Connection conn, String locationName, int sessionNum){
+    public int getLocationId(String locationName, int sessionNum){
         PreparedStatement statement = null;
         try {
+            Connection conn = dataSource.getConnection();
             statement = conn.prepareStatement("SELECT location_id FROM locations WHERE  sess = ? AND location_name = ?;");
             statement.setInt(1, sessionNum);
             statement.setString(2, locationName);
@@ -219,21 +217,23 @@ public class LocationStoreDao implements LocationStore{
         }
         return -1;
     }
-      
+
     @Override
-    public static Location getLocation(Connection connection, String accountMail) {
+    public Location getLocationById (int locationId){
+        Location result = null;
         try {
-            PreparedStatement statement = connection.prepareStatement(
-                    "SELECT location_name, sess FROM accounts INNER JOIN locations USING (location_id) WHERE mail=?;");
-            statement.setString(1, accountMail);
+            PreparedStatement statement = dataSource.getConnection().prepareStatement("SELECT location_name, sess, chat_id FROM locations WHERE location_id = ?");
+            statement.setInt(1, locationId);
             ResultSet rs = statement.executeQuery();
-            if(rs.next()){
-                return new SaveleLocation(rs.getString(1), rs.getInt(2));
+            ChatStore chatStore = new ChatStoreDao(dataSource);
+            if (rs.next()) {
+                Chat ch = chatStore.getPublicChat(rs.getInt("chat_id"));
+                result = new SaveleLocation(rs.getString(1), rs.getInt(2), ch); // needs to get chat too
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return null;
+        return result;
     }
 }
 
