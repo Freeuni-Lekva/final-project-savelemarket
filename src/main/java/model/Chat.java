@@ -9,6 +9,7 @@ public interface Chat {
     List<Message> getAllMessages();
     String getChatName();
     List<Message> getMessages(int number);
+    int getChatID();
     // Removed add members for interface to work in private too (private chat doesn't need add/remove methods)
     //returns id of sent message, might need it for something idk
     int sendMessage(Message message);
