@@ -199,4 +199,24 @@ public class AccountsStoreDao implements AccountsStore {
     }
 }
 
+ /** Returns Account class object read from database and suitable for the given mail*/
+    private Account getAccountByMail(Connection connection, String mail){
+        Account result = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT first_name, last_name, mail, location_id, pass FROM accounts WHERE mail = ?");
+            statement.setString(1, mail);
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()){
+                String name = rs.getString(1);
+                String lastName = rs.getString(2);
+                int locId = rs.getInt(4);
+                byte[] pass = rs.getBytes(5);
+                result = new StudentAccount(name, lastName, pass, mail, getLocationById(connection, locId));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return result;
+    }
+}
 
