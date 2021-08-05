@@ -34,10 +34,7 @@ public class PrivateChat implements Chat{
         this.id = db.getPrivateChatID(sender,receiver);
         this.chatName = Chat.PRIVATE_NAME;
     }
-    @Override
-    public int getChatID(){
-        return id;
-    }
+
     @Override
     public List<Message> getAllMessages() {
         return db.getAllChatMessages(id);

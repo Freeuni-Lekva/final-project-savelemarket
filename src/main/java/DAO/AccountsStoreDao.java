@@ -11,7 +11,7 @@ import java.util.List;
 public class AccountsStoreDao implements AccountsStore {
     private DataSource dataSource;
 
-    public AccountsStoreDao(DataSource dataSource) {
+    public AccountsStoreDao(DataSource dataSource){
         this.dataSource = dataSource;
     }
 
@@ -24,7 +24,6 @@ public class AccountsStoreDao implements AccountsStore {
                     connection.prepareStatement("" +
                             "INSERT INTO accounts (first_name, last_name, mail, location_id, pass) " +
                             "VALUES (?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
-
             int locId = LocationStoreDao.getLocationId(connection, account.getLocation().getName(), account.getLocation().getSessionNumber());
             statement.setString(1, account.getName());
             statement.setString(2, account.getLastName());
@@ -96,7 +95,6 @@ public class AccountsStoreDao implements AccountsStore {
     /**
      * Returns true if accounts store data table contains
      * account with private key 'mail'. Otherwise returns false.
-     *
      * @param mail
      * @return
      */
@@ -108,10 +106,9 @@ public class AccountsStoreDao implements AccountsStore {
             PreparedStatement statement = conn.prepareStatement("SELECT first_name, last_name, mail, location_id, pass FROM accounts WHERE mail = ?;");
             statement.setString(1, mail);
             ResultSet rs = statement.executeQuery();
-            if (rs.next()) return true;
+            if(rs.next()) return true;
             return false;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwables) { throwables.printStackTrace();
         } finally {
             if (conn != null) {
                 try {
@@ -140,12 +137,10 @@ public class AccountsStoreDao implements AccountsStore {
                 int locationId = rs.getInt(4);
                 System.out.println(locationId);
                 byte[] password = rs.getBytes(5);
-                LocationStore locationStore = new LocationStoreDao(dataSource);
-                return new StudentAccount(firstName, lastName, password, gmail, locationStore.getLocationById(conn, locationId));
+                return new StudentAccount(firstName,lastName,password,gmail,getLocationById(conn, locationId));
             }
             return null;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwables) { throwables.printStackTrace();
         } finally {
             if (conn != null) {
                 try {
@@ -163,7 +158,6 @@ public class AccountsStoreDao implements AccountsStore {
      * turns them into appropriate account objects
      * and returns their list;
      * Useful for testing and showing data.
-     *
      * @return List<Account>
      */
     @Override
@@ -181,11 +175,9 @@ public class AccountsStoreDao implements AccountsStore {
                 String mail = rs.getString(3);
                 int locationId = rs.getInt(4);
                 byte[] password = rs.getBytes(5);
-                LocationStore locationStore = new LocationStoreDao(dataSource);
-                ret.add(new StudentAccount(firstName, lastName, password, mail, locationStore.getLocationById(conn, locationId)));
+                ret.add(new StudentAccount(firstName,lastName,password, mail,getLocationById(conn, locationId)));
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwables) { throwables.printStackTrace();
         } finally {
             if (conn != null) {
                 try {
@@ -197,9 +189,32 @@ public class AccountsStoreDao implements AccountsStore {
         }
         return ret;
     }
-}
 
- /** Returns Account class object read from database and suitable for the given mail*/
+
+    /**
+     * Reads all fields from DataBase associated with location ID, converts them
+     * to location object and returns it.
+     */
+    private Location getLocationById(Connection connection, int locationId){
+        Location result = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT location_name, sess, chat_id FROM locations WHERE location_id = ?");
+            statement.setInt(1, locationId);
+            ResultSet rs = statement.executeQuery();
+            ChatStore chatStore = new ChatStoreDao(dataSource);
+            if(rs.next()){
+                Chat ch = chatStore.getPublicChat(rs.getInt("chat_id"));
+                result = new SaveleLocation(rs.getString(1), rs.getInt(2),ch); // needs to get chat too
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return result;
+    }
+
+
+
+    /** Returns Account class object read from database and suitable for the given mail*/
     private Account getAccountByMail(Connection connection, String mail){
         Account result = null;
         try {
@@ -219,4 +234,3 @@ public class AccountsStoreDao implements AccountsStore {
         return result;
     }
 }
-

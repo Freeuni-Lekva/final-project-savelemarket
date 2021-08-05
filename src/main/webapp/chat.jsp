@@ -35,7 +35,6 @@
             <%
                 ChatStore chatStore = (ChatStore) request.getServletContext().getAttribute("chat-store");
                 Account currAccount = ((Account)session.getAttribute("current-account"));
-                System.out.println(currAccount.getLocation());
                 List<Account> accounts = chatStore.getChatMembers(currAccount.getLocation().getChatID());
                 System.out.println(accounts);
                 for(Account account:accounts){

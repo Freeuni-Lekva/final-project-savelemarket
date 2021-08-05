@@ -27,10 +27,6 @@ public class LocationChat implements Chat{
         this.id = id;
     }
 
-    @Override
-    public int getChatID(){
-        return id;
-    }
     //needs to be called after alternate constructor
     @Override
     public void setChatName(String locationName){

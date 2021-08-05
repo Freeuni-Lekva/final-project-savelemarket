@@ -13,14 +13,10 @@ public class SaveleLocation implements Location{
     private Chat chat; // location chat
 
     //need to set chat after creating it
-    public SaveleLocation(String name, int sessionNumber, int chat_id){
-        this(name,sessionNumber);
-        this.chatID = chat_id;
-    }
-    public SaveleLocation(String name, int sessionNumber, Chat chat){
-        this(name,sessionNumber);
+    public SaveleLocation(String name, int sessionNumber,Chat chat){
+        this.name = name;
+        this.sessionNumber = sessionNumber;
         this.chat = chat;
-        this.chatID = chat.getChatID();
     }
     public SaveleLocation(String name, int sessionNumber){
         this.name = name;
