@@ -7,4 +7,5 @@ public interface ShoppingItem {
     Account getWriterAccount();
     int getItemId();
     double getPrice();
+    String getCreateTime();
 }

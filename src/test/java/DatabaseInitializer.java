@@ -54,6 +54,7 @@ public class DatabaseInitializer {
             "    `writer_mail` VARCHAR(64) NOT NULL," +
             "    `location_id` INT NOT NULL," +
             "    `price` DOUBLE NOT NULL," +
+            "    `create_time` VARCHAR(64) NOT NULL,"+
             "    FOREIGN KEY (`writer_mail`) REFERENCES accounts(`mail`)," +
             "    FOREIGN KEY (`location_id`) REFERENCES locations(`location_id`)" +
             ");";
