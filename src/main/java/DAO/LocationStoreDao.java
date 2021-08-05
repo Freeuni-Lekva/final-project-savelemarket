@@ -176,4 +176,41 @@ public class LocationStoreDao implements LocationStore{
         return false;
     }
 
+    /////////// added 2 static methods /////
+
+    /** Returns primary key of the location from Data Base suitable for the given
+     *  location name and session number.
+     */
+    public static int getLocationId(Connection conn, String locationName, int sessionNum){
+        PreparedStatement statement = null;
+        try {
+            statement = conn.prepareStatement("SELECT location_id FROM locations WHERE  sess = ? AND location_name = ?;");
+            statement.setInt(1, sessionNum);
+            statement.setString(2, locationName);
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+            return -1;
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return -1;
+    }
+
+
+    public static Location getLocation(Connection connection, String accountMail) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT location_name, sess FROM accounts INNER JOIN locations USING (location_id) WHERE mail=?;");
+            statement.setString(1, accountMail);
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()){
+                return new SaveleLocation(rs.getString(1), rs.getInt(2));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return null;
+    }
 }

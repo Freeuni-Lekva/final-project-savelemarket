@@ -1,10 +1,10 @@
 package model;
 
-public interface ShopItem {
+public interface ShoppingItem {
     void setId(int id);
 
     Location getDesiredLocation();
     Account getWriterAccount();
-    int getAdvertId();
+    int getItemId();
     double getPrice();
 }

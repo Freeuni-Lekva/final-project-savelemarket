@@ -24,7 +24,7 @@ public class AccountsStoreDao implements AccountsStore {
                     connection.prepareStatement("" +
                             "INSERT INTO accounts (first_name, last_name, mail, location_id, pass) " +
                             "VALUES (?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
-            int locId = getLocationId(connection, account.getLocation().getName(), account.getLocation().getSessionNumber());
+            int locId = LocationStoreDao.getLocationId(connection, account.getLocation().getName(), account.getLocation().getSessionNumber());
             statement.setString(1, account.getName());
             statement.setString(2, account.getLastName());
             statement.setString(3, account.getMail());
@@ -74,7 +74,7 @@ public class AccountsStoreDao implements AccountsStore {
             PreparedStatement statement =
                     connection.prepareStatement("" +
                             "UPDATE accounts SET location_id = ? WHERE mail = ?");
-            int locId = getLocationId(connection, location.getName(), location.getSessionNumber());
+            int locId = LocationStoreDao.getLocationId(connection, location.getName(), location.getSessionNumber());
             statement.setInt(1, locId);
             statement.setString(2, account.getMail());
             statement.executeUpdate();
@@ -213,21 +213,24 @@ public class AccountsStoreDao implements AccountsStore {
     }
 
 
-    /** Returns primary key of the account's location form Data Base. */
-    private int getLocationId(Connection conn, String locationName, int sessionNum){
-        PreparedStatement statement = null;
+
+    /** Returns Account class object read from database and suitable for the given mail*/
+    private Account getAccountByMail(Connection connection, String mail){
+        Account result = null;
         try {
-            statement = conn.prepareStatement("SELECT location_id FROM locations WHERE  sess = ? AND location_name = ?;");
-            statement.setInt(1, sessionNum);
-            statement.setString(2, locationName);
+            PreparedStatement statement = connection.prepareStatement("SELECT first_name, last_name, mail, location_id, pass FROM accounts WHERE mail = ?");
+            statement.setString(1, mail);
             ResultSet rs = statement.executeQuery();
             if(rs.next()){
-                return rs.getInt(1);
+                String name = rs.getString(1);
+                String lastName = rs.getString(2);
+                int locId = rs.getInt(4);
+                byte[] pass = rs.getBytes(5);
+                result = new StudentAccount(name, lastName, pass, mail, getLocationById(connection, locId));
             }
-            return -1;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return -1;
+        return result;
     }
 }
