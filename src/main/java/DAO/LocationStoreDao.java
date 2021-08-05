@@ -173,6 +173,7 @@ public class LocationStoreDao implements LocationStore{
         return false;
     }
 
+
     @Override
     /**
      * Reads all fields from Database associated with location ID, converts them
@@ -197,8 +198,12 @@ public class LocationStoreDao implements LocationStore{
 
 
     @Override
-    /** Returns primary key of the account's location form Data Base. */
-    public int getLocationId(Connection conn, String locationName, int sessionNum){
+    /////////// added 2 static methods /////
+
+    /** Returns primary key of the location from Data Base suitable for the given
+     *  location name and session number.
+     */
+    public static int getLocationId(Connection conn, String locationName, int sessionNum){
         PreparedStatement statement = null;
         try {
             statement = conn.prepareStatement("SELECT location_id FROM locations WHERE  sess = ? AND location_name = ?;");
@@ -214,22 +219,21 @@ public class LocationStoreDao implements LocationStore{
         }
         return -1;
     }
-
+      
     @Override
-    public Location getLocation(String locationName, int locationSession) {
-        Location loc = null;
-        try{
-            PreparedStatement st = dataSource.getConnection().prepareStatement("SELECT location_name,sess,chat_id,location_id FROM locations WHERE location_name = ? AND sess = ?");
-            st.setString(1,locationName);
-            st.setInt(2,locationSession);
-            ResultSet rs = st.executeQuery();
+    public static Location getLocation(Connection connection, String accountMail) {
+        try {
+            PreparedStatement statement = connection.prepareStatement(
+                    "SELECT location_name, sess FROM accounts INNER JOIN locations USING (location_id) WHERE mail=?;");
+            statement.setString(1, accountMail);
+            ResultSet rs = statement.executeQuery();
             if(rs.next()){
-                loc = new SaveleLocation(rs.getString("location_name"),rs.getInt("sess"),rs.getInt("chat_id"));
+                return new SaveleLocation(rs.getString(1), rs.getInt(2));
             }
-        } catch (SQLException throwables){
+        } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return loc;
+        return null;
     }
 }
 

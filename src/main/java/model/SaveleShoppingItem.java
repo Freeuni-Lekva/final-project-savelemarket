@@ -1,6 +1,6 @@
 package model;
 
-public class SaveleShopItem implements ShopItem {
+public class SaveleShoppingItem implements ShoppingItem {
     public static Location ANY_WHERE = null;
 
     private Location desiredLocation;
@@ -8,13 +8,13 @@ public class SaveleShopItem implements ShopItem {
     private int id = -1;
     private double price;
 
-    public SaveleShopItem(Account account, Location desiredLocation, double price){
+    public SaveleShoppingItem(Account account, Location desiredLocation, double price){
         this.writerAccount = account;
         this.desiredLocation = desiredLocation;
         this.price = price;
     }
 
-    public SaveleShopItem(int id, Account account, Location desiredLocation, double price){
+    public SaveleShoppingItem(int id, Account account, Location desiredLocation, double price){
         this.id = id;
         this.writerAccount = account;
         this.desiredLocation = desiredLocation;
@@ -37,7 +37,7 @@ public class SaveleShopItem implements ShopItem {
     }
 
     @Override
-    public int getAdvertId() {
+    public int getItemId() {
         return id;
     }
 
@@ -45,5 +45,14 @@ public class SaveleShopItem implements ShopItem {
     @Override
     public double getPrice() {
         return price;
+    }
+
+    @Override
+    public String toString(){
+        return  writerAccount.getMail() + " wants to change " +
+                writerAccount.getLocation().getName() + "" +
+                writerAccount.getLocation().getSessionNumber() + " to " +
+                desiredLocation.getName() + ""+
+                desiredLocation.getSessionNumber() + " for "+ price + "$";
     }
 }

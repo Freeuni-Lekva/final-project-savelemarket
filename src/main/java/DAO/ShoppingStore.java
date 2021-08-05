@@ -1,11 +1,12 @@
 package DAO;
 
-import model.ShopItem;
+import model.ShoppingItem;
 
 import java.util.List;
 
 public interface ShoppingStore {
-    void addItem(ShopItem shopItem);
+    void addItem(ShoppingItem shoppingItem);
     void removeItem(int shopItemId);
-    List<ShopItem> getAllItems();
+    List<ShoppingItem> getAllItemsForAccount(String accountMail);
+    List<ShoppingItem> getAllItems();
 }

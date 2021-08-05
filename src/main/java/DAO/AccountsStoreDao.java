@@ -20,12 +20,12 @@ public class AccountsStoreDao implements AccountsStore {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            LocationStore locationStore = new LocationStoreDao(dataSource);
             PreparedStatement statement =
                     connection.prepareStatement("" +
                             "INSERT INTO accounts (first_name, last_name, mail, location_id, pass) " +
                             "VALUES (?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
-            int locId = locationStore.getLocationId(connection, account.getLocation().getName(), account.getLocation().getSessionNumber());
+
+            int locId = LocationStoreDao.getLocationId(connection, account.getLocation().getName(), account.getLocation().getSessionNumber());
             statement.setString(1, account.getName());
             statement.setString(2, account.getLastName());
             statement.setString(3, account.getMail());
@@ -75,8 +75,7 @@ public class AccountsStoreDao implements AccountsStore {
             PreparedStatement statement =
                     connection.prepareStatement("" +
                             "UPDATE accounts SET location_id = ? WHERE mail = ?");
-            LocationStore locationStore = new LocationStoreDao(dataSource);
-            int locId = locationStore.getLocationId(connection, location.getName(), location.getSessionNumber());
+            int locId = LocationStoreDao.getLocationId(connection, location.getName(), location.getSessionNumber());
             statement.setInt(1, locId);
             statement.setString(2, account.getMail());
             statement.executeUpdate();
