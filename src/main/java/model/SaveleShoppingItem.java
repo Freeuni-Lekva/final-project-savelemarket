@@ -7,6 +7,7 @@ public class SaveleShoppingItem implements ShoppingItem {
     private Account writerAccount;
     private int id = -1;
     private double price;
+    private String time;
 
     public SaveleShoppingItem(Account account, Location desiredLocation, double price){
         this.writerAccount = account;
@@ -14,8 +15,9 @@ public class SaveleShoppingItem implements ShoppingItem {
         this.price = price;
     }
 
-    public SaveleShoppingItem(int id, Account account, Location desiredLocation, double price){
+    public SaveleShoppingItem(int id, String time, Account account, Location desiredLocation, double price){
         this.id = id;
+        this.time = time;
         this.writerAccount = account;
         this.desiredLocation = desiredLocation;
         this.price = price;
@@ -48,11 +50,21 @@ public class SaveleShoppingItem implements ShoppingItem {
     }
 
     @Override
+    public String getCreateTime() {
+        return time;
+    }
+
+    @Override
     public String toString(){
-        return  writerAccount.getMail() + " wants to change " +
+        String tempRes = writerAccount.getMail() + " wants to change " +
                 writerAccount.getLocation().getName() + "" +
                 writerAccount.getLocation().getSessionNumber() + " to " +
                 desiredLocation.getName() + ""+
                 desiredLocation.getSessionNumber() + " for "+ price + "$";
+        if(time == null){
+            return  tempRes +" not posted yet";
+        }else{
+            return  tempRes + " posted on: "+ time;
+        }
     }
 }

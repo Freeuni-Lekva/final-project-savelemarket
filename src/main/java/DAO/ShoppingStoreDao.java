@@ -4,6 +4,7 @@ import model.*;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,13 +20,14 @@ public class ShoppingStoreDao implements ShoppingStore {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO shop_store (price, location_id, writer_mail) " +
-                    "VALUES (?,?,?);");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO shop_store (price, location_id, writer_mail, create_time) " +
+                    "VALUES (?,?,?,?);");
             statement.setDouble(1, shoppingItem.getPrice());
             LocationStore locStore = new LocationStoreDao(dataSource);
             statement.setInt(2, locStore.getLocationId(shoppingItem.getDesiredLocation().getName(),
                     shoppingItem.getDesiredLocation().getSessionNumber()));
             statement.setString(3, shoppingItem.getWriterAccount().getMail());
+            statement.setString(4,getCurrentTime());
             statement.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -68,7 +70,7 @@ public class ShoppingStoreDao implements ShoppingStore {
         List<ShoppingItem> ret = new ArrayList<>();
         try {
             conn = dataSource.getConnection();
-            PreparedStatement stm = conn.prepareStatement("SELECT shop_item_id, price FROM shop_store WHERE writer_mail = ?;");
+            PreparedStatement stm = conn.prepareStatement("SELECT shop_item_id, price, create_time FROM shop_store WHERE writer_mail = ?;");
             stm.setString(1, accountMail);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
@@ -76,7 +78,8 @@ public class ShoppingStoreDao implements ShoppingStore {
                 Account writerAccount = getWriterAccount(conn, itemId);
                 Location desiredLocation = getDesLocation(conn, itemId);
                 double price = rs.getDouble(2);
-                SaveleShoppingItem shoppingItem = new SaveleShoppingItem(itemId, writerAccount, desiredLocation, price);
+                String time = rs.getString(3);
+                SaveleShoppingItem shoppingItem = new SaveleShoppingItem(itemId,time, writerAccount, desiredLocation, price);
                 ret.add(shoppingItem);
             }
         } catch (SQLException throwables) { throwables.printStackTrace();
@@ -98,15 +101,15 @@ public class ShoppingStoreDao implements ShoppingStore {
         List<ShoppingItem> ret = new ArrayList<>();
         try {
             conn = dataSource.getConnection();
-            PreparedStatement stm = conn.prepareStatement("SELECT shop_item_id, price FROM shop_store;");
+            PreparedStatement stm = conn.prepareStatement("SELECT shop_item_id, price, create_time FROM shop_store;");
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
                 int itemId = rs.getInt(1);
                 Account writerAccount = getWriterAccount(conn, itemId);
                 Location desiredLocation = getDesLocation(conn, itemId);
                 double price = rs.getDouble(2);
-                SaveleShoppingItem shoppingItem = new SaveleShoppingItem(itemId, writerAccount, desiredLocation, price);
-                ret.add(shoppingItem);
+                String time = rs.getString(3);
+                SaveleShoppingItem shoppingItem = new SaveleShoppingItem(itemId,time, writerAccount, desiredLocation, price);                ret.add(shoppingItem);
             }
         } catch (SQLException throwables) { throwables.printStackTrace();
         } finally {
@@ -160,4 +163,9 @@ public class ShoppingStoreDao implements ShoppingStore {
         return result;
     }
 
+    private String getCurrentTime(){
+        java.util.Date dt = new java.util.Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        return df.format(dt);
+    }
 }

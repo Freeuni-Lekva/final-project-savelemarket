@@ -66,8 +66,7 @@ CREATE TABLE IF NOT EXISTS shop_store(
     `writer_mail` VARCHAR(64) NOT NULL,
     `location_id` INT NOT NULL,
     `price` DOUBLE NOT NULL,
---     `location_name` VARCHAR(64),
---     `location_sess_num` INT,
+    `create_time` VARCHAR(64) NOT NULL,
     FOREIGN KEY (`writer_mail`) REFERENCES accounts(`mail`),
     FOREIGN KEY (`location_id`) REFERENCES locations(`location_id`)
 );
