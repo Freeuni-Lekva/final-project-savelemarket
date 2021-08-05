@@ -24,7 +24,6 @@ public class SaveleLocation implements Location{
     @Override
     public void setChat(Chat chat) {
         this.chat = chat;
-
     }
 
     @Override

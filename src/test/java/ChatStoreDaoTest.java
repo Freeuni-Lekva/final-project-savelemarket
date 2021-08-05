@@ -1,34 +1,72 @@
-import DAO.AccountsStore;
-import DAO.AccountsStoreDao;
-import DAO.ChatStore;
-import DAO.ChatStoreDao;
+import DAO.*;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
-import model.Account;
-import model.Chat;
-import model.Message;
+import model.*;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import javax.sql.DataSource;
+import java.util.Arrays;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 public class ChatStoreDaoTest {
+    Location loc1_1 = new SaveleLocation("location_1",1);
+    Location loc1_2 = new SaveleLocation("location_1",2);
+    Location loc2 = new SaveleLocation("location_2",1);
 
+    Account acc1 = new StudentAccount("name_1","last_1","pass_1","mail_1@freeuni.edu.ge",loc1_1);
+    Account acc2 = new StudentAccount("name_2","last_2","pass_2","mail_2@agruni.edu.ge",loc1_1);
+    Account acc3 = new StudentAccount("name_3","last_3","pass_3","mail_3@freeui.edu.ge",loc1_1);
+    Account acc4 = new StudentAccount("name_4","last_4","pass_4","mail_4@freeui.edu.ge",loc1_1);
+    Account acc5 = new StudentAccount("name_5","last_5","pass_5","mail_5@freeui.edu.ge",loc1_2);
+    Account acc6 = new StudentAccount("name_6","last_6","pass_6","mail_6@freeui.edu.ge",loc1_2);
+    Account acc7 = new StudentAccount("name_7","last_7","pass_7","mail_7@freeui.edu.ge",loc2);;
+
+    MysqlConnectionPoolDataSource ds;
+    AccountsStore accStore;
+    LocationStore locStore;
+    ChatStore chatStore;
+
+    @BeforeEach
+    public void init(){
+        ds = DatabaseInitializer.createDataSource();
+        DatabaseInitializer.recreateDatabase(ds);
+        chatStore = new ChatStoreDao(ds);
+        accStore = new AccountsStoreDao(ds);
+        locStore = new LocationStoreDao(ds);
+    }
+    private void addAccounts(List<Account> accounts){
+        for(Account acc : accounts){
+            accStore.addAccount(acc);
+        }
+    }
+    private void addLocations(List<Location> locations){
+        for(Location loc : locations){
+            locStore.addLocation(loc,chatStore);
+        }
+    }
+    private void addMessages(List<Message> messages){
+        for (Message m : messages){
+            chatStore.addMessage(m);
+        }
+    }
     @Test
-    public void baseTest(){
-        MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
-        ds.setServerName("localhost");
-        ds.setPort(3306);
-        ds.setDatabaseName("myDatabase");
-        ds.setUser("shug");
-        ds.setPassword("");
-        ChatStore chatStore = new ChatStoreDao(ds);
-//        AccountsStore accStore = new AccountsStoreDao(ds);
-//        Account sender = accStore.getAccount("mail");
-//        Account receiver = accStore.getAccount("mail2");
-//        int id = chatStore.createPrivateChat(sender,receiver);
-//        assertTrue(id != -1);
-//        List<Message> lst = chatStore.getAllChatMessages(12);
+    public void privateChatTest(){
+        List<Account> accounts = Arrays.asList(acc1,acc2);
+        List<Location> locations = Arrays.asList(loc1_1);
+        addLocations(locations);
+        addAccounts(accounts);
+        int id = chatStore.createPrivateChat(acc1,acc2);
+        assertTrue(id >= 1);
+        Message m1 = new GeneralMessage(acc1,"message1",false,id);
+        Message m2 = new GeneralMessage(acc2,"message2",false,id);
+        Message m3 = new GeneralMessage(acc2,"message2_cont",false,id);
+        Message m4 = new GeneralMessage(acc1,"message3",false,id);
+        List<Message> list = Arrays.asList(m1,m2,m3,m4);
+        addMessages(list);
+        List<Message> messageList = chatStore.getAllChatMessages(id);
+        assertEquals(list,messageList);
 //        for (Message m : lst){
 //            System.out.println("(" + m.getSendTime() + ")"+ m.getSender().getMail() + ": " + m.getText());
 //        }

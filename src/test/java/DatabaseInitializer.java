@@ -64,7 +64,7 @@ public class DatabaseInitializer {
         MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
         ds.setServerName("localhost");
         ds.setPort(3306);
-        ds.setDatabaseName("myDatabase");
+        ds.setDatabaseName("testDatabase");
         ds.setUser("root");
         ds.setPassword("");
         try {
