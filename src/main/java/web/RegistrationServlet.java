@@ -38,7 +38,8 @@ public class RegistrationServlet extends HttpServlet {
         // create location
         String locationName = (String)(request.getParameter("location"));
         int sessNum = Integer.parseInt((String)(request.getParameter("session_numbers")));
-        Location location = new SaveleLocation(locationName, sessNum);
+        Location location = locationStore.getLocation(locationName,sessNum);
+//                new SaveleLocation(locationName, sessNum);
         // create account
         String password = (String)(request.getParameter("password"));
         String accName = (String)(request.getParameter("name"));
