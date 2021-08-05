@@ -20,9 +20,9 @@ public class testHello {
     static AccountsStore accStore;
     static LocationStore locStore;
     static ChatStore chatStore;
-    static Location loc1_1 = new SaveleLocation("location_1",1);
-    static Location loc1_2 = new SaveleLocation("location_1",2);
-    static Location loc2 = new SaveleLocation("location_2",1);
+    static Location loc1_1 = new SaveleLocation("ილიურთა",1);
+    static Location loc1_2 = new SaveleLocation("ყაზბეგი",2);
+    static Location loc2 = new SaveleLocation("ციმბირი",1);
 
     public static void main(String[] args) {
 
