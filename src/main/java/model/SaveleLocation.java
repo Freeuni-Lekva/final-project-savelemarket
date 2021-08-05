@@ -70,7 +70,7 @@ public class SaveleLocation implements Location{
 
     @Override
     public String toString(){
-        return "location name: "+name+"  session: "+sessionNumber;
+        return "location name: "+name+"  session: "+sessionNumber + "  chat_id: " + chatID;
     }
 
     @Override

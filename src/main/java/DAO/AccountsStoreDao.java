@@ -141,7 +141,9 @@ public class AccountsStoreDao implements AccountsStore {
                 int locationId = rs.getInt(4);
                 byte[] password = rs.getBytes(5);
                 LocationStore locationStore = new LocationStoreDao(dataSource);
-                return new StudentAccount(firstName, lastName, password, gmail, locationStore.getLocationById(locationId));
+                Location loc = locationStore.getLocationById(locationId);
+                System.out.println(loc);
+                return new StudentAccount(firstName, lastName, password, gmail,loc);
             }
             return null;
         } catch (SQLException throwables) {
