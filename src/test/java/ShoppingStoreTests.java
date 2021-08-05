@@ -12,7 +12,7 @@ import java.util.List;
 public class ShoppingStoreTests {
     private final String serverName = "localhost";
     private final int port = 3306;
-    private final String dbName = "myDatabase";
+    private final String dbName = "testDatabase";
     private final String user = "root";
     private final String password = "";
     private AccountsStoreDao accountsStoreDao;
@@ -87,51 +87,22 @@ public class ShoppingStoreTests {
     private void initDbs(MysqlConnectionPoolDataSource ds){
         try {
             Connection connection = ds.getConnection();
-            PreparedStatement resetShoppingStore = connection.prepareStatement("DROP TABLE IF EXISTS shop_store;");
-            resetShoppingStore.executeUpdate();
-            PreparedStatement psReset1 = connection.prepareStatement("DROP TABLE IF EXISTS accounts;");
-            psReset1.executeUpdate();
-            PreparedStatement psReset2 = connection.prepareStatement("DROP TABLE IF EXISTS locations;");
-            psReset2.executeUpdate();
-            PreparedStatement psInit1 = connection.prepareStatement("CREATE TABLE locations ( " +
-                    "`location_name` VARCHAR(64) NOT NULL, " +
-                    "`sess` TINYINT NOT NULL, " +
-                    "`location_id` INT AUTO_INCREMENT PRIMARY KEY" +
-                    ");" +
-                    "");
-            psInit1.executeUpdate();
-            PreparedStatement psInit2 = connection.prepareStatement("CREATE TABLE accounts ( " +
-                    "`first_name` VARCHAR(64) NOT NULL," +
-                    "`last_name` VARCHAR(64) NOT NULL," +
-                    "`mail` VARCHAR(64) NOT NULL PRIMARY KEY," +
-                    "`location_id` INT NOT NULL," +
-                    "`pass` BLOB(64) NOT NULL," +
-                    " FOREIGN KEY (`location_id`) REFERENCES locations(`location_id`)" +
-                    ");" +
-                    "");
-            psInit2.executeUpdate();
+            DatabaseInitializer.initialize();
             for(int i =0; i < locations.length; i++){
+                ChatStore ch = new ChatStoreDao(ds);
+                int num = ch.createPublicChat();
                 PreparedStatement addLocation = connection.prepareStatement(
-                        "INSERT INTO locations (location_name, sess) " +
-                                "VALUES (?,?);");
+                        "INSERT INTO locations (location_name, sess, chat_id) " +
+                                "VALUES (?,?,?);");
                 addLocation.setString(1, locations[i].getName());
                 addLocation.setInt(2, locations[i].getSessionNumber());
+                addLocation.setInt(3,num);
                 addLocation.executeUpdate();
             }
             accountsStoreDao = new AccountsStoreDao(ds);
             for(int i =0; i < accounts.length; i++){
                 accountsStoreDao.addAccount(accounts[i]);
             }
-            PreparedStatement initShoppingStore = connection.prepareStatement(
-                    "CREATE TABLE IF NOT EXISTS shop_store("+
-                    "`shop_item_id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL," +
-                    "`writer_mail` VARCHAR(64) NOT NULL," +
-                    "`location_id` INT NOT NULL,"+
-                    "`price` DOUBLE NOT NULL," +
-                    "FOREIGN KEY (`writer_mail`) REFERENCES accounts(`mail`)," +
-                    "FOREIGN KEY (`location_id`) REFERENCES locations(`location_id`));"
-            );
-            initShoppingStore.executeUpdate();
         } catch (SQLException throwables) { throwables.printStackTrace(); }
     }
 

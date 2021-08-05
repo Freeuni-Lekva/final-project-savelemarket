@@ -24,8 +24,8 @@ public class AccountsStoreDao implements AccountsStore {
                     connection.prepareStatement("" +
                             "INSERT INTO accounts (first_name, last_name, mail, location_id, pass) " +
                             "VALUES (?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
-
-            int locId = LocationStoreDao.getLocationId(connection, account.getLocation().getName(), account.getLocation().getSessionNumber());
+            LocationStore locStore = new LocationStoreDao(dataSource);
+            int locId = locStore.getLocationId(account.getLocation().getName(), account.getLocation().getSessionNumber());
             statement.setString(1, account.getName());
             statement.setString(2, account.getLastName());
             statement.setString(3, account.getMail());
@@ -75,7 +75,8 @@ public class AccountsStoreDao implements AccountsStore {
             PreparedStatement statement =
                     connection.prepareStatement("" +
                             "UPDATE accounts SET location_id = ? WHERE mail = ?");
-            int locId = LocationStoreDao.getLocationId(connection, location.getName(), location.getSessionNumber());
+            LocationStore locStore = new LocationStoreDao(dataSource);
+            int locId = locStore.getLocationId(location.getName(), location.getSessionNumber());
             statement.setInt(1, locId);
             statement.setString(2, account.getMail());
             statement.executeUpdate();
@@ -138,10 +139,9 @@ public class AccountsStoreDao implements AccountsStore {
                 String lastName = rs.getString(2);
                 String gmail = rs.getString(3);
                 int locationId = rs.getInt(4);
-                System.out.println(locationId);
                 byte[] password = rs.getBytes(5);
                 LocationStore locationStore = new LocationStoreDao(dataSource);
-                return new StudentAccount(firstName, lastName, password, gmail, locationStore.getLocationById(conn, locationId));
+                return new StudentAccount(firstName, lastName, password, gmail, locationStore.getLocationById(locationId));
             }
             return null;
         } catch (SQLException throwables) {
@@ -182,7 +182,7 @@ public class AccountsStoreDao implements AccountsStore {
                 int locationId = rs.getInt(4);
                 byte[] password = rs.getBytes(5);
                 LocationStore locationStore = new LocationStoreDao(dataSource);
-                ret.add(new StudentAccount(firstName, lastName, password, mail, locationStore.getLocationById(conn, locationId)));
+                ret.add(new StudentAccount(firstName, lastName, password, mail, locationStore.getLocationById(locationId)));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -197,7 +197,6 @@ public class AccountsStoreDao implements AccountsStore {
         }
         return ret;
     }
-}
 
  /** Returns Account class object read from database and suitable for the given mail*/
     private Account getAccountByMail(Connection connection, String mail){
@@ -211,7 +210,8 @@ public class AccountsStoreDao implements AccountsStore {
                 String lastName = rs.getString(2);
                 int locId = rs.getInt(4);
                 byte[] pass = rs.getBytes(5);
-                result = new StudentAccount(name, lastName, pass, mail, getLocationById(connection, locId));
+                LocationStore locStore = new LocationStoreDao(dataSource);
+                result = new StudentAccount(name, lastName, pass, mail, locStore.getLocationById( locId));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
