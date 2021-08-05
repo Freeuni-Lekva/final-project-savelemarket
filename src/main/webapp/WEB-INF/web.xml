@@ -6,6 +6,11 @@
   <display-name>Archetype Created Web Application</display-name>
 
   <servlet>
+    <servlet-name>chat-servlet</servlet-name>
+    <servlet-class>web.ChatServlet</servlet-class>
+  </servlet>
+
+  <servlet>
     <servlet-name>registration-servlet</servlet-name>
     <servlet-class>web.RegistrationServlet</servlet-class>
   </servlet>
@@ -36,5 +41,9 @@
     <url-pattern>/registration</url-pattern>
   </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>chat-servlet</servlet-name>
+    <url-pattern>/chat</url-pattern>
+  </servlet-mapping>
 
 </web-app>

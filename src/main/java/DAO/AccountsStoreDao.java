@@ -135,6 +135,7 @@ public class AccountsStoreDao implements AccountsStore {
                 String lastName = rs.getString(2);
                 String gmail = rs.getString(3);
                 int locationId = rs.getInt(4);
+                System.out.println(locationId);
                 byte[] password = rs.getBytes(5);
                 return new StudentAccount(firstName,lastName,password,gmail,getLocationById(conn, locationId));
             }

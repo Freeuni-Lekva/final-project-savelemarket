@@ -65,6 +65,11 @@ public class PrivateChat implements Chat{
     }
 
     @Override
+    public boolean isPrivate() {
+        return true;
+    }
+
+    @Override
     public String toString() {
         return "PrivateChat{" +
                 "sender=" + sender +
