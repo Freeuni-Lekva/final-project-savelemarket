@@ -80,9 +80,6 @@ public class ChatStoreDaoTest {
         Chat ch = chatStore.getPrivateChat(id);
         assertEquals(ch,chatStore.getUserChats(acc1.getMail()).get(0));
         assertEquals(ch,chatStore.getUserChats(acc2.getMail()).get(0));
-        String newName = "Super Cool Chat";
-        ch.setChatName(newName);
-        assertEquals(newName,ch.getChatName());
     }
 
     @Test

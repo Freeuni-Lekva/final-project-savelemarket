@@ -24,7 +24,6 @@ public class PrivateChat implements Chat{
         this.receiver = receiver;
         this.id = db.getPrivateChatID(sender,receiver);
         db.addAccounts(Arrays.asList(sender,receiver),id);
-        this.chatName = Chat.PRIVATE_NAME;
     }
 
     //this constructor for getting from database
@@ -32,7 +31,6 @@ public class PrivateChat implements Chat{
         this.sender = sender;
         this.receiver = receiver;
         this.id = db.getPrivateChatID(sender,receiver);
-        this.chatName = Chat.PRIVATE_NAME;
     }
     @Override
     public int getChatID(){
@@ -43,10 +41,6 @@ public class PrivateChat implements Chat{
         return db.getAllChatMessages(id);
     }
 
-    @Override
-    public String getChatName() {
-        return chatName;
-    }
 
     @Override
     public List<Message> getMessages(int number) {
@@ -61,11 +55,6 @@ public class PrivateChat implements Chat{
     @Override
     public int getMemberCount(){
         return 2;
-    }
-
-    @Override
-    public void setChatName(String chatName) {
-        this.chatName = chatName;
     }
 
     @Override

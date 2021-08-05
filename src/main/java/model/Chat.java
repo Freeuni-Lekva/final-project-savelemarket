@@ -5,9 +5,7 @@ import java.util.List;
 // Could have 2 different interfaces implementing this and those implemented by classes but this should be fine.
 public interface Chat {
     static final int MSG_NUM = 20;
-    static final String PRIVATE_NAME = "Private Chat";
     List<Message> getAllMessages();
-    String getChatName();
     List<Message> getMessages(int number);
     int getChatID();
     // Removed add members for interface to work in private too (private chat doesn't need add/remove methods)
@@ -15,6 +13,5 @@ public interface Chat {
     int sendMessage(Message message);
     //void deleteMessage(int id); // No need for it yet
     int getMemberCount();
-    void setChatName(String chatName);
     boolean isPrivate();
 }

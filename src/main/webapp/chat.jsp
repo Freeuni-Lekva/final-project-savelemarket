@@ -16,25 +16,25 @@
     <title>Chat</title>
     <link rel="stylesheet" href="main.css">
 </head>
+<%
+    ChatStore chatStore = (ChatStore) request.getServletContext().getAttribute("chat-store");
+    Account currAccount = ((Account)session.getAttribute("current-account"));
+%>
 <body>
     <header>
         <section class="chat-menu-section">
             <li>
                 <a class="leave-chat" href="messages.jsp">ჩათის დატოვება</a>
             </li>
-            <a class="chat-name">ჩათის სახელი</a>
+            <a class="chat-name"><%
+                out.println(currAccount.getLocation().getName());
+            %></a>
         </section>
     </header>
     <body>
     <section class="chat-section">
         <div class="members-div">
-            <a class="chat-member">member1</a>
-            <a class="chat-member">member1</a>
-            <a class="chat-member">member1</a>
-
             <%
-                ChatStore chatStore = (ChatStore) request.getServletContext().getAttribute("chat-store");
-                Account currAccount = ((Account)session.getAttribute("current-account"));
                 System.out.println(currAccount.getLocation());
                 List<Account> accounts = chatStore.getChatMembers(currAccount.getLocation().getChatID());
                 System.out.println(accounts);
