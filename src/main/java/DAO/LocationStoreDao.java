@@ -1,9 +1,6 @@
 package DAO;
 
-import model.Account;
-import model.Location;
-import model.SaveleLocation;
-import model.StudentAccount;
+import model.*;
 
 import javax.sql.DataSource;
 import javax.ws.rs.NotFoundException;
@@ -176,6 +173,31 @@ public class LocationStoreDao implements LocationStore{
         return false;
     }
 
+
+    @Override
+    /**
+     * Reads all fields from Database associated with location ID, converts them
+     * to location object and returns it.
+     */
+    public Location getLocationById(Connection connection, int locationId){
+        Location result = null;
+        try {
+            PreparedStatement statement = connection.prepareStatement("SELECT location_name, sess, chat_id FROM locations WHERE location_id = ?");
+            statement.setInt(1, locationId);
+            ResultSet rs = statement.executeQuery();
+            ChatStore chatStore = new ChatStoreDao(dataSource);
+            if(rs.next()){
+                Chat ch = chatStore.getPublicChat(rs.getInt("chat_id"));
+                result = new SaveleLocation(rs.getString(1), rs.getInt(2),ch); // needs to get chat too
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return result;
+    }
+
+
+    @Override
     /////////// added 2 static methods /////
 
     /** Returns primary key of the location from Data Base suitable for the given
@@ -197,8 +219,8 @@ public class LocationStoreDao implements LocationStore{
         }
         return -1;
     }
-
-
+      
+    @Override
     public static Location getLocation(Connection connection, String accountMail) {
         try {
             PreparedStatement statement = connection.prepareStatement(
@@ -214,3 +236,4 @@ public class LocationStoreDao implements LocationStore{
         return null;
     }
 }
+

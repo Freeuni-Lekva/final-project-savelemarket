@@ -50,6 +50,7 @@ public class ChatStoreDao implements ChatStore{
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
+        System.out.println("------------------------ WRONG ID -------------------------");
         return WRONG_ID;
     }
 
@@ -91,6 +92,7 @@ public class ChatStoreDao implements ChatStore{
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
+        System.out.println("--------------------- ADD MESSAGE FAIL ---------------------");
         return -1;
     }
 
