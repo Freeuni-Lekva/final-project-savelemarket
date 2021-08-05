@@ -21,12 +21,14 @@ public class Listener implements ServletContextListener, HttpSessionListener, Ht
         ds.setDatabaseName("myDatabase");
         ds.setUser("root");
         ds.setPassword("");
+
         AccountsStore accountsStore = new AccountsStoreDao(ds);
         ChatStore chatStore = new ChatStoreDao(ds);
         LocationStore locationStore = new LocationStoreDao(ds);
         sce.getServletContext().setAttribute("chat-store",chatStore);
         sce.getServletContext().setAttribute("accounts-store", accountsStore);
         sce.getServletContext().setAttribute("locations-store", locationStore);
+
     }
 
     @Override

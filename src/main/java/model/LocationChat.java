@@ -5,14 +5,7 @@ import DAO.ChatStore;
 import java.util.List;
 
 public class LocationChat implements Chat{
-    @Override
-    public String toString() {
-        return "LocationChat{" +
-                "accounts=" + accounts +
-                ", id=" + id +
-                ", chatName='" + chatName + '\'' +
-                '}';
-    }
+
 
     private ChatStore db;
     private List<Account> accounts;
@@ -21,13 +14,12 @@ public class LocationChat implements Chat{
 
     // for this one need to create new public chat and give id here before making new LocationChat
     public LocationChat(ChatStore db,List<Account> accounts,String locationName, int id) {
-        this.db = db;
-        this.accounts = accounts;
-        this.id = id;
+        this(db,accounts,id);
         chatName = locationName;
+        addAccounts(accounts);
     }
 
-    // alternate constructor
+    // alternate constructor for fetching from database
     public LocationChat(ChatStore db, List<Account> accounts,int id){
         this.db = db;
         this.accounts = accounts;
@@ -66,5 +58,17 @@ public class LocationChat implements Chat{
     @Override
     public List<Message> getMessages(int number) {
         return null;
+    }
+
+    private void addAccounts(List<Account> accounts){
+        db.addAccounts(accounts,id);
+    }
+    @Override
+    public String toString() {
+        return "LocationChat{" +
+                "accounts=" + accounts +
+                ", id=" + id +
+                ", chatName='" + chatName + '\'' +
+                '}';
     }
 }

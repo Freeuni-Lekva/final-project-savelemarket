@@ -12,6 +12,7 @@ public interface LocationStore {
     List<Location> getAllLocations();
     List<Account> getStudents(Location location);
     List<String> getUniqueLocations();
+    //creates chat with location.
     void addLocation(Location location, ChatStore chatStore);
 
     //added
