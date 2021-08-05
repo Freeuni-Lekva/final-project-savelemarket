@@ -83,6 +83,10 @@ public class ChatStoreDaoTest {
         String newName = "Super Cool Chat";
         ch.setChatName(newName);
         assertEquals(newName,ch.getChatName());
+    }
+
+    @Test
+    public void publicChatTest(){
 
     }
 }
