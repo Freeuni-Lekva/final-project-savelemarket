@@ -75,8 +75,7 @@ public class ChatStoreDao implements ChatStore{
         }
         return id;
     }
-
-
+    
     @Override
     public int addMessage(Message message) {
         try {

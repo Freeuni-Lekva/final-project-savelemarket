@@ -1,9 +1,6 @@
 package web;
 
-import DAO.AccountsStore;
-import DAO.AccountsStoreDao;
-import DAO.LocationStore;
-import DAO.LocationStoreDao;
+import DAO.*;
 import model.Account;
 import model.Location;
 import model.SaveleLocation;
@@ -13,12 +10,13 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.util.Arrays;
 
 
 public class RegistrationServlet extends HttpServlet {
     AccountsStore accountsStore;
     LocationStore locationStore;
-
+    ChatStore chatStore;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
@@ -29,6 +27,8 @@ public class RegistrationServlet extends HttpServlet {
         request.setCharacterEncoding("UTF-8");
         locationStore = (LocationStoreDao) request.getServletContext().getAttribute("locations-store");
         accountsStore = (AccountsStoreDao) request.getServletContext().getAttribute("accounts-store");
+        chatStore = (ChatStoreDao) request.getServletContext().getAttribute("chat-store");
+
         // check fields validity
         // may change checks sequence
         if(reqEmptyFields(request, response)) return;
@@ -47,7 +47,7 @@ public class RegistrationServlet extends HttpServlet {
         String mail = (String)(request.getParameter("mail"));
         Account newAccount = new StudentAccount(accName, lastName, password, mail, location);
         accountsStore.addAccount(newAccount);
-
+        chatStore.addAccounts(Arrays.asList(newAccount),location.getChatID());
         HttpSession session = request.getSession();
         session.setAttribute("current-account", newAccount);
         request.getRequestDispatcher("profile.jsp").forward(request, response);
