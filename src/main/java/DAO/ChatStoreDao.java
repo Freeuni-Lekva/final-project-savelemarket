@@ -18,7 +18,7 @@ public class ChatStoreDao implements ChatStore{
     //queries and updates
     private static final String getPrivateChatID=
             "SELECT acc_1.chat_id FROM chat_users acc_1 INNER JOIN chat USING (chat_id) JOIN chat_users acc_2 " +
-                    "ON acc_1.account_mail = ? AND acc_2.account_mail = ? AND acc_1.chat_id = acc_2.chat_id AND is_private = true;";
+                    "ON acc_1.account_mail = ? AND acc_2.account_mail = ? AND acc_1.chat_id = acc_2.chat_id AND is_private = TRUE;";
     //private static final String getPublicChatID= "";
     private static final String addMessage = "INSERT INTO message(chat_id,is_picture,sent_time,message,sender_mail) VALUES(?,?,?,?,?)";
     private static final String addAccounts = "INSERT INTO chat_users(chat_id,account_mail) VALUES ";
@@ -26,7 +26,7 @@ public class ChatStoreDao implements ChatStore{
     private static final String createPrivateChat = "INSERT INTO chat(is_private) VALUES(true);";
     private static final String insertIntoChatUsers ="INSERT INTO chat_users(chat_id,account_mail) VALUES(?,?);";
     //returns chat_id,account_mail,first_name,last_name,mail,location_id,pass blob
-    private static final String getChatAccounts = "SELECT * FROM chat_users c inner join accounts a on c.account_mail = a.mail INNER JOIN locations l ON (a.location_id = l.location_id) WHERE c.chat_id = ?;";
+    private static final String getChatAccounts = "SELECT * FROM chat_users c INNER JOIN accounts a ON c.account_mail = a.mail INNER JOIN locations l ON (a.location_id = l.location_id) WHERE c.chat_id = ?;";
     private static final String getAllChats = "SELECT * FROM message WHERE chat_id = ? ORDER BY message_id;";
     private static final String getMemberCount = "SELECT COUNT(chat_id) AS count FROM chat_users WHERE chat_id = ?";
     private static final String getUserChats = "SELECT * FROM chat_users c INNER JOIN chat ch ON c.chat_id = ch.chat_id INNER JOIN accounts a ON c.account_mail = a.mail INNER JOIN locations l ON (a.location_id = l.location_id) WHERE a.mail = ?;";
@@ -87,7 +87,7 @@ public class ChatStoreDao implements ChatStore{
             st.setString(4,message.getText()); // if isPicture, text is link to uploaded file which we should generate
             st.setString(5,message.getSender().getMail());
             st.executeUpdate();
-            return st.getGeneratedKeys().getInt("message_id");
+            return getID(st);
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
@@ -174,7 +174,7 @@ public class ChatStoreDao implements ChatStore{
                 st1.setInt(1, id);
                 st1.setString(2, sender.getMail());
                 st2.setInt(1, id);
-                st2.setString(1, receiver.getMail());
+                st2.setString(2, receiver.getMail());
                 st1.executeUpdate();
                 st2.executeUpdate();
             }else{

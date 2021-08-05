@@ -3,6 +3,8 @@ package model;
 import DAO.AccountsStore;
 import DAO.AccountsStoreDao;
 
+import java.util.Objects;
+
 public class SaveleLocation implements Location{
 
     private int sessionNumber;
@@ -65,5 +67,18 @@ public class SaveleLocation implements Location{
     @Override
     public String toString(){
         return "location name: "+name+"  session: "+sessionNumber;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        SaveleLocation that = (SaveleLocation) o;
+        return sessionNumber == that.sessionNumber && chatID == that.chatID && name.equals(that.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sessionNumber, name, chatID);
     }
 }

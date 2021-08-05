@@ -101,14 +101,12 @@ public class StudentAccount implements Account {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StudentAccount that = (StudentAccount) o;
-        return name.equals(that.name) && Arrays.equals(passwordBytes, that.passwordBytes) && location.equals(that.location);
+        return Objects.equals(lastName, that.lastName) && mail.equals(that.mail) && Objects.equals(name, that.name);
     }
 
     @Override
     public int hashCode() {
-        int result = Objects.hash(name, location);
-        result = 31 * result + Arrays.hashCode(passwordBytes);
-        return result;
+        return Objects.hash(lastName, mail, name);
     }
 
     @Override
@@ -118,7 +116,7 @@ public class StudentAccount implements Account {
                 ", mail='" + mail + '\'' +
                 ", name='" + name + '\'' +
                 ", location=" + location +
-//                ", passwordBytes=" + Arrays.toString(passwordBytes) +
+                ", passwordBytes=" + Arrays.toString(passwordBytes) +
                 '}';
     }
 }

@@ -48,7 +48,8 @@ public class ChatStoreDaoTest {
     }
     private void addMessages(List<Message> messages){
         for (Message m : messages){
-            chatStore.addMessage(m);
+            int message_id = chatStore.addMessage(m);
+            m.setMessageID(message_id);
         }
     }
     @Test
@@ -66,16 +67,26 @@ public class ChatStoreDaoTest {
         List<Message> list = Arrays.asList(m1,m2,m3,m4);
         addMessages(list);
         List<Message> messageList = chatStore.getAllChatMessages(id);
-        assertEquals(list,messageList);
-//        for (Message m : lst){
-//            System.out.println("(" + m.getSendTime() + ")"+ m.getSender().getMail() + ": " + m.getText());
-//        }
-//        System.out.println(chatStore.getMemberCount(12));
-//        System.out.println(chatStore.getMemberCount(3));
-//        List<Chat> chats = chatStore.getUserChats("m2");
-//        for(Chat ch : chats){
-//            System.out.println(ch);
-//        }
+        assertEquals(list, messageList);
+        int id1 = chatStore.getPrivateChatID(acc1,acc2);
+        int id2 = chatStore.getPrivateChatID(acc2,acc1);
+        assertTrue(id1 == id2 && id1 == id);
+        List<Account> members = chatStore.getChatMembers(id);
+        assertTrue(members.contains(acc1));
+        assertTrue(members.contains(acc2));
+        assertEquals(2,chatStore.getMemberCount(id));
+        List<Account> storedAccounts = chatStore.getChatMembers(id);
+        assertEquals(accounts,storedAccounts);
+        Chat ch = chatStore.getPrivateChat(id);
+        assertEquals(ch,chatStore.getUserChats(acc1.getMail()).get(0));
+        assertEquals(ch,chatStore.getUserChats(acc2.getMail()).get(0));
+        String newName = "Super Cool Chat";
+        ch.setChatName(newName);
+        assertEquals(newName,ch.getChatName());
+    }
+
+    @Test
+    public void publicChatTest(){
 
     }
 }
