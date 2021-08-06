@@ -101,7 +101,7 @@ public class StudentAccount implements Account {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         StudentAccount that = (StudentAccount) o;
-        return Objects.equals(lastName, that.lastName) && mail.equals(that.mail) && Objects.equals(name, that.name);
+        return Objects.equals(lastName, that.lastName) && location.equals(that.location)&& mail.equals(that.mail) && Objects.equals(name, that.name);
     }
 
     @Override

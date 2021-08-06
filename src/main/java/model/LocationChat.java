@@ -32,10 +32,6 @@ public class LocationChat implements Chat{
         return id;
     }
     //needs to be called after alternate constructor
-    @Override
-    public void setChatName(String locationName){
-        chatName = locationName;
-    }
 
     @Override
     public boolean isPrivate() {
@@ -58,10 +54,6 @@ public class LocationChat implements Chat{
         return db.getMemberCount(id);
     }
 
-    @Override
-    public String getChatName() {
-        return chatName;
-    }
     public void updateChatMembers(){
         accounts = db.getChatMembers(id);
     }

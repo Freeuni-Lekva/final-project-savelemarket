@@ -125,7 +125,7 @@ public class LocationStoreDao implements LocationStore{
     }
 
     @Override
-    public void addLocation(Location location, ChatStore chatStore) {
+    public int addLocation(Location location, ChatStore chatStore) {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
@@ -138,6 +138,7 @@ public class LocationStoreDao implements LocationStore{
             statement.setInt(2, location.getSessionNumber());
             statement.setInt(3,chatID);
             statement.executeUpdate();
+            return chatID;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }finally {
@@ -149,6 +150,7 @@ public class LocationStoreDao implements LocationStore{
                 }
             }
         }
+        return -1;
     }
 
     @Override
