@@ -245,12 +245,12 @@ public class LocationStoreDao implements LocationStore{
         try {
             conn = dataSource.getConnection();
             PreparedStatement statement;
-            if(locationName.equals(SaveleLocation.NO_OP_LOC_NAME) && sessinNum == SaveleLocation.NO_OP_SESS){
+            if(locationName == null && sessinNum == SaveleLocation.NO_OP_SESS){
                 statement = conn.prepareStatement("SELECT location_name, sess, chat_id FROM locations");
-            }else if(locationName.equals(SaveleLocation.NO_OP_LOC_NAME) && sessinNum != SaveleLocation.NO_OP_SESS){
+            }else if(locationName == null && sessinNum != SaveleLocation.NO_OP_SESS){
                 statement = conn.prepareStatement("SELECT location_name, sess, chat_id FROM locations WHERE sess = ?");
                 statement.setInt(1, sessinNum);
-            }else if(!locationName.equals(SaveleLocation.NO_OP_LOC_NAME) && sessinNum == SaveleLocation.NO_OP_SESS){
+            }else if(locationName != null && sessinNum == SaveleLocation.NO_OP_SESS){
                 statement = conn.prepareStatement("SELECT location_name, sess, chat_id FROM locations WHERE location_name = ?");
                 statement.setString(1, locationName);
             }else {

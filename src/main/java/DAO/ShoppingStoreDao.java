@@ -1,6 +1,7 @@
 package DAO;
 
 import model.*;
+import org.w3c.dom.ls.LSOutput;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -21,19 +22,21 @@ public class ShoppingStoreDao implements ShoppingStore {
         try {
             connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement("INSERT INTO shop_store (price, writer_mail, create_time) " +
-                    "VALUES (?,?,?);");
+                    "VALUES (?,?,?);", Statement.RETURN_GENERATED_KEYS);
             statement.setDouble(1, shoppingItem.getPrice());
             statement.setString(2, shoppingItem.getWriterAccount().getMail());
-            statement.setString(3,getCurrentTime());
-            statement.executeUpdate();
-            int shopItemId = getItemId(shoppingItem.getWriterAccount().getMail(), shoppingItem.getCreateTime());
+            statement.setString(3, getCurrentTime());
+            int res = statement.executeUpdate();
+            int shopItemId = getID(statement);
             LocationStore locationStore = new LocationStoreDao(dataSource);
-            for(Location l : shoppingItem.getDesiredLocations()){
+            List<Location> locs = shoppingItem.getDesiredLocations();
+            for(Location l : locs){
                 PreparedStatement addStatement = connection.prepareStatement("INSERT INTO shop_locations (shop_item_id, location_id)" +
                         "VALUES (?,?)");
                 addStatement.setInt(1, shopItemId);
                 int locId = locationStore.getLocationId(l.getName(), l.getSessionNumber());
                 addStatement.setInt(2, locId);
+                addStatement.executeUpdate();
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -53,16 +56,16 @@ public class ShoppingStoreDao implements ShoppingStore {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            /// remove from shop_store
-            PreparedStatement statement1 =
-                    connection.prepareStatement("DELETE FROM shop_store WHERE shop_item_id = ?");
-            statement1.setInt(1, shopItemId);
-            statement1.executeUpdate();
             /// remove from shop_locations
             PreparedStatement statement2 =
                     connection.prepareStatement("DELETE FROM shop_locations WHERE shop_item_id = ?");
             statement2.setInt(1, shopItemId);
             statement2.executeUpdate();
+            /// remove from shop_store
+            PreparedStatement statement1 =
+                    connection.prepareStatement("DELETE FROM shop_store WHERE shop_item_id = ?");
+            statement1.setInt(1, shopItemId);
+            statement1.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
@@ -166,23 +169,6 @@ public class ShoppingStoreDao implements ShoppingStore {
         return ret;
     }
 
-    @Override
-    public int getItemId(String writerMail, String createDate){
-        try {
-            Connection conn = dataSource.getConnection();
-            PreparedStatement statement = conn.prepareStatement("SELECT shop_item_id FROM shop_store WHERE writer_mail = ? AND create_time = ?;");
-            statement.setString(1, writerMail);
-            statement.setString(2, createDate);
-            ResultSet rs = statement.executeQuery();
-            if(rs.next()){
-                return rs.getInt(1);
-            }
-            return -1;
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-        return -1;
-    }
 
     private Account getWriterAccount(Connection connection, int itemId) throws SQLException {
         Account result = null;
@@ -204,7 +190,7 @@ public class ShoppingStoreDao implements ShoppingStore {
 
     private List<Location> getLocationsFor(Connection connection, int shopItId) throws SQLException {
         List<Location> ret = new ArrayList<>();
-        PreparedStatement stm = connection.prepareStatement("SELECT location_name, sess, chatId FROM shop_locations INNER JOIN " +
+        PreparedStatement stm = connection.prepareStatement("SELECT location_name, sess, chat_id FROM shop_locations INNER JOIN " +
                 "locations USING (location_id) WHERE shop_item_id = ?;");
         stm.setInt(1, shopItId);
         ResultSet rs = stm.executeQuery();
@@ -212,7 +198,8 @@ public class ShoppingStoreDao implements ShoppingStore {
             String locationName = rs.getString(1);
             int sessionNum = rs.getInt(2);
             int chatId = rs.getInt(3);
-            ret.add(new SaveleLocation(locationName,sessionNum,chatId));
+            Location loc = new SaveleLocation(locationName,sessionNum,chatId);
+            ret.add(loc);
         }
         return ret;
     }
@@ -221,5 +208,17 @@ public class ShoppingStoreDao implements ShoppingStore {
         java.util.Date dt = new java.util.Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return df.format(dt);
+    }
+
+    private int getID(PreparedStatement st){
+        try {
+            ResultSet set = st.getGeneratedKeys();
+            if(set.next()){
+                return set.getInt(1);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return -1;
     }
 }

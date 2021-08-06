@@ -10,5 +10,4 @@ public interface ShoppingStore {
     void removeAllItemFor(String accountMail);
     List<ShoppingItem> getAllItemsForAccount(String accountMail);
     List<ShoppingItem> getAllItems();
-    int getItemId(String writerMail, String createDate);
 }

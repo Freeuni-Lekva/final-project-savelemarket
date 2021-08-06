@@ -142,7 +142,7 @@ public class AccountsStoreDao implements AccountsStore {
                 byte[] password = rs.getBytes(5);
                 LocationStore locationStore = new LocationStoreDao(dataSource);
                 Location loc = locationStore.getLocationById(locationId);
-                System.out.println(loc);
+                //System.out.println(loc);
                 return new StudentAccount(firstName, lastName, password, gmail,loc);
             }
             return null;
