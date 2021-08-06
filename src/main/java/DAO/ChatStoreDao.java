@@ -54,7 +54,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
         if(set.next()) {
             return set.getInt(1);
         }
-        System.out.println("------------------------ WRONG ID -------------------------");
+
         return WRONG_ID;
     }
 
@@ -73,7 +73,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
             }
             //returned more than 2 private chats, shouldn't happen
             if(resultSet.next()){
-                System.out.println("------------------------------------- more than 1 private chats exist -------------------------------------");
+
                 id = MORE_THAN_ONE_PRIVATE;
             }
         } catch (SQLException sqlException) {

@@ -353,7 +353,8 @@ select{
     border-radius: 10px;
     padding: 10px;
     word-wrap: break-word;
-    width: 300px;
+    display: inline-block;
+    max-width: 300px;
 }
 
 .sender-name{
@@ -371,7 +372,6 @@ select{
 
 .my-message{
     background-color: #abc5f3;
-
     display: inline-block;
     max-width: 300px;
 
@@ -386,6 +386,8 @@ select{
     display: flex;
     flex-direction: column;
     transform: rotateX(180deg);
+    align-items: flex-start;
+    margin-left: 5px;
 }
 
 .my-message-info{
