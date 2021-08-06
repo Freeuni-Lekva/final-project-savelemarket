@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ChatStoreDao implements ChatStore{
+public class ChatStoreDao extends DAO implements ChatStore {
 
     private DataSource dataSource;
     //queries and updates
@@ -282,6 +282,7 @@ public class ChatStoreDao implements ChatStore{
         try {
             for(int i = 0;i<number;i++) {
                 if(!rs.next()){
+                    closeConnection(resultSetMap.get(id).c);
                     break;
                 }
                 Message message = getMessage(rs, accs, accStore);
@@ -298,16 +299,6 @@ public class ChatStoreDao implements ChatStore{
     public void updateMessages(int id) {
         closeConnection(resultSetMap.get(id).c);
         resultSetMap.put(id,null);
-    }
-
-    private void closeConnection(Connection c){
-        if(c!= null){
-            try {
-                c.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     @Override
