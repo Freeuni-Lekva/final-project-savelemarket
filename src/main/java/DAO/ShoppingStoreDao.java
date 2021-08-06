@@ -65,6 +65,28 @@ public class ShoppingStoreDao implements ShoppingStore {
     }
 
     @Override
+    public void removeAllItemFor(String accountMail) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement statement =
+                    connection.prepareStatement("DELETE FROM shop_store WHERE writer_mail = ?");
+            statement.setString(1, accountMail);
+            statement.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }
+    }
+
+    @Override
     public List<ShoppingItem> getAllItemsForAccount(String accountMail) {
         Connection conn = null;
         List<ShoppingItem> ret = new ArrayList<>();
