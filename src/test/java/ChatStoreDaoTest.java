@@ -92,12 +92,31 @@ public class ChatStoreDaoTest {
         List<Account> accounts = Arrays.asList(acc1,acc2,acc3,acc4,acc5,acc6,acc7);
         List<Location> locations = Arrays.asList(loc1_1,loc1_2,loc2);
         addLocations(locations); // these accounts have only chat_id, no Chat chat.
+        int id1 = loc1_1.getChatID();
+        int id2 = loc1_2.getChatID();
+        int id3 = loc2.getChatID();
         addAccounts(accounts);
-        List<Account> firstAccs = chatStore.getChatMembers(loc1_1.getChatID());
+        List<Account> firstAccs = chatStore.getChatMembers(id1);
         assertEquals(Arrays.asList(acc1,acc2,acc3,acc4),firstAccs);
-        List<Account> secondAccs = chatStore.getChatMembers(loc1_2.getChatID());
+        List<Account> secondAccs = chatStore.getChatMembers(id2);
         assertEquals(Arrays.asList(acc5,acc6),secondAccs);
-        List<Account> thirdAcc = chatStore.getChatMembers(loc2.getChatID());
+        List<Account> thirdAcc = chatStore.getChatMembers(id3);
         assertEquals(Arrays.asList(acc7),thirdAcc);
+        assertEquals(4,chatStore.getMemberCount(id1));
+        assertEquals(2,chatStore.getMemberCount(id2));
+        assertEquals(1,chatStore.getMemberCount(id3));
+        Message m1 = new GeneralMessage(acc1,"Hey!",false,id1);
+        Message m2 = new GeneralMessage(acc2,"Hello there!",false,id1);
+        int mid1 = chatStore.addMessage(m1);
+        int mid2 = chatStore.addMessage(m2);
+        m1.setMessageID(mid1);
+        m2.setMessageID(mid2);
+        assertEquals(List.of(m2,m1),chatStore.getAllChatMessages(id1));
+        assertEquals(List.of(m2),chatStore.getMessages(id1,1));
+        assertEquals(List.of(m1),chatStore.getMessages(id1,1));
+        assertEquals(0,chatStore.getMessages(id1, 1).size());
+        chatStore.updateMessages(id1);
+        assertEquals(List.of(m2,m1),chatStore.getMessages(id1,2));
+
     }
 }
