@@ -50,7 +50,7 @@ public class ChatStoreDao implements ChatStore{
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
-        System.out.println("------------------------ WRONG ID -------------------------");
+
         return WRONG_ID;
     }
 
@@ -67,7 +67,7 @@ public class ChatStoreDao implements ChatStore{
             }
             //returned more than 2 private chats, shouldn't happen
             if(resultSet.next()){
-                System.out.println("------------------------------------- more than 1 private chats exist -------------------------------------");
+
                 id = MORE_THAN_ONE_PRIVATE;
             }
         } catch (SQLException sqlException) {
@@ -91,7 +91,6 @@ public class ChatStoreDao implements ChatStore{
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }
-        System.out.println("--------------------- ADD MESSAGE FAIL ---------------------");
         return -1;
     }
 
