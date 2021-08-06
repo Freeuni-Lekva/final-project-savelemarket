@@ -46,25 +46,7 @@
         </div>
 
         <div class="messages-div">
-
                 <div class="chat-box" id="chat-box">
-
-<%--                    <%--%>
-
-<%--                        List<Message> messages = chatStore.getAllChatMessages(currAccount.getLocation().getChatID());--%>
-<%--                        for(int i = messages.size() - 1; i >= 0; i--){--%>
-<%--                            Message message = messages.get(i);--%>
-<%--                            if(((Account)session.getAttribute("current-account")).getMail().equals(message.getSender().getMail()))--%>
-<%--                            out.println("<div class=\"my-message-info\">");--%>
-<%--                            else out.println("<div class=\"message-info\">");--%>
-
-<%--                            out.println("<a class=\"sender-name\">" + message.getSender().getMail()+ "</a>");--%>
-<%--                            if(((Account)session.getAttribute("current-account")).getMail().equals(message.getSender().getMail()))--%>
-<%--                            out.println("<a class=\"my-message\">"+message.getText()+"</a>");--%>
-<%--                            else out.println("<a class=\"message\">"+message.getText()+"</a>");--%>
-<%--                            out.println("<a class=\"send-time\">"+message.getSendTime() +"</a></div>");--%>
-<%--                        }--%>
-<%--                    %>--%>
                 </div>
             <iframe name="votar" style="display:none;"></iframe>
             <form action="/chat" method="post" target = "votar" class="messages_form" id="message-inputs" >

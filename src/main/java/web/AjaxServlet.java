@@ -21,7 +21,7 @@ public class AjaxServlet extends HttpServlet {
         String result = "";
         ChatStore chatStore = (ChatStore) request.getServletContext().getAttribute("chat-store");
         List<Message> messages = chatStore.getAllChatMessages(current.getLocation().getChatID());
-        for(int i = messages.size() - 1; i >= 0; i--){
+        for(int i = 0; i < messages.size(); i++){
             Message message = messages.get(i);
             if(current.getMail().equals(message.getSender().getMail()))
                 result = result + "<div class=\"my-message-info\">";
