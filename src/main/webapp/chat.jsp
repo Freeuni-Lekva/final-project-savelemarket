@@ -48,13 +48,12 @@
         <div class="messages-div">
                 <div class="chat-box" id="chat-box">
                 </div>
-            <iframe name="votar" style="display:none;"></iframe>
-            <form action="/chat" method="post" target = "votar" class="messages_form" id="message-inputs" >
+            <iframe name="frame" style="display:none;" ></iframe>
+            <form action="/chat" method="post" target="frame" class="messages_form" id="message-inputs" >
                 <div class="write-text">
                     <input name="user-message" type="text" class="user-message" id="message-text" />
-                    <input type="button" name="send-message" class="send-message" value ="გაგზავნა" onclick="submitForm()" id="btnsubmit"/>
+                    <input type="button" name="send-message" onclick=submitForm() class="send-message" value ="გაგზავნა" id="btnsubmit"/>
                 </div>
-
             </form>
         </div>
     </section>
@@ -63,6 +62,15 @@
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <script type="text/javascript">
+        document.addEventListener('keypress', function (e)
+        {
+            var key = e.which || e.keyCode;
+            var enterKey = 13;
+            if (key === enterKey)
+            {
+                submitForm();
+            }
+        });
 
         function submitForm() {
             // Get the first form with the name
@@ -70,10 +78,8 @@
             // but duplicate names are possible in HTML
             // Therefore to work around the issue, enforce the correct index
             var frm = document.getElementById('message-inputs');
-            var txt = document.getElementById('message-text');
-
             frm.submit();// Submit the form
-            txt.value = "";
+            frm.reset();
             document.getElementById('message-inputs');
             return false; // Prevent page refresh
         }
