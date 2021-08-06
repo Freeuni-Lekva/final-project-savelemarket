@@ -182,8 +182,10 @@ public class LocationStoreDao implements LocationStore{
     @Override
     public Location getLocation(String locationName, int locationSession) {
         Location loc = null;
+        Connection conn = null;
         try{
-            PreparedStatement st = dataSource.getConnection().prepareStatement("SELECT location_name,sess,chat_id,location_id FROM locations WHERE location_name = ? AND sess = ?");
+            conn = dataSource.getConnection();
+            PreparedStatement st = conn.prepareStatement("SELECT location_name,sess,chat_id,location_id FROM locations WHERE location_name = ? AND sess = ?");
             st.setString(1,locationName);
             st.setInt(2,locationSession);
             ResultSet rs = st.executeQuery();
@@ -192,7 +194,15 @@ public class LocationStoreDao implements LocationStore{
             }
         } catch (SQLException throwables){
             throwables.printStackTrace();
+        } finally {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
+    }
         return loc;
     }
 
@@ -204,8 +214,9 @@ public class LocationStoreDao implements LocationStore{
      */
     public int getLocationId(String locationName, int sessionNum){
         PreparedStatement statement = null;
+        Connection conn = null;
         try {
-            Connection conn = dataSource.getConnection();
+            conn = dataSource.getConnection();
             statement = conn.prepareStatement("SELECT location_id FROM locations WHERE  sess = ? AND location_name = ?;");
             statement.setInt(1, sessionNum);
             statement.setString(2, locationName);
@@ -216,15 +227,25 @@ public class LocationStoreDao implements LocationStore{
             return -1;
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+        if (conn != null) {
+            try {
+                conn.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
+    }
         return -1;
     }
 
     @Override
     public Location getLocationById (int locationId){
         Location result = null;
+        Connection conn = null;
         try {
-            PreparedStatement statement = dataSource.getConnection().prepareStatement("SELECT location_name, sess, chat_id FROM locations WHERE location_id = ?");
+            conn = dataSource.getConnection();
+            PreparedStatement statement = conn.prepareStatement("SELECT location_name, sess, chat_id FROM locations WHERE location_id = ?");
             statement.setInt(1, locationId);
             ResultSet rs = statement.executeQuery();
             ChatStore chatStore = new ChatStoreDao(dataSource);
@@ -234,6 +255,14 @@ public class LocationStoreDao implements LocationStore{
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
         }
         return result;
     }
