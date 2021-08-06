@@ -35,7 +35,7 @@
     <section class="chat-section">
         <div class="members-div">
             <%
-                System.out.println(currAccount.getLocation());
+                System.out.println("chat location: " + currAccount.getLocation());
                 List<Account> accounts = chatStore.getChatMembers(currAccount.getLocation().getChatID());
                 System.out.println(accounts);
                 for(Account account:accounts){
