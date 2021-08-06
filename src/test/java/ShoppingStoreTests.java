@@ -52,7 +52,7 @@ public class ShoppingStoreTests {
 
     @Test
     public void complexShoppingItemTest(){
-        System.out.println("::::: tests :::::");
+        System.out.println("::::: test1 :::::");
         ShoppingItem item1 = new SaveleShoppingItem(accounts[0], locations[1], 100);
         shoppingStore.addItem(item1);
         List<ShoppingItem> items1 = shoppingStore.getAllItemsForAccount(accounts[0].getMail());
@@ -81,6 +81,35 @@ public class ShoppingStoreTests {
             shoppingStore.removeItem(sI.getItemId());
         }
         System.out.println("-------");
+    }
+
+    @Test
+    public void removeItemsTest(){
+        System.out.println("::::: test2 :::::");
+        ShoppingItem item1 = new SaveleShoppingItem(accounts[0], locations[1], 100);
+        shoppingStore.addItem(item1);
+        ShoppingItem item2 = new SaveleShoppingItem(accounts[0], locations[5], 200);
+        shoppingStore.addItem(item2);
+        ShoppingItem item3 = new SaveleShoppingItem(accounts[0], locations[7], 400);
+        shoppingStore.addItem(item3);
+        List<ShoppingItem> items1 = shoppingStore.getAllItemsForAccount(accounts[0].getMail());
+        for(ShoppingItem sI : items1){
+            System.out.println(sI);
+        }
+        shoppingStore.removeItem(items1.get(1).getItemId());
+        List<ShoppingItem> items2 = shoppingStore.getAllItemsForAccount(accounts[0].getMail());
+        System.out.println("::::after removing 2nd shopping item::::");
+        for(ShoppingItem sI : items2){
+            System.out.println(sI);
+        }
+        shoppingStore.removeAllItemFor(accounts[0].getMail());
+        List<ShoppingItem> items3 = shoppingStore.getAllItemsForAccount(accounts[0].getMail());
+        System.out.println("::::after removing all item for "+accounts[0].getMail()+"::::");
+        if(items3.isEmpty()){
+            System.out.println("nothing to show");
+        }else{
+            System.out.println("there are some items left");
+        }
     }
 
 

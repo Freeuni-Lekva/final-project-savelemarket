@@ -217,7 +217,15 @@ public class AccountsStoreDao implements AccountsStore {
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
+        } finally {
+        if (connection != null) {
+            try {
+                connection.close();
+            } catch (SQLException throwables) {
+                throwables.printStackTrace();
+            }
         }
+    }
         return result;
     }
 }

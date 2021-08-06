@@ -15,6 +15,7 @@ USE myDatabase;
 # single chat with multiple chat users
 CREATE TABLE IF NOT EXISTS chat (
     `is_private` BOOL NOT NULL,
+    # `chat_name` VARCHAR(64) NOT NULL,
     # communicates with chat users and message db with this
     `chat_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY NOT NULL
 );

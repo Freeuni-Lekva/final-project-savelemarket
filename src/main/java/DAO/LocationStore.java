@@ -14,7 +14,7 @@ public interface LocationStore {
     List<Account> getStudents(Location location);
     List<String> getUniqueLocations();
     //creates chat with location.
-    void addLocation(Location location, ChatStore chatStore);
+    int addLocation(Location location, ChatStore chatStore);
     int getLocationId(String locationName, int sessionNum);
     Location getLocationById(int locationId);
     Location getLocation(String locationName, int locationSession);

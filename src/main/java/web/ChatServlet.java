@@ -12,7 +12,7 @@ import java.io.IOException;
 
 
 public class ChatServlet extends HttpServlet {
-    ChatStore chatStore;
+    ChatStore   chatStore;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

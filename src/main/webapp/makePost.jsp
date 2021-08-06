@@ -33,7 +33,7 @@
 </header>
 <body class="body">
 <div class="post-inputs">
-    <form action="/postisdamatebisservleti" method="post" class="add-post-form">
+    <form action="/createPost" method="post" class="add-post-form">
         <div class="location-filter">
             <a class="input_name">სასურველი ლოკაცია: </a>
             <select name="location" class="locations">

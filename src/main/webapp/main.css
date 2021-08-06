@@ -374,6 +374,7 @@ select{
     background-color: #abc5f3;
     display: inline-block;
     max-width: 300px;
+
     border-radius: 10px;
     padding: 10px;
     word-wrap: break-word;

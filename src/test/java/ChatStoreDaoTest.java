@@ -36,14 +36,18 @@ public class ChatStoreDaoTest {
         accStore = new AccountsStoreDao(ds);
         locStore = new LocationStoreDao(ds);
     }
+
     private void addAccounts(List<Account> accounts){
         for(Account acc : accounts){
             accStore.addAccount(acc);
+            chatStore.addAccounts(List.of(acc),acc.getLocation().getChatID());
+            // ექაუნთის შექმნის მერე ამ ეტეაპზე ხელით ვამატებთ ბაზაში ექაუნთს ჩატზე.
         }
     }
     private void addLocations(List<Location> locations){
         for(Location loc : locations){
-            locStore.addLocation(loc,chatStore);
+            int id = locStore.addLocation(loc,chatStore);
+            loc.setChatID(id);
         }
     }
     private void addMessages(List<Message> messages){
@@ -80,13 +84,39 @@ public class ChatStoreDaoTest {
         Chat ch = chatStore.getPrivateChat(id);
         assertEquals(ch,chatStore.getUserChats(acc1.getMail()).get(0));
         assertEquals(ch,chatStore.getUserChats(acc2.getMail()).get(0));
-        String newName = "Super Cool Chat";
-        ch.setChatName(newName);
-        assertEquals(newName,ch.getChatName());
     }
 
     @Test
     public void publicChatTest(){
+        // 7 is alone, 5,6 are together, 1,2,3,4 are together
+        List<Account> accounts = Arrays.asList(acc1,acc2,acc3,acc4,acc5,acc6,acc7);
+        List<Location> locations = Arrays.asList(loc1_1,loc1_2,loc2);
+        addLocations(locations); // these accounts have only chat_id, no Chat chat.
+        int id1 = loc1_1.getChatID();
+        int id2 = loc1_2.getChatID();
+        int id3 = loc2.getChatID();
+        addAccounts(accounts);
+        List<Account> firstAccs = chatStore.getChatMembers(id1);
+        assertEquals(Arrays.asList(acc1,acc2,acc3,acc4),firstAccs);
+        List<Account> secondAccs = chatStore.getChatMembers(id2);
+        assertEquals(Arrays.asList(acc5,acc6),secondAccs);
+        List<Account> thirdAcc = chatStore.getChatMembers(id3);
+        assertEquals(Arrays.asList(acc7),thirdAcc);
+        assertEquals(4,chatStore.getMemberCount(id1));
+        assertEquals(2,chatStore.getMemberCount(id2));
+        assertEquals(1,chatStore.getMemberCount(id3));
+        Message m1 = new GeneralMessage(acc1,"Hey!",false,id1);
+        Message m2 = new GeneralMessage(acc2,"Hello there!",false,id1);
+        int mid1 = chatStore.addMessage(m1);
+        int mid2 = chatStore.addMessage(m2);
+        m1.setMessageID(mid1);
+        m2.setMessageID(mid2);
+        assertEquals(List.of(m2,m1),chatStore.getAllChatMessages(id1));
+        assertEquals(List.of(m2),chatStore.getMessages(id1,1));
+        assertEquals(List.of(m1),chatStore.getMessages(id1,1));
+        assertEquals(0,chatStore.getMessages(id1, 1).size());
+        chatStore.updateMessages(id1);
+        assertEquals(List.of(m2,m1),chatStore.getMessages(id1,2));
 
     }
 }

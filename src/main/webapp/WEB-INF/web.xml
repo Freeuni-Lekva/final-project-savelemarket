@@ -26,7 +26,6 @@
   </servlet>
   <servlet>
     <servlet-name>AjaxServlet</servlet-name>
-
     <servlet-class>web.AjaxServlet</servlet-class>
   </servlet>
 
@@ -54,6 +53,11 @@
     <servlet-name>AjaxServlet</servlet-name>
     <url-pattern>/AjaxServlet</url-pattern>
 
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>create-post-servlet</servlet-name>
+    <url-pattern>/createPost</url-pattern>
   </servlet-mapping>
 
 </web-app>

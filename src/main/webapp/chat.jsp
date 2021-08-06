@@ -16,13 +16,19 @@
     <title>Chat</title>
     <link rel="stylesheet" href="main.css">
 </head>
+<%
+    ChatStore chatStore = (ChatStore) request.getServletContext().getAttribute("chat-store");
+    Account currAccount = ((Account)session.getAttribute("current-account"));
+%>
 <body>
     <header>
         <section class="chat-menu-section">
             <li>
                 <a class="leave-chat" href="messages.jsp">უკან დაბრუნება</a>
             </li>
-            <a class="chat-name">ჩათის სახელი</a>
+            <a class="chat-name"><%
+                out.println(currAccount.getLocation().getName());
+            %></a>
         </section>
     </header>
     <body>
