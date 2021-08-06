@@ -27,7 +27,7 @@ public class ChatStoreDao implements ChatStore{
     private static final String insertIntoChatUsers ="INSERT INTO chat_users(chat_id,account_mail) VALUES(?,?);";
     //returns chat_id,account_mail,first_name,last_name,mail,location_id,pass blob
     private static final String getChatAccounts = "SELECT * FROM chat_users c INNER JOIN accounts a ON c.account_mail = a.mail INNER JOIN locations l ON (a.location_id = l.location_id) WHERE c.chat_id = ?;";
-    private static final String getAllChats = "SELECT * FROM message WHERE chat_id = ? ORDER BY message_id;";
+    private static final String getAllChats = "SELECT * FROM message WHERE chat_id = ? ORDER BY message_id DESC;";
     private static final String getMemberCount = "SELECT COUNT(chat_id) AS count FROM chat_users WHERE chat_id = ?";
     private static final String getUserChats = "SELECT * FROM chat_users c INNER JOIN chat ch ON c.chat_id = ch.chat_id INNER JOIN accounts a ON c.account_mail = a.mail INNER JOIN locations l ON (a.location_id = l.location_id) WHERE a.mail = ?;";
     private static final int ID_DOESNT_EXIST = 0;
@@ -35,20 +35,24 @@ public class ChatStoreDao implements ChatStore{
     private static final int MORE_THAN_ONE_PRIVATE = -2;
     private static final int ERROR_CODE = -3;
 
-    private Map<Integer,ResultSet>  resultSetMap; // null if not getting messages by number. not null if query is done and fetching by some amounts
+    private Map<Integer,ConnectionResultSet>  resultSetMap; // null if not getting messages by number. not null if query is done and fetching by some amounts
+    class ConnectionResultSet{
+        public Connection c;
+        public ResultSet connResultSet;
+        public ConnectionResultSet(Connection c, ResultSet connResultSet){
+            this.c = c;
+            this.connResultSet = connResultSet;
+        }
+    }
 
     public ChatStoreDao(DataSource dataSource) {
         this.dataSource = dataSource;
     }
 
-    private int getID(PreparedStatement st){
-        try {
-            ResultSet set = st.getGeneratedKeys();
-            if(set.next()){
-                return set.getInt(1);
-            }
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
+    private int getID(PreparedStatement st) throws SQLException {
+        ResultSet set = st.getGeneratedKeys();
+        if(set.next()) {
+            return set.getInt(1);
         }
         System.out.println("------------------------ WRONG ID -------------------------");
         return WRONG_ID;
@@ -75,17 +79,11 @@ public class ChatStoreDao implements ChatStore{
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         } finally{
-            if(c!= null){
-                try {
-                    c.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeConnection(c);
         }
         return id;
     }
-    
+
     @Override
     public int addMessage(Message message) {
         Connection c = null;
@@ -103,16 +101,10 @@ public class ChatStoreDao implements ChatStore{
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         } finally{
-            if(c!= null){
-                try {
-                    c.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeConnection(c);
         }
         System.out.println("--------------------- ADD MESSAGE FAIL ---------------------");
-        return -1;
+        return WRONG_ID;
     }
 
     @Override
@@ -140,13 +132,7 @@ public class ChatStoreDao implements ChatStore{
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         } finally{
-            if(c!= null){
-                try {
-                    c.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeConnection(c);
         }
     }
 
@@ -175,13 +161,7 @@ public class ChatStoreDao implements ChatStore{
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         } finally{
-            if(connection!= null){
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeConnection(connection);
         }
 
         return list;
@@ -202,13 +182,7 @@ public class ChatStoreDao implements ChatStore{
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         } finally{
-            if(connection!= null){
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeConnection(connection);
         }
         return id;
     }
@@ -239,14 +213,8 @@ public class ChatStoreDao implements ChatStore{
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         }finally{
-                if(c!= null){
-                    try {
-                        c.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
+            closeConnection(c);
+        }
         return id;
     }
 
@@ -268,13 +236,7 @@ public class ChatStoreDao implements ChatStore{
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
         } finally{
-            if(c!= null){
-                try {
-                    c.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+            closeConnection(c);
         }
 
         return list;
@@ -299,60 +261,71 @@ public class ChatStoreDao implements ChatStore{
         Map<String, Account> accs= new HashMap<>(); // same mail -> account mapping as getAllChats. keeps all accounts that are in chat.
         AccountsStore accStore = new AccountsStoreDao(dataSource);
         Connection c = null;
+        if(resultSetMap == null){
+            resultSetMap = new HashMap<>();
+        }
+        ResultSet rs = null;
         if(resultSetMap.getOrDefault(id,null) == null){
             try {
                 c = dataSource.getConnection();
                 PreparedStatement st = c.prepareStatement(getAllChats);
                 st.setInt(1,id);
-                ResultSet set = st.executeQuery();
-                set.next(); // initial next, so it gets to first element
-                resultSetMap.put(id,set);
+                rs = st.executeQuery();
+                resultSetMap.put(id,new ConnectionResultSet(c,rs));
             } catch (SQLException e) {
                 e.printStackTrace();
-            } finally{
-                if(c!= null){
-                    try {
-                        c.close();
-                    } catch (SQLException e) {
-                        e.printStackTrace();
-                    }
-                }
+                closeConnection(c);
             }
         }
         List<Message> messages = new ArrayList<>(number);
-        ResultSet rs = resultSetMap.get(id);
+        rs = resultSetMap.get(id).connResultSet;
         try {
             for(int i = 0;i<number;i++) {
-                Message message = getMessage(rs, accs, accStore);
-                messages.add(message);
                 if(!rs.next()){
                     break;
                 }
+                Message message = getMessage(rs, accs, accStore);
+                messages.add(message);
             }
         } catch (SQLException e) {
             e.printStackTrace();
+            closeConnection(c);
         }
         return messages;
     }
 
     @Override
     public void updateMessages(int id) {
+        closeConnection(resultSetMap.get(id).c);
         resultSetMap.put(id,null);
+    }
+
+    private void closeConnection(Connection c){
+        if(c!= null){
+            try {
+                c.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @Override
     public int getMemberCount(int id) {
         int output = ERROR_CODE;
+        Connection c = null;
         try{
-            PreparedStatement st = dataSource.getConnection().prepareStatement(getMemberCount);
+            c = dataSource.getConnection();
+            PreparedStatement st = c.prepareStatement(getMemberCount);
             st.setInt(1,id);
             ResultSet rs = st.executeQuery();
             if(rs.next()){
                 output = rs.getInt("count");
-                rs.close();
             }
         } catch (SQLException sqlException) {
             sqlException.printStackTrace();
+        }finally{
+            closeConnection(c);
         }
         return output;
     }
@@ -399,13 +372,7 @@ public class ChatStoreDao implements ChatStore{
         } catch (SQLException e) {
             e.printStackTrace();
         } finally{
-            if(connection!= null){
-                try {
-                    connection.close();
-                } catch (SQLException e) {
-                    e.printStackTrace();
-                }
-            }
+          closeConnection(connection);
         }
         return chats;
     }

@@ -113,7 +113,10 @@ public class ChatStoreDaoTest {
         m2.setMessageID(mid2);
         assertEquals(List.of(m2,m1),chatStore.getAllChatMessages(id1));
         assertEquals(List.of(m2),chatStore.getMessages(id1,1));
-
+        assertEquals(List.of(m1),chatStore.getMessages(id1,1));
+        assertEquals(0,chatStore.getMessages(id1, 1).size());
+        chatStore.updateMessages(id1);
+        assertEquals(List.of(m2,m1),chatStore.getMessages(id1,2));
 
     }
 }
