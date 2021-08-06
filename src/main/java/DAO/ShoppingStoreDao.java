@@ -147,40 +147,32 @@ public class ShoppingStoreDao implements ShoppingStore {
     }
 
 
-    private Location getDesLocation(Connection connection, int itemId){
+    private Location getDesLocation(Connection connection, int itemId) throws SQLException {
         Location result = null;
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT location_name, sess FROM shop_store INNER JOIN" +
-                    " locations USING (location_id) WHERE shop_item_id = ?;");
-            statement.setInt(1, itemId);
-            ResultSet rs = statement.executeQuery();
-            if(rs.next()){
-                result = new SaveleLocation(rs.getString(1), rs.getInt(2));
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        PreparedStatement statement = connection.prepareStatement("SELECT location_name, sess FROM shop_store INNER JOIN" +
+                " locations USING (location_id) WHERE shop_item_id = ?;");
+        statement.setInt(1, itemId);
+        ResultSet rs = statement.executeQuery();
+        if(rs.next()){
+            result = new SaveleLocation(rs.getString(1), rs.getInt(2));
         }
         return result;
     }
 
-    private Account getWriterAccount(Connection connection, int itemId){
+    private Account getWriterAccount(Connection connection, int itemId) throws SQLException {
         Account result = null;
-        try {
-            PreparedStatement statement = connection.prepareStatement("SELECT first_name, last_name, " +
-                    "mail, pass FROM shop_store s INNER JOIN accounts " +
-                    "a ON s.writer_mail = a.mail WHERE shop_item_id = ?;");
-            statement.setInt(1, itemId);
-            ResultSet rs = statement.executeQuery();
-            if(rs.next()){
-                String name = rs.getString(1);
-                String lastName = rs.getString(2);
-                String mail = rs.getString(3);
-                byte[] pass = rs.getBytes(4);
-                LocationStore locStore = new LocationStoreDao(dataSource);
-                result = new StudentAccount(name, lastName, pass, mail, locStore.getLocation(mail));
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        PreparedStatement statement = connection.prepareStatement("SELECT first_name, last_name, " +
+                "mail, pass FROM shop_store s INNER JOIN accounts " +
+                "a ON s.writer_mail = a.mail WHERE shop_item_id = ?;");
+        statement.setInt(1, itemId);
+        ResultSet rs = statement.executeQuery();
+        if(rs.next()){
+            String name = rs.getString(1);
+            String lastName = rs.getString(2);
+            String mail = rs.getString(3);
+            byte[] pass = rs.getBytes(4);
+            LocationStore locStore = new LocationStoreDao(dataSource);
+            result = new StudentAccount(name, lastName, pass, mail, locStore.getLocation(mail));
         }
         return result;
     }
