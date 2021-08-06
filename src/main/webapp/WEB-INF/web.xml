@@ -51,8 +51,8 @@
     <servlet-name>chat-servlet</servlet-name>
     <url-pattern>/chat</url-pattern>
   </servlet-mapping>
-  <servlet-mapping>
 
+  <servlet-mapping>
     <servlet-name>ajax-servlet</servlet-name>
     <url-pattern>/AjaxServlet</url-pattern>
 
