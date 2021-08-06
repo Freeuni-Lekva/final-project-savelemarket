@@ -55,9 +55,5 @@
 
   </servlet-mapping>
 
-  <servlet-mapping>
-    <servlet-name>create-post-servlet</servlet-name>
-    <url-pattern>/createPost</url-pattern>
-  </servlet-mapping>
 
 </web-app>
