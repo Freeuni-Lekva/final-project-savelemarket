@@ -27,7 +27,7 @@
                 <a class="leave-chat" href="messages.jsp">უკან დაბრუნება</a>
             </li>
             <a class="chat-name"><%
-                out.println(currAccount.getLocation().getName());
+                out.println(currAccount.getLocation().getName() + " " + currAccount.getLocation().getSessionNumber());
             %></a>
         </section>
     </header>
@@ -38,7 +38,7 @@
 
                 List<Account> accounts = chatStore.getChatMembers(currAccount.getLocation().getChatID());
                 for(Account account:accounts){
-                    out.println("<a class=\"chat-member\">"+ account.getMail() +"</a>");
+                    out.println("<a href = \"\" class=\"chat-member\">"+ account.getMail() +"</a>");
                 }
 
 

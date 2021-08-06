@@ -27,7 +27,9 @@
 <section class="profile-body">
     <section class="profile-section">
         <h1 class="profile-name">
-            <%out.println(((Account)session.getAttribute("current-account")).getName() + " " + ((Account) session.getAttribute("current-account")).getLastName());%>
+            <% Account acc = ((Account)request.getAttribute("profile-account"));
+                System.out.println(acc);
+                out.println(acc.getName() + " " + acc.getLastName());%>
         </h1>
         <div class="profile-info">
             <div class="info-titles">
@@ -37,13 +39,13 @@
             </div>
             <div class="info-texts">
                 <a class="info-text">
-                    <%out.println(((Account)session.getAttribute("current-account")).getMail());%>
+                    <%out.println(acc.getMail());%>
                 </a>
                 <a class="info-text">
-                    <%out.println(((Account)session.getAttribute("current-account")).getLocation().getName());%>
+                    <%out.println(acc.getLocation().getName());%>
                 </a>
                 <a class="info-text">
-                    <%out.println(((Account)session.getAttribute("current-account")).getLocation().getSessionNumber());%>
+                    <%out.println(acc.getLocation().getSessionNumber());%>
                 </a>
             </div>
         </div>
