@@ -6,7 +6,8 @@ import java.sql.Statement;
 
 public class DatabaseInitializer {
 
-    public static final String dropAllTables = "DROP TABLE IF EXISTS shop_store;" +
+    public static final String dropAllTables = "DROP TABLE IF EXISTS shop_locations;"+
+            "DROP TABLE IF EXISTS shop_store;" +
             "DROP TABLE IF EXISTS message;" +
             "DROP TABLE IF EXISTS chat_users;" +
             "DROP TABLE IF EXISTS accounts;" +
@@ -52,14 +53,21 @@ public class DatabaseInitializer {
     public static final String createShopStore = "CREATE TABLE IF NOT EXISTS shop_store(" +
             "    `shop_item_id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL," +
             "    `writer_mail` VARCHAR(64) NOT NULL," +
-            "    `location_id` INT NOT NULL," +
             "    `price` DOUBLE NOT NULL," +
             "    `create_time` VARCHAR(64) NOT NULL,"+
-            "    FOREIGN KEY (`writer_mail`) REFERENCES accounts(`mail`)," +
+            "    FOREIGN KEY (`writer_mail`) REFERENCES accounts(`mail`)" +
+            ");";
+
+    public static final String createShopLoc = "CREATE TABLE IF NOT EXISTS shop_locations(" +
+            "    `shop_item_id` INT NOT NULL," +
+            "    `location_id` INT NOT NULL," +
+            "    FOREIGN KEY (`shop_item_id`) REFERENCES shop_store(`shop_item_id`)," +
             "    FOREIGN KEY (`location_id`) REFERENCES locations(`location_id`)" +
             ");";
 
-    public static final String initializeDatabase = createChat + createLocations + createAccounts + createChatUsers + createMessage + createShopStore;
+    public static final String initializeDatabase = createChat + createLocations + createAccounts + createChatUsers +
+            createMessage + createShopStore + createShopLoc;
+
     public static final String recreateDatabase = dropAllTables + initializeDatabase;
 
     public static void recreateDatabase(DataSource ds){

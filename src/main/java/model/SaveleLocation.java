@@ -6,6 +6,8 @@ import DAO.AccountsStoreDao;
 import java.util.Objects;
 
 public class SaveleLocation implements Location{
+    public static int NO_OP_SESS = -1;
+    public static String NO_OP_LOC_NAME = null;
 
     private int sessionNumber;
     private String name;

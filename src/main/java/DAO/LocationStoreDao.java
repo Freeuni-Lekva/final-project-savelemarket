@@ -266,5 +266,48 @@ public class LocationStoreDao implements LocationStore{
         }
         return result;
     }
+
+    @Override
+    public List<Location> getPossibleLocations(String locationName, int sessinNum) {
+        Connection conn = null;
+        List<Location> ret = new ArrayList<>();
+        try {
+            conn = dataSource.getConnection();
+            PreparedStatement statement;
+            if(locationName == null && sessinNum == SaveleLocation.NO_OP_SESS){
+                statement = conn.prepareStatement("SELECT location_name, sess, chat_id FROM locations");
+            }else if(locationName == null && sessinNum != SaveleLocation.NO_OP_SESS){
+                statement = conn.prepareStatement("SELECT location_name, sess, chat_id FROM locations WHERE sess = ?");
+                statement.setInt(1, sessinNum);
+            }else if(locationName != null && sessinNum == SaveleLocation.NO_OP_SESS){
+                statement = conn.prepareStatement("SELECT location_name, sess, chat_id FROM locations WHERE location_name = ?");
+                statement.setString(1, locationName);
+            }else {
+                statement = conn.prepareStatement("SELECT location_name, sess, chat_id FROM locations WHERE location_name = ? AND sess = ?;");
+                statement.setString(1, locationName);
+                statement.setInt(2, sessinNum);
+            }
+            ResultSet rs = statement.executeQuery();
+            while (rs.next()) {
+                String locName = rs.getString(1);
+                int sessNum = rs.getInt(2);
+                int chatId = rs.getInt(3);
+                Location newLocation = new SaveleLocation(locName, sessNum, chatId);
+                ret.add(newLocation);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            if (conn != null) {
+                try {
+                    conn.close();
+                } catch (SQLException throwables) {
+                    throwables.printStackTrace();
+                }
+            }
+        }
+        return ret;
+    }
+
 }
 

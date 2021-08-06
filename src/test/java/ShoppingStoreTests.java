@@ -9,14 +9,17 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public class ShoppingStoreTests {
     private final String serverName = "localhost";
     private final int port = 3306;
-    private final String dbName = "testDatabase";
+    private final String dbName = "testdatabase";
     private final String user = "root";
     private final String password = "";
     private AccountsStoreDao accountsStoreDao;
     private ShoppingStore shoppingStore;
+    private LocationStore locationStore;
 
     private SaveleLocation locations[] = {  new SaveleLocation("Kazbegi", 1),
             new SaveleLocation("Kazbegi", 2),
@@ -48,12 +51,14 @@ public class ShoppingStoreTests {
         initDbs(ds);
 
         shoppingStore = new ShoppingStoreDao(ds);
+        locationStore = new LocationStoreDao(ds);
     }
 
     @Test
     public void complexShoppingItemTest(){
         System.out.println("::::: test1 :::::");
-        ShoppingItem item1 = new SaveleShoppingItem(accounts[0], locations[1], 100);
+        ShoppingItem item1 = new SaveleShoppingItem(accounts[0],
+                locationStore.getPossibleLocations(locations[1].getName(),locations[1].getSessionNumber()), 100);
         shoppingStore.addItem(item1);
         List<ShoppingItem> items1 = shoppingStore.getAllItemsForAccount(accounts[0].getMail());
         for(ShoppingItem sI : items1){
@@ -63,7 +68,8 @@ public class ShoppingStoreTests {
         System.out.println("-------");
         accountsStoreDao.updateLocation(accounts[0], locations[1]);
         Account upDtAcc1 = accountsStoreDao.getAccount(accounts[0].getMail());
-        ShoppingItem item2 = new SaveleShoppingItem(upDtAcc1, locations[5], 200);
+        ShoppingItem item2 = new SaveleShoppingItem(upDtAcc1,
+                locationStore.getPossibleLocations(locations[5].getName(),locations[5].getSessionNumber()), 200);
         shoppingStore.addItem(item2);
         List<ShoppingItem> items2 = shoppingStore.getAllItemsForAccount(upDtAcc1.getMail());
         for(ShoppingItem sI : items2){
@@ -73,7 +79,8 @@ public class ShoppingStoreTests {
         System.out.println("-------");
         accountsStoreDao.updateLocation(upDtAcc1, locations[5]);
         Account upDtAcc2 = accountsStoreDao.getAccount(accounts[0].getMail());
-        ShoppingItem item3 = new SaveleShoppingItem(upDtAcc2, locations[7], 400);
+        ShoppingItem item3 = new SaveleShoppingItem(upDtAcc2,
+                locationStore.getPossibleLocations(locations[7].getName(),locations[7].getSessionNumber()), 400);
         shoppingStore.addItem(item3);
         List<ShoppingItem> items3 = shoppingStore.getAllItemsForAccount(upDtAcc2.getMail());
         for(ShoppingItem sI : items3){
@@ -81,16 +88,20 @@ public class ShoppingStoreTests {
             shoppingStore.removeItem(sI.getItemId());
         }
         System.out.println("-------");
+
     }
 
     @Test
     public void removeItemsTest(){
         System.out.println("::::: test2 :::::");
-        ShoppingItem item1 = new SaveleShoppingItem(accounts[0], locations[1], 100);
+        ShoppingItem item1 = new SaveleShoppingItem(accounts[0],
+                locationStore.getPossibleLocations(locations[1].getName(),locations[1].getSessionNumber()), 100);
         shoppingStore.addItem(item1);
-        ShoppingItem item2 = new SaveleShoppingItem(accounts[0], locations[5], 200);
+        ShoppingItem item2 = new SaveleShoppingItem(accounts[0],
+                locationStore.getPossibleLocations(locations[5].getName(),locations[5].getSessionNumber()), 200);
         shoppingStore.addItem(item2);
-        ShoppingItem item3 = new SaveleShoppingItem(accounts[0], locations[7], 400);
+        ShoppingItem item3 = new SaveleShoppingItem(accounts[0],
+                locationStore.getPossibleLocations(locations[7].getName(),locations[7].getSessionNumber()), 400);
         shoppingStore.addItem(item3);
         List<ShoppingItem> items1 = shoppingStore.getAllItemsForAccount(accounts[0].getMail());
         for(ShoppingItem sI : items1){

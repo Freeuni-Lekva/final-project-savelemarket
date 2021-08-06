@@ -1,9 +1,11 @@
 package model;
 
+import java.util.List;
+
 public interface ShoppingItem {
     void setId(int id);
 
-    Location getDesiredLocation();
+    List<Location> getDesiredLocations();
     Account getWriterAccount();
     int getItemId();
     double getPrice();

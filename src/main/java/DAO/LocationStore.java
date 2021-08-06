@@ -13,6 +13,7 @@ public interface LocationStore {
     List<Location> getAllLocations();
     List<Account> getStudents(Location location);
     List<String> getUniqueLocations();
+    public List<Location> getPossibleLocations(String locationName, int sessinNum);
     //creates chat with location.
     int addLocation(Location location, ChatStore chatStore);
     int getLocationId(String locationName, int sessionNum);

@@ -1,6 +1,7 @@
 package DAO;
 
 import model.*;
+import org.w3c.dom.ls.LSOutput;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -20,15 +21,23 @@ public class ShoppingStoreDao implements ShoppingStore {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement("INSERT INTO shop_store (price, location_id, writer_mail, create_time) " +
-                    "VALUES (?,?,?,?);");
+            PreparedStatement statement = connection.prepareStatement("INSERT INTO shop_store (price, writer_mail, create_time) " +
+                    "VALUES (?,?,?);", Statement.RETURN_GENERATED_KEYS);
             statement.setDouble(1, shoppingItem.getPrice());
-            LocationStore locStore = new LocationStoreDao(dataSource);
-            statement.setInt(2, locStore.getLocationId(shoppingItem.getDesiredLocation().getName(),
-                    shoppingItem.getDesiredLocation().getSessionNumber()));
-            statement.setString(3, shoppingItem.getWriterAccount().getMail());
-            statement.setString(4,getCurrentTime());
-            statement.executeUpdate();
+            statement.setString(2, shoppingItem.getWriterAccount().getMail());
+            statement.setString(3, getCurrentTime());
+            int res = statement.executeUpdate();
+            int shopItemId = getID(statement);
+            LocationStore locationStore = new LocationStoreDao(dataSource);
+            List<Location> locs = shoppingItem.getDesiredLocations();
+            for(Location l : locs){
+                PreparedStatement addStatement = connection.prepareStatement("INSERT INTO shop_locations (shop_item_id, location_id)" +
+                        "VALUES (?,?)");
+                addStatement.setInt(1, shopItemId);
+                int locId = locationStore.getLocationId(l.getName(), l.getSessionNumber());
+                addStatement.setInt(2, locId);
+                addStatement.executeUpdate();
+            }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
@@ -47,10 +56,16 @@ public class ShoppingStoreDao implements ShoppingStore {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement statement =
+            /// remove from shop_locations
+            PreparedStatement statement2 =
+                    connection.prepareStatement("DELETE FROM shop_locations WHERE shop_item_id = ?");
+            statement2.setInt(1, shopItemId);
+            statement2.executeUpdate();
+            /// remove from shop_store
+            PreparedStatement statement1 =
                     connection.prepareStatement("DELETE FROM shop_store WHERE shop_item_id = ?");
-            statement.setInt(1, shopItemId);
-            statement.executeUpdate();
+            statement1.setInt(1, shopItemId);
+            statement1.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
@@ -69,10 +84,18 @@ public class ShoppingStoreDao implements ShoppingStore {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement statement =
-                    connection.prepareStatement("DELETE FROM shop_store WHERE writer_mail = ?");
-            statement.setString(1, accountMail);
-            statement.executeUpdate();
+            PreparedStatement getItemsId = connection.prepareStatement("SELECT shop_item_id FROM shop_store WHERE writer_mail = ?");
+            getItemsId.setString(1, accountMail);
+            ResultSet rs = getItemsId.executeQuery();
+            while(rs.next()){
+                PreparedStatement  removeFromShopLoc = connection.prepareStatement("DELETE from shop_locations WHERE shop_item_id = ?");
+                int id = rs.getInt(1);
+                removeFromShopLoc.setInt(1,id);
+                removeFromShopLoc.executeUpdate();
+            }
+            PreparedStatement  removeFromShopstore = connection.prepareStatement("DELETE from shop_store WHERE writer_mail = ?");
+            removeFromShopstore.setString(1, accountMail);
+            removeFromShopstore.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
@@ -98,10 +121,10 @@ public class ShoppingStoreDao implements ShoppingStore {
             while (rs.next()) {
                 int itemId = rs.getInt(1);
                 Account writerAccount = getWriterAccount(conn, itemId);
-                Location desiredLocation = getDesLocation(conn, itemId);
                 double price = rs.getDouble(2);
                 String time = rs.getString(3);
-                SaveleShoppingItem shoppingItem = new SaveleShoppingItem(itemId,time, writerAccount, desiredLocation, price);
+                List<Location> desiredLocations = getLocationsFor(conn, itemId);
+                SaveleShoppingItem shoppingItem = new SaveleShoppingItem(itemId,time, writerAccount, desiredLocations, price);
                 ret.add(shoppingItem);
             }
         } catch (SQLException throwables) { throwables.printStackTrace();
@@ -128,10 +151,10 @@ public class ShoppingStoreDao implements ShoppingStore {
             while (rs.next()) {
                 int itemId = rs.getInt(1);
                 Account writerAccount = getWriterAccount(conn, itemId);
-                Location desiredLocation = getDesLocation(conn, itemId);
+                List<Location> desiredLocations = getLocationsFor(conn, itemId);
                 double price = rs.getDouble(2);
                 String time = rs.getString(3);
-                SaveleShoppingItem shoppingItem = new SaveleShoppingItem(itemId,time, writerAccount, desiredLocation, price);                ret.add(shoppingItem);
+                SaveleShoppingItem shoppingItem = new SaveleShoppingItem(itemId,time, writerAccount, desiredLocations, price);                ret.add(shoppingItem);
             }
         } catch (SQLException throwables) { throwables.printStackTrace();
         } finally {
@@ -146,18 +169,6 @@ public class ShoppingStoreDao implements ShoppingStore {
         return ret;
     }
 
-
-    private Location getDesLocation(Connection connection, int itemId) throws SQLException {
-        Location result = null;
-        PreparedStatement statement = connection.prepareStatement("SELECT location_name, sess FROM shop_store INNER JOIN" +
-                " locations USING (location_id) WHERE shop_item_id = ?;");
-        statement.setInt(1, itemId);
-        ResultSet rs = statement.executeQuery();
-        if(rs.next()){
-            result = new SaveleLocation(rs.getString(1), rs.getInt(2));
-        }
-        return result;
-    }
 
     private Account getWriterAccount(Connection connection, int itemId) throws SQLException {
         Account result = null;
@@ -177,9 +188,37 @@ public class ShoppingStoreDao implements ShoppingStore {
         return result;
     }
 
+    private List<Location> getLocationsFor(Connection connection, int shopItId) throws SQLException {
+        List<Location> ret = new ArrayList<>();
+        PreparedStatement stm = connection.prepareStatement("SELECT location_name, sess, chat_id FROM shop_locations INNER JOIN " +
+                "locations USING (location_id) WHERE shop_item_id = ?;");
+        stm.setInt(1, shopItId);
+        ResultSet rs = stm.executeQuery();
+        while (rs.next()) {
+            String locationName = rs.getString(1);
+            int sessionNum = rs.getInt(2);
+            int chatId = rs.getInt(3);
+            Location loc = new SaveleLocation(locationName,sessionNum,chatId);
+            ret.add(loc);
+        }
+        return ret;
+    }
+
     private String getCurrentTime(){
         java.util.Date dt = new java.util.Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         return df.format(dt);
+    }
+
+    private int getID(PreparedStatement st){
+        try {
+            ResultSet set = st.getGeneratedKeys();
+            if(set.next()){
+                return set.getInt(1);
+            }
+        } catch (SQLException sqlException) {
+            sqlException.printStackTrace();
+        }
+        return -1;
     }
 }

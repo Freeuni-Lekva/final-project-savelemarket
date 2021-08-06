@@ -1,25 +1,27 @@
 package model;
 
+import java.util.List;
+
 public class SaveleShoppingItem implements ShoppingItem {
     public static Location ANY_WHERE = null;
 
-    private Location desiredLocation;
+    private List<Location> desiredLocations;
     private Account writerAccount;
     private int id = -1;
     private double price;
     private String time;
 
-    public SaveleShoppingItem(Account account, Location desiredLocation, double price){
+    public SaveleShoppingItem(Account account, List<Location> desiredLocations, double price){
         this.writerAccount = account;
-        this.desiredLocation = desiredLocation;
+        this.desiredLocations = desiredLocations;
         this.price = price;
     }
 
-    public SaveleShoppingItem(int id, String time, Account account, Location desiredLocation, double price){
+    public SaveleShoppingItem(int id, String time, Account account, List<Location> desiredLocations, double price){
         this.id = id;
         this.time = time;
         this.writerAccount = account;
-        this.desiredLocation = desiredLocation;
+        this.desiredLocations = desiredLocations;
         this.price = price;
     }
 
@@ -29,8 +31,8 @@ public class SaveleShoppingItem implements ShoppingItem {
     }
 
     @Override
-    public Location getDesiredLocation() {
-        return desiredLocation;
+    public List<Location> getDesiredLocations() {
+        return desiredLocations;
     }
 
     @Override
@@ -58,9 +60,11 @@ public class SaveleShoppingItem implements ShoppingItem {
     public String toString(){
         String tempRes = writerAccount.getMail() + " wants to change " +
                 writerAccount.getLocation().getName() + "" +
-                writerAccount.getLocation().getSessionNumber() + " to " +
-                desiredLocation.getName() + ""+
-                desiredLocation.getSessionNumber() + " for "+ price + "$";
+                writerAccount.getLocation().getSessionNumber() + " to: ";
+        for(Location l : desiredLocations){
+            tempRes += l.getName() + ""+
+                    l.getSessionNumber() + " for "+ price + "$;  ";
+        }
         if(time == null){
             return  tempRes +" not posted yet";
         }else{
