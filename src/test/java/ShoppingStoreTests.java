@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class ShoppingStoreTests {
     private final String serverName = "localhost";
     private final int port = 3306;
-    private final String dbName = "testdatabase";
+    private final String dbName = "testDatabase";
     private final String user = "root";
     private final String password = "";
     private AccountsStoreDao accountsStoreDao;

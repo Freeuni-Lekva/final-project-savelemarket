@@ -7,6 +7,7 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.util.List;
 
 public class CreatePostServlet extends HttpServlet {
     @Override
@@ -37,7 +38,7 @@ public class CreatePostServlet extends HttpServlet {
            return;
        }
        /// add new shop item and redirect to the profile page
-       ShoppingItem newShopItem = new SaveleShoppingItem(currentAccount,desiredLocation,price);
+       ShoppingItem newShopItem = new SaveleShoppingItem(currentAccount, List.of(desiredLocation),price);
        shoppingStore.addItem(newShopItem);
        //System.out.println("-----------create post-----------");
        // System.out.println("daemata "+ shoppingStore.getAllItemsForAccount(currentAccount.getMail()));
