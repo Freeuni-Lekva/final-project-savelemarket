@@ -24,12 +24,14 @@
     <servlet-name>profile-servlet</servlet-name>
     <servlet-class>web.ProfileServlet</servlet-class>
   </servlet>
-
+  <servlet>
+    <servlet-name>ajax-servlet</servlet-name>
+    <servlet-class>web.AjaxServlet</servlet-class>
+  </servlet>
   <servlet>
     <servlet-name>create-post-servlet</servlet-name>
     <servlet-class>web.CreatePostServlet</servlet-class>
   </servlet>
-
   <servlet-mapping>
     <servlet-name>profile-servlet</servlet-name>
     <url-pattern>/profile</url-pattern>
@@ -48,6 +50,12 @@
   <servlet-mapping>
     <servlet-name>chat-servlet</servlet-name>
     <url-pattern>/chat</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+
+    <servlet-name>ajax-servlet</servlet-name>
+    <url-pattern>/AjaxServlet</url-pattern>
+
   </servlet-mapping>
 
   <servlet-mapping>
