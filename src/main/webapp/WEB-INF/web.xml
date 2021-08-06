@@ -25,6 +25,10 @@
     <servlet-class>web.ProfileServlet</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>create-post-servlet</servlet-name>
+    <servlet-class>web.CreatePostServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>profile-servlet</servlet-name>
@@ -44,6 +48,11 @@
   <servlet-mapping>
     <servlet-name>chat-servlet</servlet-name>
     <url-pattern>/chat</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>create-post-servlet</servlet-name>
+    <url-pattern>/createPost</url-pattern>
   </servlet-mapping>
 
 </web-app>
