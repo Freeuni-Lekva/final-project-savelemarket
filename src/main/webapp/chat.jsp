@@ -35,8 +35,6 @@
     <section class="chat-section">
         <div class="members-div">
             <%
-                ChatStore chatStore = (ChatStore) request.getServletContext().getAttribute("chat-store");
-                Account currAccount = ((Account)session.getAttribute("current-account"));
 
                 List<Account> accounts = chatStore.getChatMembers(currAccount.getLocation().getChatID());
                 for(Account account:accounts){
