@@ -415,8 +415,13 @@ select{
     font-size: 20px;
     color: #044f04;
     padding: 3px;
+    text-decoration: none;
+
 }
 
+.chat-member:hover{
+    color: #0c94b3;
+}
 .send-private-message{
     background-color: #00e1ff;
     border: none;

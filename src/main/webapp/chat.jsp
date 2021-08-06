@@ -38,7 +38,7 @@
 
                 List<Account> accounts = chatStore.getChatMembers(currAccount.getLocation().getChatID());
                 for(Account account:accounts){
-                    out.println("<a href = \"\" class=\"chat-member\">"+ account.getMail() +"</a>");
+                    out.println("<a href = \"profile?id=" + account.getMail() + "\"class=\"chat-member\">"+ account.getMail() +"</a>");
                 }
 
 
