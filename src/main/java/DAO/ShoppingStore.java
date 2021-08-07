@@ -10,4 +10,5 @@ public interface ShoppingStore {
     void removeAllItemFor(String accountMail);
     List<ShoppingItem> getAllItemsForAccount(String accountMail);
     List<ShoppingItem> getAllItems();
+    //List<ShoppingItem> getFilteredItems(String );
 }
