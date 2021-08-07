@@ -45,6 +45,13 @@
       <servlet-class>web.PrivateChatServlet</servlet-class>
   </servlet>
 
+
+  <servlet>
+    <servlet-name>LogOutServlet</servlet-name>
+    <servlet-class>web.LogOutServlet</servlet-class>
+  </servlet>
+
+
   <servlet-mapping>
     <servlet-name>PrivateChatServlet</servlet-name>
     <url-pattern>/pchat</url-pattern>
@@ -83,6 +90,11 @@
   <servlet-mapping>
     <servlet-name>create-post-servlet</servlet-name>
     <url-pattern>/createPost</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>LogOutServlet</servlet-name>
+    <url-pattern>/LogOut</url-pattern>
   </servlet-mapping>
 
 </web-app>

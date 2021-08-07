@@ -26,9 +26,12 @@
             </ul>
 
         </nav>
-        <li>
-            <a class="sing-out" href="index.jsp">გასვლა</a>
-        </li>
+
+        <form action="/LogOut" method="post" class="logout-form">
+            <li>
+                <input type="submit" value="გასვლა" class="sing-out"/>
+            </li>
+        </form>
     </section>
 
 </header>
