@@ -19,9 +19,18 @@ public class PrivateChatServlet extends HttpServlet {
         String myMail = (String) request.getSession().getAttribute("current-account");
         ChatStore chatStore = (ChatStoreDao) request.getServletContext().getAttribute("chat-store");
         int id = chatStore.getPrivateChatID(myMail,otherMail);
-        if(id == ChatStoreDao.ID_DOESNT_EXIST || id == ChatStoreDao.WRONG_ID){
+        if(id == ChatStoreDao.ID_DOESNT_EXIST){
             id = chatStore.createPrivateChat(myMail,otherMail);
         }
+        if( id == ChatStoreDao.MORE_THAN_ONE_PRIVATE){
+            System.out.println("-------------------------------- MORE THAN ONE PRIVATE --------------------------------");
+            try {
+                throw new Exception("-------------------------------- MORE THAN ONE PRIVATE --------------------------------");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         request.setAttribute("private-chat-id",id);
         request.getRequestDispatcher("/pchat.jsp").forward(request,response); // არ ვიცი შეიძლება ეს გადავაკეთო და doGet-ში გავუშვა
         // აჯაქსს გააჩნია

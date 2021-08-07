@@ -253,7 +253,14 @@ public class ChatStoreDao extends DAO implements ChatStore {
                 rs.getBoolean("is_picture"),rs.getInt("chat_id"),rs.getString("sent_time"));
         return message;
     }
-
+    private static final int DEFAULT_FETCH_SIZE = 10;
+    @Override
+    public void addToMessages(int id, int number){
+        if(fetchNumberForChat == null){
+            fetchNumberForChat = new HashMap<>();
+        }
+        fetchNumberForChat.put(id,fetchNumberForChat.getOrDefault(id,DEFAULT_FETCH_SIZE) + number);
+    }
     //after first call, just fetches older ones, not new ones.
     @Override
     public List<Message> getMessages(int id, int number) {
@@ -264,7 +271,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
             fetchNumberForChat = new HashMap<>();
         }
         ResultSet rs = null;
-        int current = fetchNumberForChat.getOrDefault(id,20);
+        int current = fetchNumberForChat.getOrDefault(id,DEFAULT_FETCH_SIZE);
         int newSize = current + number;
         try {
             c = dataSource.getConnection();

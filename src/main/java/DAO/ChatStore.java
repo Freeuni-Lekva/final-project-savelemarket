@@ -17,6 +17,7 @@ public interface ChatStore {
     List<Message> getAllChatMessages(int id); // returns list of messages indexed 0 to size, 0 being the oldest.
     List<Message> getMessages(int id, int number); // keep resultset and iterate over that one. if null then do new query.
     void updateMessages(int id); // makes getMessages return new information
+    void addToMessages(int id, int number);
     int getMemberCount(int id);
     Chat getPrivateChat(int id);
     Chat getPublicChat(int id);
