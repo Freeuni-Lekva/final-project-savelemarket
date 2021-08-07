@@ -26,7 +26,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
     private static final String createPrivateChat = "INSERT INTO chat(is_private) VALUES(true);";
     private static final String insertIntoChatUsers ="INSERT INTO chat_users(chat_id,account_mail) VALUES(?,?);";
     //returns chat_id,account_mail,first_name,last_name,mail,location_id,pass blob
-    private static final String getChatAccounts = "SELECT * FROM chat_users c INNER JOIN accounts a ON c.account_mail = a.mail INNER JOIN locations l ON (a.location_id = l.location_id) WHERE c.chat_id = ?;";
+    private static final String getChatAccounts = "SELECT * FROM chat_users c INNER JOIN accounts a ON c.account_mail = a.mail INNER JOIN locations l ON (a.location_id = l.location_id) INNER JOIN chat ch ON (c.chat_id = ch.chat_id) WHERE c.chat_id = ?;";
     private static final String getAllChats = "SELECT * FROM message WHERE chat_id = ? ORDER BY message_id DESC;";
     private static final String getMemberCount = "SELECT COUNT(chat_id) AS count FROM chat_users WHERE chat_id = ?";
     private static final String getUserChats = "SELECT * FROM chat_users c INNER JOIN chat ch ON c.chat_id = ch.chat_id INNER JOIN accounts a ON c.account_mail = a.mail INNER JOIN locations l ON (a.location_id = l.location_id) WHERE a.mail = ?;";
@@ -136,6 +136,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
         }
     }
 
+
     @Override
     public List<Account> getChatMembers(int id){
         List<Account> list= new ArrayList<>();
@@ -146,13 +147,18 @@ public class ChatStoreDao extends DAO implements ChatStore {
             st.setInt(1,id);
             ResultSet rs = st.executeQuery();
             Location l = null;
+            LocationStore locationStore = new LocationStoreDao(dataSource);
             while(rs.next()){
-                if(l == null){
-                    int chat_id = rs.getInt("chat_id");
-                    if(chat_id == 0){
-                        System.out.println("------------------chat_id is 0 -----------------------");
+                if(rs.getBoolean("is_private") == false){
+                    if(l == null){
+                        int chat_id = rs.getInt("chat_id");
+                        if(chat_id == 0){
+                            System.out.println("------------------chat_id is 0 -----------------------");
+                        }
+                        l = new SaveleLocation(rs.getString("location_name"),rs.getInt("sess"),chat_id);
                     }
-                    l = new SaveleLocation(rs.getString("location_name"),rs.getInt("sess"),rs.getInt("chat_id"));
+                } else{
+                    l = locationStore.getLocationById(rs.getInt("location_id"));
                 }
                 Account acc = new StudentAccount(rs.getString("first_name"),rs.getString("last_name"),
                         rs.getBytes("pass"),rs.getString("mail"),l);
@@ -328,6 +334,8 @@ public class ChatStoreDao extends DAO implements ChatStore {
         Chat ch = new PrivateChat(accounts.get(0),accounts.get(1),this);
         return ch;
     }
+
+
     @Override
     public Chat getPublicChat(int id){
         List<Account> accounts = getChatMembers(id);

@@ -12,17 +12,14 @@ public class PrivateChat implements Chat{
     private Account sender;
     private Account receiver;
     private int id;
-    private  String chatName;
     /**
      * receives initialized ChatStore Object that has database initialized with chat ID
      * basically chat exists in database before this constructor is called
      */
     //this for adding to database
     public PrivateChat(ChatStore db, Account sender, Account receiver) {
+        this(sender,receiver,db);
         this.db = db;
-        this.sender = sender;
-        this.receiver = receiver;
-        this.id = db.getPrivateChatID(sender,receiver);
         db.addAccounts(Arrays.asList(sender,receiver),id);
     }
 
@@ -68,7 +65,6 @@ public class PrivateChat implements Chat{
                 "sender=" + sender +
                 ", receiver=" + receiver +
                 ", id=" + id +
-                ", chatName='" + chatName + '\'' +
                 '}';
     }
 
@@ -78,12 +74,11 @@ public class PrivateChat implements Chat{
         if (o == null || getClass() != o.getClass()) return false;
         PrivateChat that = (PrivateChat) o;
         return id == that.id &&
-                ((sender.equals(that.sender)  && receiver.equals(that.receiver)) || (sender.equals(that.receiver) && receiver.equals(that.sender)))
-                && chatName.equals(that.chatName);
+                ((sender.equals(that.sender)  && receiver.equals(that.receiver)) || (sender.equals(that.receiver) && receiver.equals(that.sender)));
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(sender, receiver, id, chatName);
+        return Objects.hash(sender, receiver, id);
     }
 }

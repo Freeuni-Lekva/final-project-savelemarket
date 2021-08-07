@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -71,6 +72,7 @@ public class ChatStoreDaoTest {
         List<Message> list = Arrays.asList(m1,m2,m3,m4);
         addMessages(list);
         List<Message> messageList = chatStore.getAllChatMessages(id);
+        Collections.reverse(list); // needs to be reversed as order of get will be m4,m3,m2,m1 from latest to oldest
         assertEquals(list, messageList);
         int id1 = chatStore.getPrivateChatID(acc1,acc2);
         int id2 = chatStore.getPrivateChatID(acc2,acc1);
@@ -82,8 +84,8 @@ public class ChatStoreDaoTest {
         List<Account> storedAccounts = chatStore.getChatMembers(id);
         assertEquals(accounts,storedAccounts);
         Chat ch = chatStore.getPrivateChat(id);
-        assertEquals(ch,chatStore.getUserChats(acc1.getMail()).get(0));
-        assertEquals(ch,chatStore.getUserChats(acc2.getMail()).get(0));
+        assertEquals(ch,chatStore.getUserChats(acc1.getMail()).get(1));
+        assertEquals(ch,chatStore.getUserChats(acc2.getMail()).get(1));
     }
 
     @Test
@@ -101,7 +103,7 @@ public class ChatStoreDaoTest {
         List<Account> secondAccs = chatStore.getChatMembers(id2);
         assertEquals(Arrays.asList(acc5,acc6),secondAccs);
         List<Account> thirdAcc = chatStore.getChatMembers(id3);
-        assertEquals(Arrays.asList(acc7),thirdAcc);
+        assertEquals(List.of(acc7),thirdAcc);
         assertEquals(4,chatStore.getMemberCount(id1));
         assertEquals(2,chatStore.getMemberCount(id2));
         assertEquals(1,chatStore.getMemberCount(id3));
