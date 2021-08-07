@@ -63,7 +63,7 @@ public class ChatStoreDaoTest {
         List<Location> locations = Arrays.asList(loc1_1);
         addLocations(locations);
         addAccounts(accounts);
-        int id = chatStore.createPrivateChat(acc1,acc2);
+        int id = chatStore.createPrivateChat(acc1.getMail(),acc2.getMail());
         assertTrue(id >= 1);
         Message m1 = new GeneralMessage(acc1,"message1",false,id);
         Message m2 = new GeneralMessage(acc2,"message2",false,id);
@@ -74,8 +74,8 @@ public class ChatStoreDaoTest {
         List<Message> messageList = chatStore.getAllChatMessages(id);
         Collections.reverse(list); // needs to be reversed as order of get will be m4,m3,m2,m1 from latest to oldest
         assertEquals(list, messageList);
-        int id1 = chatStore.getPrivateChatID(acc1,acc2);
-        int id2 = chatStore.getPrivateChatID(acc2,acc1);
+        int id1 = chatStore.getPrivateChatID(acc1.getMail(),acc2.getMail());
+        int id2 = chatStore.getPrivateChatID(acc2.getMail(),acc1.getMail());
         assertTrue(id1 == id2 && id1 == id);
         List<Account> members = chatStore.getChatMembers(id);
         assertTrue(members.contains(acc1));

@@ -27,7 +27,7 @@ public class PrivateChat implements Chat{
     public PrivateChat(Account sender,Account receiver,ChatStore db){
         this.sender = sender;
         this.receiver = receiver;
-        this.id = db.getPrivateChatID(sender,receiver);
+        this.id = db.getPrivateChatID(sender.getMail(),receiver.getMail());
     }
     @Override
     public int getChatID(){
