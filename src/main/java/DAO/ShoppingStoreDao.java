@@ -32,7 +32,7 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
             List<Location> locs = shoppingItem.getDesiredLocations();
             for(Location l : locs){
                 PreparedStatement addStatement = connection.prepareStatement("INSERT INTO shop_locations (shop_item_id, location_id)" +
-                        "VALUES (?,?)");
+                        "VALUES (?,?);");
                 addStatement.setInt(1, shopItemId);
                 int locId = locationStore.getLocationId(l.getName(), l.getSessionNumber());
                 addStatement.setInt(2, locId);
@@ -52,12 +52,12 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
             connection = dataSource.getConnection();
             /// remove from shop_locations
             PreparedStatement statement2 =
-                    connection.prepareStatement("DELETE FROM shop_locations WHERE shop_item_id = ?");
+                    connection.prepareStatement("DELETE FROM shop_locations WHERE shop_item_id = ?;");
             statement2.setInt(1, shopItemId);
             statement2.executeUpdate();
             /// remove from shop_store
             PreparedStatement statement1 =
-                    connection.prepareStatement("DELETE FROM shop_store WHERE shop_item_id = ?");
+                    connection.prepareStatement("DELETE FROM shop_store WHERE shop_item_id = ?;");
             statement1.setInt(1, shopItemId);
             statement1.executeUpdate();
         } catch (SQLException throwables) {
@@ -68,20 +68,41 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
     }
 
     @Override
+    public int getItemId(String writerMail, String createTime){
+        Connection conn = null;
+        try {
+            conn = dataSource.getConnection();
+            PreparedStatement statement = conn.prepareStatement("SELECT shop_item_id FROM shop_store " +
+                    "WHERE writer_mail = ? AND create_time = ?;");
+            statement.setString(1, writerMail);
+            statement.setString(2, createTime);
+            ResultSet rs = statement.executeQuery();
+            if(rs.next()){
+                return rs.getInt(1);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return -1;
+    }
+
+    @Override
     public void removeAllItemFor(String accountMail) {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement getItemsId = connection.prepareStatement("SELECT shop_item_id FROM shop_store WHERE writer_mail = ?");
+            PreparedStatement getItemsId = connection.prepareStatement("SELECT shop_item_id FROM shop_store WHERE writer_mail = ?;");
             getItemsId.setString(1, accountMail);
             ResultSet rs = getItemsId.executeQuery();
             while(rs.next()){
-                PreparedStatement  removeFromShopLoc = connection.prepareStatement("DELETE from shop_locations WHERE shop_item_id = ?");
+                PreparedStatement  removeFromShopLoc = connection.prepareStatement("DELETE from shop_locations WHERE shop_item_id = ?;");
                 int id = rs.getInt(1);
                 removeFromShopLoc.setInt(1,id);
                 removeFromShopLoc.executeUpdate();
             }
-            PreparedStatement  removeFromShopstore = connection.prepareStatement("DELETE from shop_store WHERE writer_mail = ?");
+            PreparedStatement  removeFromShopstore = connection.prepareStatement("DELETE from shop_store WHERE writer_mail = ?;");
             removeFromShopstore.setString(1, accountMail);
             removeFromShopstore.executeUpdate();
         } catch (SQLException throwables) {

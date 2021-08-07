@@ -84,7 +84,7 @@
                     out.println(currentAccount.getMail() + "</a>");
                     out.println("<a class=\"post-time\">" + shoppingItem.getCreateTime() + "</a>\n" +
                             "                </div>");
-                    out.println("<form action=\"/serveletissaxeli\" method=\"post\" class=\"\">\n" +
+                    out.println("<form action=\"/deletePost\" method=\"post\" class=\"\">\n" +
                             "                    <input type=\"submit\" name=\"post-delete\" class=\"post-delete\" value =\"წაშლა\"/>\n" +
                             "                </form>\n" +
                             "            </div>");

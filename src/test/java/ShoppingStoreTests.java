@@ -54,6 +54,13 @@ public class ShoppingStoreTests {
         locationStore = new LocationStoreDao(ds);
     }
 
+//    @Test
+//    public void tempRemoveTest(){
+//        int removeId = shoppingStore.getItemId("ttotl18@freeuni.edu.ge", "2021-08-08 02:10:56");
+//        System.out.println(removeId);
+//        shoppingStore.removeItem(removeId);
+//    }
+
     @Test
     public void complexShoppingItemTest(){
         System.out.println("::::: test1 :::::");
