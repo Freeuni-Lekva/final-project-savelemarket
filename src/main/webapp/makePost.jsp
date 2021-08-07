@@ -46,7 +46,7 @@
                         LocationStore locationStore = (LocationStoreDao) request.getServletContext().getAttribute("locations-store");
                         List<Location> locationsList = locationStore.getAllLocations();
                         for(Location location : locationsList){
-                            out.println("<div class=\"check-item\"><input type=\"checkbox\" name=\"location\" value=\" class=\"checkbox\"" +location.getName() + " " + location.getSessionNumber() + "\">"+
+                            out.println("<div class=\"check-item\"><input type=\"checkbox\" class=\"checkbox\" name=\"location\" value=\" " +location.getName() + " " + location.getSessionNumber() + "\">"+
                                     "<a class=\"check-location\">" + location.getName()+ " " + location.getSessionNumber() + "</a></div>");
                         }
                     %>

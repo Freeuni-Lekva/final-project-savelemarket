@@ -2,7 +2,6 @@ package web;
 
 import DAO.ChatStore;
 import model.Account;
-import model.GeneralMessage;
 import model.Message;
 
 import javax.servlet.*;
@@ -12,16 +11,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-
-public class AjaxServlet extends HttpServlet {
+public class ShowMoreServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         Account current = (Account)request.getSession().getAttribute("current-account");
         response.setContentType("text/html;charset=UTF-8");
         String result = "";
         ChatStore chatStore = (ChatStore) request.getServletContext().getAttribute("chat-store");
-        //ეს უნდა შეიცვალოს getMessages-ით და ჩამოიტანოს რაღაც რიცხვის მიხედვით.
-        List<Message> messages = chatStore.getMessages(current.getLocation().getChatID(), 0);
+
+        List<Message> messages = chatStore.getMessages(current.getLocation().getChatID(), 20);
         for(int i = 0; i < messages.size(); i++){
             Message message = messages.get(i);
             if(current.getMail().equals(message.getSender().getMail()))
@@ -42,6 +40,7 @@ public class AjaxServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       this.doGet(request, response);
+        this.doGet(request, response);
+
     }
 }

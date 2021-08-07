@@ -264,7 +264,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
             fetchNumberForChat = new HashMap<>();
         }
         ResultSet rs = null;
-        int current = fetchNumberForChat.getOrDefault(id,0);
+        int current = fetchNumberForChat.getOrDefault(id,20);
         int newSize = current + number;
         try {
             c = dataSource.getConnection();

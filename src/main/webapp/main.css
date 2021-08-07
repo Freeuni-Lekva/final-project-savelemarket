@@ -713,3 +713,10 @@ select{
     margin-left: 30px;
 }
 
+.show-more{
+    transform: rotateX(180deg);
+    text-decoration: none;
+
+    text-align: center;
+}
+
