@@ -17,6 +17,6 @@ public class LogOutServlet extends GeneralServlet {
         redirectIfNotLogged(request,response);
         HttpSession session = request.getSession();
         session.setAttribute("current-account", null);
-        System.out.println("aqaaaneee");
+        request.getRequestDispatcher("index.jsp").forward(request,response);
     }
 }
