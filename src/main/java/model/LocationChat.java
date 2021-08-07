@@ -5,7 +5,7 @@ import DAO.ChatStore;
 import java.util.List;
 import java.util.Objects;
 
-public class LocationChat implements Chat{
+public class LocationChat extends Chat{
 
 
     private ChatStore db;
