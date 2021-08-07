@@ -3,12 +3,18 @@
 <%@ page import="DAO.ShoppingStoreDao" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.ShoppingItem" %>
+<%@ page import="model.Location" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <meta charset="UTF-8">
     <title>Profile</title>
     <link rel="stylesheet" href="main.css">
+    <%
+        ShoppingStore shoppingStore = (ShoppingStoreDao) request.getServletContext().getAttribute("shopping-items-store");
+        Account currentAccount = (Account)request.getSession().getAttribute("current-account");
+        List<ShoppingItem> allItems = shoppingStore.getAllItemsForAccount(currentAccount.getMail());
+    %>
 </head>
 <body>
 <header>
@@ -65,30 +71,45 @@
     </section>
 
     <section class="posts-section">
-        <div class="post">
-            <div class="post-header">
-                <div class="post-author-date">
-                    <a class="post-author">ლირემ18@ფრეეუნი.ედუ.გე</a>
-                    <a class="post-time">12:12:12:12:12</a>
-                </div>
-                <form action="/serveletissaxeli" method="post" class="">
-                    <input type="submit" name="post-delete" class="post-delete" value ="წაშლა"/>
-                </form>
-            </div>
-            <div class="location-from">
-                <a class="location-parameter">მაქვს:</a>
-                <a class="post-location">ძეგვი</a>
-            </div>
-            <div class="location-to">
-                <a class="location-parameter">მინდა:</a>
-                <a class="post-location">მალდივის კუნძულები</a>
-            </div>
-            <div class="post-footer">
-                <a class="post-price">ფასი: 1.20$</a>
+        <%
+            if(allItems.size() == 0){
+                out.println("<a class=\"no-posts\">პოსტები არ არის</a>");
+            }else {
+                for (int i = allItems.size() - 1; i >= 0; i--) {
+                    ShoppingItem shoppingItem = allItems.get(i);
+                    out.println("<div class=\"post\">\n" +
+                            "            <div class=\"post-header\">\n" +
+                            "                <div class=\"post-author-date\">\n" +
+                            "                    <a class=\"post-author\">");
+                    out.println(currentAccount.getMail() + "</a>");
+                    out.println("<a class=\"post-time\">" + shoppingItem.getCreateTime() + "</a>\n" +
+                            "                </div>");
+                    out.println("<form action=\"/serveletissaxeli\" method=\"post\" class=\"\">\n" +
+                            "                    <input type=\"submit\" name=\"post-delete\" class=\"post-delete\" value =\"წაშლა\"/>\n" +
+                            "                </form>\n" +
+                            "            </div>");
+                    out.println("<div class=\"location-from\">\n" +
+                            "                <a class=\"location-parameter\">მაქვს:</a>");
+                    out.println("<a class=\"post-location\">");
+                    out.println(currentAccount.getLocation().getName() + " " + currentAccount.getLocation().getSessionNumber() + "</a>\n" +
+                            "            </div>");
 
-            </div>
+                    out.println("<div class=\"location-to\">\n" +
+                            "                <a class=\"location-parameter\">მინდა:</a><div class=\"locations-want\">");
+                    for (Location l : shoppingItem.getDesiredLocations()) {
+                        out.println("<a class=\"post-location-want\">" + l.getName() + " " + l.getSessionNumber() + "</a>");
+                    }
+                    out.println("</div></div>");
+                    out.println("<div class=\"post-footer\">");
+                    if (shoppingItem.getPrice() < 0)
+                        out.println("<a class=\"post-price\">" + "ვიყიდი: " + shoppingItem.getPrice() * (-1) + " ₾</a>");
+                    else if (shoppingItem.getPrice() > 0)
+                        out.println("<a class=\"post-price\">" + "გავყიდი: " + shoppingItem.getPrice() + " ₾</a>");
+                    out.println("</div></div>");
+                }
+            }
+        %>
 
-        </div>
     </section>
 </section>
 </body>
