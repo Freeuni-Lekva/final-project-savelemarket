@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public class PrivateChat implements Chat{
+public class PrivateChat extends Chat{
 
     private ChatStore db;
     private Account sender;
