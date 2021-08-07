@@ -11,14 +11,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class CreatePostServlet extends HttpServlet {
+public class CreatePostServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        redirectIfNotLogged(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        redirectIfNotLogged(request,response);
         request.setCharacterEncoding("UTF-8");
         HttpSession session = request.getSession();
         /// dao objects

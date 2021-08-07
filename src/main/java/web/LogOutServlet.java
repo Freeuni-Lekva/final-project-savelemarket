@@ -6,14 +6,15 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 
 
-public class LogOutServlet extends HttpServlet {
+public class LogOutServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        redirectIfNotLogged(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        redirectIfNotLogged(request,response);
         HttpSession session = request.getSession();
         session.setAttribute("current-account", null);
         System.out.println("aqaaaneee");
