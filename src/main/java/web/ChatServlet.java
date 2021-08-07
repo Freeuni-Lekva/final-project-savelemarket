@@ -23,6 +23,7 @@ public class ChatServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         chatStore = (ChatStore) request.getServletContext().getAttribute("chat-store");
         String messageText = (String)(request.getParameter("user-message"));
+        messageText = messageText.replaceAll("\\<.*?\\>", "");
         if(messageText.trim().length() > 0) {
             Account current = (Account) request.getSession().getAttribute("current-account");
             Message message = new GeneralMessage(current, messageText, false, current.getLocation().getChatID());

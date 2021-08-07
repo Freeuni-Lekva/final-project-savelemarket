@@ -86,6 +86,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
 
     @Override
     public int addMessage(Message message) {
+
         Connection c = null;
         try {
             // message(chat_id,is_picture,sent_time,message,sender_mail)
