@@ -674,8 +674,7 @@ select{
 }
 
 .check-box-label{
-    font-size: 20px;
-
+    font-size: 25px;
     color: var(--color-agruni);
 }
 
