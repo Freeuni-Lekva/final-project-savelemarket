@@ -92,6 +92,38 @@ public class ShoppingStoreTests {
     }
 
     @Test
+    public void testDifferentCasesOfItems(){
+        System.out.println("::::: test3 :::::");
+        // wants a specific one location
+        ShoppingItem item1 = new SaveleShoppingItem(accounts[0],
+                locationStore.getPossibleLocations(locations[0].getName(), locations[0].getSessionNumber()), 50);
+        // doesn't matter location name (only session number 1)
+        ShoppingItem item2 = new SaveleShoppingItem(accounts[1],
+                locationStore.getPossibleLocations(null, 1), 100);
+        // doesn't matter session number (only location name 'Kazbegi')
+        ShoppingItem item3 = new SaveleShoppingItem(accounts[2],
+                locationStore.getPossibleLocations(locations[1].getName(), SaveleLocation.NO_OP_SESS), 300);
+        // doesn't matter neither location name nor session number
+        // only wants to sell own location for 500 gel
+        ShoppingItem item4 = new SaveleShoppingItem(accounts[3],
+                locationStore.getPossibleLocations(null, SaveleLocation.NO_OP_SESS), 500);
+        shoppingStore.addItem(item1);
+        shoppingStore.addItem(item2);
+        shoppingStore.addItem(item3);
+        shoppingStore.addItem(item4);
+        List<ShoppingItem> allItems = shoppingStore.getAllItems();
+        for(ShoppingItem sI : allItems){
+            System.out.println(sI);
+        }
+        System.out.println("---nika's items---");
+        List<ShoppingItem> allItemsForNika = shoppingStore.getAllItemsForAccount(accounts[1].getMail());
+        for(ShoppingItem sI : allItemsForNika){
+            System.out.println(sI);
+        }
+        System.out.println("-------");
+    }
+
+    @Test
     public void removeItemsTest(){
         System.out.println("::::: test2 :::::");
         ShoppingItem item1 = new SaveleShoppingItem(accounts[0],
