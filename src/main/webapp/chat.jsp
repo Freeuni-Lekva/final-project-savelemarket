@@ -47,6 +47,7 @@
 
         <div class="messages-div">
                 <div class="chat-box" id="chat-box">
+
                 </div>
             <iframe name="frame" style="display:none;" ></iframe>
             <form action="/chat" method="post" target="frame" class="messages_form" id="message-inputs" >
@@ -85,26 +86,29 @@
             return false; // Prevent page refresh
         }
 
-
         $(document).ready(function () {
-
             function fun1(){
-
                 $.ajax({
-
                         type:"POST",
                          url:"AjaxServlet",
                          data:"",
                          success:function(data){
-
                              $("#chat-box").html(data);
-
                          }
                      });
                  }
             fun1();
             setInterval (fun1, 2500);
-
+            $('#chat-box').click(function () {
+                $.ajax({
+                    type:"POST",
+                    url:"ShowMoreServlet",
+                    data:"",
+                    success:function(data){
+                        $("#chat-box").html(data);
+                    }
+                });
+            })
         });
     </script>
 </body>
