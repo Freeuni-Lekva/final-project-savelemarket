@@ -20,6 +20,7 @@ public class AjaxServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String result = "";
         ChatStore chatStore = (ChatStore) request.getServletContext().getAttribute("chat-store");
+        //ეს უნდა შეიცვალოს getMessages-ით და ჩამოიტანოს რაღაც რიცხვის მიხედვით.
         List<Message> messages = chatStore.getAllChatMessages(current.getLocation().getChatID());
         for(int i = 0; i < messages.size(); i++){
             Message message = messages.get(i);
