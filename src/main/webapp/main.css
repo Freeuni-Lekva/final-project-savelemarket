@@ -344,7 +344,7 @@ select{
     overflow-y:scroll;
     overflow-x:hidden;
     scroll-behavior: smooth;
-    transform: rotateX(180deg);
+    flex-direction: column-reverse;
 }
 
 .message{
@@ -386,7 +386,6 @@ select{
 .message-info{
     display: flex;
     flex-direction: column;
-    transform: rotateX(180deg);
     align-items: flex-start;
     margin-left: 5px;
 }
@@ -394,7 +393,7 @@ select{
 .my-message-info{
     display: flex;
     flex-direction: column;
-    transform: rotateX(180deg);
+    flex-direction: column;
     align-items: flex-end;
     margin-right: 5px;
 }
@@ -443,7 +442,6 @@ select{
     display: flex;
     flex-direction: column;
     align-items: center;
-
     overflow: scroll;
     overflow-y:scroll;
     overflow-x:hidden;
@@ -473,10 +471,10 @@ select{
     background-color: #e1e99a;
     border-radius: 10px;
     box-shadow: #abc5f3 2px 3px;
-    height: 230px;
     width: 600px;
     padding: 10px;
     margin-top: 20px;
+    margin-bottom: 10px;
 }
 
 .post-author{
@@ -715,7 +713,6 @@ select{
 }
 
 .show-more{
-    transform: rotateX(180deg);
     text-decoration: none;
 
     text-align: center;
@@ -723,4 +720,24 @@ select{
 
 .try_again{
     margin-top: 5px;
+}
+
+.no-posts{
+    font-size: 40px;
+    color: red;
+    margin-top: 20px;
+}
+
+.post-location-want{
+    width: 100px;
+    font-size: 20px;
+    margin-left: 10px;
+    color: #0d1d69;
+    margin-top: 5px;
+}
+
+.locations-want{
+    display: flex;
+    flex-direction: column;
+
 }

@@ -15,18 +15,19 @@ public class CreatePostServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         redirectIfNotLogged(request,response);
+        request.getRequestDispatcher("profile.jsp").forward(request, response); /// may change and forward to home.jsp
+
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         redirectIfNotLogged(request,response);
         request.setCharacterEncoding("UTF-8");
-        HttpSession session = request.getSession();
         /// dao objects
-        LocationStore locationStore = (LocationStoreDao) request.getServletContext().getAttribute("locations-store");
-        ShoppingStore shoppingStore = (ShoppingStoreDao) request.getServletContext().getAttribute("shopping-items-store");
+        LocationStore locationStore = getLocationStoreDao(request);
+        ShoppingStore shoppingStore = getShoppingStoreDao(request);
         /// current account
-        Account currentAccount = (StudentAccount)(session.getAttribute("current-account"));
+        Account currentAccount = getCurrentAccount(request);
         /// desired locations data
         String[] locationNames = request.getParameterValues("location");
         if(locationNames == null){
@@ -46,10 +47,6 @@ public class CreatePostServlet extends GeneralServlet {
         if(sellOrBuy.equals("buy")) price *= -1;
         ShoppingItem newItem = new SaveleShoppingItem(currentAccount, desiredLocations, price);
         shoppingStore.addItem(newItem);
-        request.getRequestDispatcher("profile.jsp").forward(request, response); /// may change and forward to home.jsp
-        List<ShoppingItem> allItems = shoppingStore.getAllItemsForAccount("lirem");
-        for(ShoppingItem I : allItems){
-            System.out.println(I);
-        }
+        response.sendRedirect("/createPost");
     }
 }
