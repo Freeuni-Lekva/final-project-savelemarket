@@ -72,6 +72,11 @@
 
         <input type="submit" value="პოსტის დამატება" class="addPost-btn"/>
     </form>
+        <%
+            if (request.getAttribute("location-not-chosen") != null){
+                out.println("<a class=\"try_again\" style=\"color: red\">გთხოვთ აირჩიეთ ლოკაცია</a>");
+            }
+        %>
 </div>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 

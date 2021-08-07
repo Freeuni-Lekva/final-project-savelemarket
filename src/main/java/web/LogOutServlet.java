@@ -16,6 +16,6 @@ public class LogOutServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         HttpSession session = request.getSession();
         session.setAttribute("current-account", null);
-        System.out.println("aqaaaneee");
+        request.getRequestDispatcher("index.jsp").forward(request,response);
     }
 }
