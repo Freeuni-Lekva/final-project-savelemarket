@@ -11,32 +11,20 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class ShowMoreServlet extends HttpServlet {
+public class ShowMoreServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Account current = (Account)request.getSession().getAttribute("current-account");
+        redirectIfNotLogged(request,response);
+        Account current = getCurrentAccount(request);
         response.setContentType("text/html;charset=UTF-8");
         String result = "";
-        ChatStore chatStore = (ChatStore) request.getServletContext().getAttribute("chat-store");
-
+        ChatStore chatStore = getChatStoreDao(request);
         List<Message> messages = chatStore.getMessages(current.getLocation().getChatID(), 20);
-        for(int i = 0; i < messages.size(); i++){
-            Message message = messages.get(i);
-            if(current.getMail().equals(message.getSender().getMail()))
-                result = result + "<div class=\"my-message-info\">";
-            else result = result + "<div class=\"message-info\">";
-            result = result + "<a class=\"sender-name\">" + message.getSender().getMail()+ "</a>";
-            if(current.getMail().equals(message.getSender().getMail()))
-                result = result + "<a class=\"my-message\">"+ message.getText()+"</a>";
-            else result = result + "<a class=\"message\">"+message.getText()+"</a>";
-            result = result + "<a class=\"send-time\">"+message.getSendTime() +"</a></div>";
-        }
-        result += "<a href =\"\" class=\"show-more\" onclick=\"return false;\" id=\"show-more\">მეტის ჩვენება</a>";
-        PrintWriter out = response.getWriter();
+        showChats(response, current, result, messages);
 
-        out.print(result);
-        out.close();
     }
+
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

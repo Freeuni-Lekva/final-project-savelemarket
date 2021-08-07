@@ -7,17 +7,18 @@ import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.IOException;
 
-public class PrivateChatServlet extends HttpServlet {
+public class PrivateChatServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        redirectIfNotLogged(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        redirectIfNotLogged(request,response);
         String otherMail = request.getParameter("profile-account"); // might be Attribute
-        String myMail = (String) request.getSession().getAttribute("current-account");
-        ChatStore chatStore = (ChatStoreDao) request.getServletContext().getAttribute("chat-store");
+        String myMail = getCurrentAccount(request).getMail();
+        ChatStore chatStore = getChatStoreDao(request);
         int id = chatStore.getPrivateChatID(myMail,otherMail);
         if(id == ChatStoreDao.ID_DOESNT_EXIST){
             id = chatStore.createPrivateChat(myMail,otherMail);

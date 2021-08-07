@@ -12,17 +12,15 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 
-public class LoginServlet extends HttpServlet {
+public class LoginServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession();
-        AccountsStore accountsStore = (AccountsStoreDao) request.getServletContext().getAttribute("accounts-store");
-        if(session.getAttribute("current-account") == null){} //gaakete ragaca
+        AccountsStore accountsStore = getAccountsStoreDao(request);
+        if(getCurrentAccount(request) == null){} //gaakete ragaca
         String userName = request.getParameter("username");
         String password = request.getParameter("password");
         Account requiredAccount = accountsStore.getAccount(userName);
@@ -31,7 +29,7 @@ public class LoginServlet extends HttpServlet {
             request.setAttribute("try-again", true);
             request.getRequestDispatcher("index.jsp").forward(request, response);
         }else{
-            session.setAttribute("current-account", requiredAccount);
+            request.getSession().setAttribute("current-account", requiredAccount);
             request.getRequestDispatcher("profile.jsp").forward(request, response);
         }
     }

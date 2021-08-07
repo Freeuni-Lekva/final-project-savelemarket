@@ -9,21 +9,22 @@ import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.List;
 
-public class CreatePostServlet extends HttpServlet {
+public class CreatePostServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        redirectIfNotLogged(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-       request.setCharacterEncoding("UTF-8");
+        redirectIfNotLogged(request,response);
+        request.setCharacterEncoding("UTF-8");
        HttpSession session = request.getSession();
        /// dao objects
-       LocationStore locationStore = (LocationStoreDao) request.getServletContext().getAttribute("locations-store");
-       ShoppingStore shoppingStore = (ShoppingStoreDao) request.getServletContext().getAttribute("shopping-items-store");
+       LocationStore locationStore = getLocationStoreDao(request);
+       ShoppingStore shoppingStore = getShoppingStoreDao(request);
        /// current account
-       Account currentAccount = (StudentAccount)(session.getAttribute("current-account"));
+       Account currentAccount = getCurrentAccount(request);
        /// desired locations data
        String locationName = (String)(request.getParameter("location"));
        int sessionNum = Integer.parseInt((String)(request.getParameter("session_numbers")));

@@ -11,23 +11,23 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.List;
 
 
-public class RegistrationServlet extends HttpServlet {
+public class RegistrationServlet extends GeneralServlet {
     AccountsStore accountsStore;
     LocationStore locationStore;
     ChatStore chatStore;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
-        locationStore = (LocationStoreDao) request.getServletContext().getAttribute("locations-store");
-        accountsStore = (AccountsStoreDao) request.getServletContext().getAttribute("accounts-store");
-        chatStore = (ChatStoreDao) request.getServletContext().getAttribute("chat-store");
+        locationStore = getLocationStoreDao(request);
+        accountsStore = getAccountsStoreDao(request);
+        chatStore = getChatStoreDao(request);
 
         // check fields validity
         // may change checks sequence
@@ -47,7 +47,7 @@ public class RegistrationServlet extends HttpServlet {
         String mail = (String)(request.getParameter("mail"));
         Account newAccount = new StudentAccount(accName, lastName, password, mail, location);
         accountsStore.addAccount(newAccount);
-        chatStore.addAccounts(Arrays.asList(newAccount),location.getChatID());
+        chatStore.addAccounts(List.of(newAccount),location.getChatID());
         HttpSession session = request.getSession();
         session.setAttribute("current-account", newAccount);
         request.getRequestDispatcher("profile.jsp").forward(request, response);

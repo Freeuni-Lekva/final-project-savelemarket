@@ -8,14 +8,15 @@ import javax.servlet.http.*;
 import javax.ws.rs.NotFoundException;
 import java.io.IOException;
 
-public class ProfileServlet extends HttpServlet {
+public class ProfileServlet extends GeneralServlet {
     private static final int uLen = "id=".length();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        redirectIfNotLogged(req,resp);
         if(req.getQueryString()== null || req.getQueryString().length()<uLen)  return; // wrong url
         String mail = req.getQueryString().substring(uLen);
 
-        Account current = (Account)req.getSession().getAttribute("current-account");
+        Account current = getCurrentAccount(req);
         if (current == null) {
             // user not logged in
             req.getRequestDispatcher("index.jsp").forward(req,resp);
@@ -26,7 +27,7 @@ public class ProfileServlet extends HttpServlet {
             req.getRequestDispatcher("profile.jsp").forward(req,resp);
             return;
         }
-        AccountsStore as = (AccountsStore) req.getServletContext().getAttribute("accounts-store");
+        AccountsStore as = getAccountsStoreDao(req);
         Account accToShow = as.getAccount(mail);
         if(accToShow == null) {
             req.getRequestDispatcher("accNotFound.jsp").forward(req,resp);
@@ -40,6 +41,6 @@ public class ProfileServlet extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        redirectIfNotLogged(request,response);
     }
 }
