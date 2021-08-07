@@ -73,6 +73,7 @@
         });
 
         function submitForm() {
+
             // Get the first form with the name
             // Usually the form name is not repeated
             // but duplicate names are possible in HTML
@@ -102,7 +103,7 @@
                      });
                  }
             fun1();
-            setInterval (fun1, 2500);
+            setInterval (fun1, 1000);
 
         });
     </script>

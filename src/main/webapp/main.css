@@ -379,7 +379,7 @@ select{
     padding: 10px;
     word-wrap: break-word;
     margin-left: 5px;
-    text-align-last: right;
+    text-align-last: left;
 }
 
 .message-info{
@@ -607,6 +607,7 @@ select{
     font-size: 20px;
     font-weight: bold;
     color: red;
+    margin-left: 5px;
 }
 
 .amount-input{
@@ -643,7 +644,7 @@ select{
     border-radius: 10px;
     margin-top: 70px;
     width: 500px;
-    height: 250px;
+    height: 320px;
     background-color: var(--color-freeuni);
     box-shadow: 6px 6px #caee5b;
 }
@@ -658,5 +659,57 @@ select{
     color: #eee6e6;
     cursor: pointer;
     box-shadow: #a9b6f5 2px 2px;
-    margin-left: 150px;
+    margin-left: 110px;
 }
+
+.check-boxes{
+    height: 100px;
+    background-color: #d1e333;
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    border-top: solid var(--color-agruni);
+}
+
+.check-box-label{
+    font-size: 25px;
+    color: var(--color-agruni);
+}
+
+.fieldset{
+    margin-top: 30px;
+    width: 400px;
+    border-color: #044f04;
+}
+
+.check-item{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-left: 10px;
+    margin-top: 5px;
+}
+
+.check-location{
+    margin-left: 5px;
+    font-size: 20px;
+}
+
+.chose-amount{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.chose-amount-input{
+    width: 60px;
+    height: 30px;
+    margin-top: 5px;
+    border-radius: 5px;
+    margin-left: 30px;
+}
+
