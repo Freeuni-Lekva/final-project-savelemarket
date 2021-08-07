@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AccountsStoreDao implements AccountsStore {
+public class AccountsStoreDao extends DAO implements AccountsStore {
     private DataSource dataSource;
 
     public AccountsStoreDao(DataSource dataSource) {
@@ -35,13 +35,7 @@ public class AccountsStoreDao implements AccountsStore {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(connection);
         }
     }
 
@@ -57,13 +51,7 @@ public class AccountsStoreDao implements AccountsStore {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(connection);
         }
     }
 
@@ -84,13 +72,7 @@ public class AccountsStoreDao implements AccountsStore {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(connection);
         }
     }
 
@@ -114,13 +96,7 @@ public class AccountsStoreDao implements AccountsStore {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(conn);
         }
         return false;
     }
@@ -148,13 +124,7 @@ public class AccountsStoreDao implements AccountsStore {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(conn);
         }
         return null;
     }
@@ -188,13 +158,7 @@ public class AccountsStoreDao implements AccountsStore {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(conn);
         }
         return ret;
     }
@@ -217,13 +181,7 @@ public class AccountsStoreDao implements AccountsStore {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-        if (connection != null) {
-            try {
-                connection.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
-        }
+            closeConnection(connection);
     }
         return result;
     }

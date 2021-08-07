@@ -9,7 +9,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ShoppingStoreDao implements ShoppingStore {
+public class ShoppingStoreDao extends DAO implements ShoppingStore {
     private final DataSource dataSource;
 
     public ShoppingStoreDao(DataSource dataSource){
@@ -41,13 +41,7 @@ public class ShoppingStoreDao implements ShoppingStore {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(connection);
         }
     }
 
@@ -69,13 +63,7 @@ public class ShoppingStoreDao implements ShoppingStore {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(connection);
         }
     }
 
@@ -99,13 +87,7 @@ public class ShoppingStoreDao implements ShoppingStore {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(connection);
         }
     }
 
@@ -129,13 +111,7 @@ public class ShoppingStoreDao implements ShoppingStore {
             }
         } catch (SQLException throwables) { throwables.printStackTrace();
         } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(conn);
         }
         return ret;
     }
@@ -158,13 +134,7 @@ public class ShoppingStoreDao implements ShoppingStore {
             }
         } catch (SQLException throwables) { throwables.printStackTrace();
         } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(conn);
         }
         return ret;
     }

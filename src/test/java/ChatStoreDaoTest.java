@@ -114,9 +114,9 @@ public class ChatStoreDaoTest {
         m1.setMessageID(mid1);
         m2.setMessageID(mid2);
         assertEquals(List.of(m2,m1),chatStore.getAllChatMessages(id1));
-        assertEquals(List.of(m2),chatStore.getMessages(id1,1));
-        assertEquals(List.of(m1),chatStore.getMessages(id1,1));
-        assertEquals(0,chatStore.getMessages(id1, 1).size());
+        assertEquals(m2,chatStore.getMessages(id1,1).get(0));
+        assertEquals(List.of(m2,m1),chatStore.getMessages(id1,1));
+        assertEquals(2,chatStore.getMessages(id1, 1).size()); // default getMessages size is ChatStoreDao.DEFAULT_FETCH_SIZE
         chatStore.updateMessages(id1);
         assertEquals(List.of(m2,m1),chatStore.getMessages(id1,2));
 
