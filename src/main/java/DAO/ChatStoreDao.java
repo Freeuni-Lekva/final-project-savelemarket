@@ -253,7 +253,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
                 rs.getBoolean("is_picture"),rs.getInt("chat_id"),rs.getString("sent_time"));
         return message;
     }
-    private static final int DEFAULT_FETCH_SIZE = 10;
+    public static final int DEFAULT_FETCH_SIZE = 10;
     @Override
     public void addToMessages(int id, int number){
         if(fetchNumberForChat == null){

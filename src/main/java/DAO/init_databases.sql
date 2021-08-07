@@ -5,6 +5,8 @@ USE myDatabase;
 # order to delete:
 
 # DROP TABLE message;
+# DROP TABLE shop_locations;
+# DROP TABLE shop_store;
 # DROP TABLE chat_users;
 # DROP TABLE accounts;
 # DROP TABLE locations;
@@ -71,8 +73,8 @@ CREATE TABLE IF NOT EXISTS shop_store(
 );
 
 CREATE TABLE IF NOT EXISTS shop_locations(
-    'shop_item_id' INT NOT NULL,
-    'location_id' INT NOT NULL,
+    `shop_item_id` INT NOT NULL,
+    `location_id` INT NOT NULL,
     FOREIGN KEY (`shop_item_id`) REFERENCES shop_store(`shop_item_id`),
     FOREIGN KEY (`location_id`) REFERENCES locations(`location_id`)
 );

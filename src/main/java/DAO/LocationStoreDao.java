@@ -8,7 +8,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LocationStoreDao implements LocationStore{
+public class LocationStoreDao extends DAO implements LocationStore{
     private DataSource dataSource;
 
     public LocationStoreDao(DataSource dataSource){
@@ -31,13 +31,7 @@ public class LocationStoreDao implements LocationStore{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(connection);
         }
         return null;
     }
@@ -57,13 +51,7 @@ public class LocationStoreDao implements LocationStore{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(connection);
         }
         return null;
     }
@@ -87,13 +75,7 @@ public class LocationStoreDao implements LocationStore{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(connection);
         }
         return null;
     }
@@ -113,13 +95,7 @@ public class LocationStoreDao implements LocationStore{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(connection);
         }
         return null;
     }
@@ -142,13 +118,7 @@ public class LocationStoreDao implements LocationStore{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(connection);
         }
         return -1;
     }
@@ -166,13 +136,7 @@ public class LocationStoreDao implements LocationStore{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }finally {
-            if (connection != null) {
-                try {
-                    connection.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(connection);
         }
         return false;
     }
@@ -195,14 +159,8 @@ public class LocationStoreDao implements LocationStore{
         } catch (SQLException throwables){
             throwables.printStackTrace();
         } finally {
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            closeConnection(conn);
         }
-    }
         return loc;
     }
 
@@ -228,14 +186,8 @@ public class LocationStoreDao implements LocationStore{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-        if (conn != null) {
-            try {
-                conn.close();
-            } catch (SQLException throwables) {
-                throwables.printStackTrace();
-            }
+            closeConnection(conn);
         }
-    }
         return -1;
     }
 
@@ -256,13 +208,7 @@ public class LocationStoreDao implements LocationStore{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(conn);
         }
         return result;
     }
@@ -298,13 +244,7 @@ public class LocationStoreDao implements LocationStore{
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
-            if (conn != null) {
-                try {
-                    conn.close();
-                } catch (SQLException throwables) {
-                    throwables.printStackTrace();
-                }
-            }
+            closeConnection(conn);
         }
         return ret;
     }
