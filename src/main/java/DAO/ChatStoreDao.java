@@ -3,6 +3,7 @@ package DAO;
 import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import model.*;
 
+import javax.persistence.criteria.Fetch;
 import javax.sql.DataSource;
 import javax.xml.transform.Result;
 import java.sql.*;
@@ -35,15 +36,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
     public static final int MORE_THAN_ONE_PRIVATE = -2;
     public static final int ERROR_CODE = -3;
 
-    private Map<Integer,ConnectionResultSet>  resultSetMap; // null if not getting messages by number. not null if query is done and fetching by some amounts
-    class ConnectionResultSet{
-        public Connection c;
-        public ResultSet connResultSet;
-        public ConnectionResultSet(Connection c, ResultSet connResultSet){
-            this.c = c;
-            this.connResultSet = connResultSet;
-        }
-    }
+    private Map<Integer,Integer>  fetchNumberForChat; //chat_id -> how many to fetch
 
     public ChatStoreDao(DataSource dataSource) {
         this.dataSource = dataSource;
@@ -267,28 +260,28 @@ public class ChatStoreDao extends DAO implements ChatStore {
         Map<String, Account> accs= new HashMap<>(); // same mail -> account mapping as getAllChats. keeps all accounts that are in chat.
         AccountsStore accStore = new AccountsStoreDao(dataSource);
         Connection c = null;
-        if(resultSetMap == null){
-            resultSetMap = new HashMap<>();
+        if(fetchNumberForChat == null){
+            fetchNumberForChat = new HashMap<>();
         }
         ResultSet rs = null;
-        if(resultSetMap.getOrDefault(id,null) == null){
-            try {
-                c = dataSource.getConnection();
-                PreparedStatement st = c.prepareStatement(getAllChats);
-                st.setInt(1,id);
-                rs = st.executeQuery();
-                resultSetMap.put(id,new ConnectionResultSet(c,rs));
-            } catch (SQLException e) {
-                e.printStackTrace();
-                closeConnection(c);
-            }
-        }
-        List<Message> messages = new ArrayList<>(number);
-        rs = resultSetMap.get(id).connResultSet;
+        int current = fetchNumberForChat.getOrDefault(id,0);
+        int newSize = current + number;
         try {
-            for(int i = 0;i<number;i++) {
+            c = dataSource.getConnection();
+            PreparedStatement st = c.prepareStatement(getAllChats); // should be replaced with get (number) of chats
+            st.setInt(1,id);
+            rs = st.executeQuery();
+            fetchNumberForChat.put(id,newSize);
+        } catch (SQLException e) {
+            e.printStackTrace();
+            closeConnection(c);
+        }
+        List<Message> messages = new ArrayList<>(newSize);
+        try {
+            for(int i = 0;i<newSize;i++) {
                 if(!rs.next()){
-                    closeConnection(resultSetMap.get(id).c);
+                    fetchNumberForChat.put(id,i); // this should fix integer overflow
+                    closeConnection(c);
                     break;
                 }
                 Message message = getMessage(rs, accs, accStore);
@@ -303,8 +296,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
 
     @Override
     public void updateMessages(int id) {
-        closeConnection(resultSetMap.get(id).c);
-        resultSetMap.put(id,null);
+        fetchNumberForChat.remove(id);
     }
 
     @Override
