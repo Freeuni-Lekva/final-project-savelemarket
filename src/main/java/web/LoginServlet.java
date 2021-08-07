@@ -24,7 +24,7 @@ public class LoginServlet extends GeneralServlet {
         String userName = request.getParameter("username");
         String password = request.getParameter("password");
         Account requiredAccount = accountsStore.getAccount(userName);
-        System.out.println("account: " + requiredAccount);
+        //System.out.println("account: " + requiredAccount);
         if(requiredAccount == null || !requiredAccount.isValidPassword(password)){
             request.setAttribute("try-again", true);
             request.getRequestDispatcher("index.jsp").forward(request, response);

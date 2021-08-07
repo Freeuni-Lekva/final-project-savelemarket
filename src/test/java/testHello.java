@@ -33,5 +33,6 @@ public class testHello {
         locStore = new LocationStoreDao(ds);
         addLocations(Arrays.asList(loc1_1,loc1_2,loc2));
         System.out.println("edit configurations to  Maven -> tomcat7:run");
+
     }
 }

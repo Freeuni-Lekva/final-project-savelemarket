@@ -12,7 +12,7 @@
 <html>
 <head>
     <meta charset="UTF-8">
-    <title>Messages</title>
+    <title>Create Post</title>
     <link rel="stylesheet" href="main.css">
 </head>
 <body>
@@ -58,7 +58,7 @@
         <div class="chose-amount">
             <div class="buy-or-sell">
                 <div class="buy-or-sell-item">
-                    <input type="radio" name="buy-or-sell" value="buy">
+                    <input type="radio" name="buy-or-sell" value="buy" checked = "checked">
                     <a class="input_name">ვიყიდი </a>
                 </div>
                     <div class="buy-or-sell-item">
@@ -66,7 +66,7 @@
                 <a class="input_name">გავყიდი </a>
                 </div>
             </div>
-            <input type="number" name="amount" class="chose-amount-input" />
+            <input type="number" name="amount" class="chose-amount-input" value = '0'/>
             <a class="gel-symbol">₾</a>
         </div>
 
