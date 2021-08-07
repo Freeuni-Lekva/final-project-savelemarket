@@ -103,7 +103,7 @@
                      });
                  }
             fun1();
-            setInterval (fun1, 1000);
+            setInterval (fun1, 2500);
 
         });
     </script>
