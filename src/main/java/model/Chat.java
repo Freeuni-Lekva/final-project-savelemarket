@@ -15,13 +15,13 @@ public abstract class Chat {
     }
 
     static final int MSG_NUM = 20;
-    abstract List<Message> getAllMessages();
-    abstract List<Message> getMessages(int number);
-    abstract int getChatID();
+    public abstract List<Message> getAllMessages();
+    public abstract List<Message> getMessages(int number);
+    public abstract int getChatID();
     // Removed add members for interface to work in private too (private chat doesn't need add/remove methods)
     //returns id of sent message, might need it for something idk
-    abstract int sendMessage(Message message);
+    public abstract int sendMessage(Message message);
     //void deleteMessage(int id); // No need for it yet
-    abstract int getMemberCount();
-    abstract boolean isPrivate();
+    public abstract int getMemberCount();
+    public abstract boolean isPrivate();
 }
