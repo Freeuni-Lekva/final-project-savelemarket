@@ -13,15 +13,19 @@ public class ProfileServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         redirectIfNotLogged(req,resp);
-        if(req.getQueryString()== null || req.getQueryString().length()<uLen)  return; // wrong url
-        String mail = req.getQueryString().substring(uLen);
-
         Account current = getCurrentAccount(req);
         if (current == null) {
             // user not logged in
             req.getRequestDispatcher("index.jsp").forward(req,resp);
             return;
         }
+        if(req.getQueryString()== null || req.getQueryString().length()<uLen)  {
+            req.getRequestDispatcher("profile.jsp").forward(req,resp);
+            return;
+        }
+
+        String mail = req.getQueryString().substring(uLen);
+
         if(current.getMail().equals(mail)){
             // same profile as logged in user
             req.getRequestDispatcher("profile.jsp").forward(req,resp);
