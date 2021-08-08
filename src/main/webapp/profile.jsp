@@ -86,6 +86,7 @@
                     out.println("<a class=\"post-time\" id=\"post-time" + i + "\"value=\""+shoppingItem.getCreateTime()+ "\" >" + shoppingItem.getCreateTime() + "</a>\n" +
                             "                </div>");
                     out.println("<div class=\"post-delete-div\"  id=\""+i+"\">\n" +
+
                             "                    <input type=\"submit\" name=\"post-delete\" class=\"post-delete\" value =\"წაშლა\"/>\n" +
                             "                </div>\n" +
                             "            </div>");
