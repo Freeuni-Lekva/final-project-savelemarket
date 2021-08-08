@@ -279,7 +279,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
         try {
             for(int i = 0;i<newSize;i++) {
                 if(!rs.next()){
-                    fetchNumberForChat.put(id,i); // this should fix integer overflow
+                    fetchNumberForChat.put(id,Math.max(i,DEFAULT_FETCH_SIZE)); // this should fix integer overflow
                     closeConnection(c);
                     break;
                 }
