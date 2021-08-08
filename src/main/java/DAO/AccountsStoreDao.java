@@ -20,8 +20,7 @@ public class AccountsStoreDao extends DAO implements AccountsStore {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement statement =
-                    connection.prepareStatement("" +
+            PreparedStatement statement = connection.prepareStatement("" +
                             "INSERT INTO accounts (first_name, last_name, mail, location_id, pass) " +
                             "VALUES (?,?,?,?,?);", Statement.RETURN_GENERATED_KEYS);
             LocationStore locStore = new LocationStoreDao(dataSource);
@@ -44,8 +43,7 @@ public class AccountsStoreDao extends DAO implements AccountsStore {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement statement =
-                    connection.prepareStatement("DELETE FROM accounts WHERE mail = ?");
+            PreparedStatement statement = connection.prepareStatement("DELETE FROM accounts WHERE mail = ?");
             statement.setString(1, account.getMail());
             statement.executeUpdate();
         } catch (SQLException throwables) {
@@ -60,9 +58,7 @@ public class AccountsStoreDao extends DAO implements AccountsStore {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement statement =
-                    connection.prepareStatement("" +
-                            "UPDATE accounts SET location_id = ? WHERE mail = ?");
+            PreparedStatement statement = connection.prepareStatement("UPDATE accounts SET location_id = ? WHERE mail = ?");
             LocationStore locStore = new LocationStoreDao(dataSource);
             int locId = locStore.getLocationId(location.getName(), location.getSessionNumber());
             statement.setInt(1, locId);
@@ -106,8 +102,7 @@ public class AccountsStoreDao extends DAO implements AccountsStore {
         Connection conn = null;
         try {
             conn = dataSource.getConnection();
-            PreparedStatement statement = conn.prepareStatement(
-                    "SELECT first_name, last_name, mail, location_id, pass FROM accounts WHERE mail = ?");
+            PreparedStatement statement = conn.prepareStatement("SELECT first_name, last_name, mail, location_id, pass FROM accounts WHERE mail = ?");
             statement.setString(1, mail);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
@@ -144,8 +139,7 @@ public class AccountsStoreDao extends DAO implements AccountsStore {
         try {
             conn = dataSource.getConnection();
             Statement stm = conn.createStatement();
-            ResultSet rs = stm.executeQuery(
-                    "SELECT first_name, last_name, mail, location_id, pass FROM accounts");
+            ResultSet rs = stm.executeQuery("SELECT first_name, last_name, mail, location_id, pass FROM accounts");
             while (rs.next()) {
                 String firstName = rs.getString(1);
                 String lastName = rs.getString(2);
