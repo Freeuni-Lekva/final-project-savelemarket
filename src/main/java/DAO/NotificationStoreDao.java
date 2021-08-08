@@ -61,7 +61,7 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
         } finally {
             closeConnection(connection);
         }
-        return null;
+        return new ArrayList<Notification>();
     }
 
     @Override
