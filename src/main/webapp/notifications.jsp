@@ -43,7 +43,7 @@
 
         for(Notification n : pendingNotifs){
             %>
-            რასაც უნდა დაეთანხმოს ან უარყოს.
+
             <section class="notification">
                 <%=n.getStatusMessage()%>
                 <%=n.getSenderMail()%>
@@ -54,7 +54,6 @@
             <%
         }
     %>
-    ძველი ნოთიფიქეიშენები
     <%
         List<Notification> nonPendingNotifs = notifStore.getNonPendingNotificationsFor(currentAccount.getMail());
 

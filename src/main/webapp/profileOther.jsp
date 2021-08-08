@@ -61,7 +61,7 @@
                 </a>
             </div>
         </div>
-        <form action="/chat" method="post" class="">
+        <form action="/pchat" method="post" class="">
             <input type="submit" name="send-private-message" class="send-private-message" value ="წერილის გაგზავნა"/>
         </form>
     </section>
