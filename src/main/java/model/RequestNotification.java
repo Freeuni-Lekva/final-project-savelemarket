@@ -50,7 +50,11 @@ public class RequestNotification implements Notification{
     public double getPrice() {
         return price;
     }
-
+    @Override
+    public String getStatusMessage(){
+        if(status == Notification.PENDING) return PENDING_MSG;
+        return (status == Notification.ACCEPTED ? ACCEPTED_MSG : REJECTED_MSG);
+    }
     @Override
     public String toString() {
         return "RequestNotification{" +
