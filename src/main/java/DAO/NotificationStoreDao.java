@@ -14,8 +14,8 @@ import java.util.List;
 
 public class NotificationStoreDao extends DAO implements NotificationStore{
     private static final String prefixOfGetNotifications =  "SELECT * FROM request_notification r INNER JOIN locations l ON (r.location_id = l.location_id) WHERE receiver_mail = ? ";
-    private static final String getPendingNotifications =   prefixOfGetNotifications + "AND notification_status = " + Notification.PENDING + ";";
-    private static final String getNonPendingNotifications = prefixOfGetNotifications + "AND notification_status != " + Notification.PENDING + ";";
+    private static final String getPendingNotifications =   prefixOfGetNotifications + "AND notification_status = " + Notification.PENDING + "ORDER BY notification_id DESC;";
+    private static final String getNonPendingNotifications = prefixOfGetNotifications + "AND notification_status != " + Notification.PENDING + "ORDER BY notification_id DESC;";
     private static final String hasNotification = "SELECT * FROM request_notification WHERE sender_mail = ? AND receiver_mail = ? AND requested_price = ? AND location_id = ?;";
     private static final String clearAllNotificationsFor = "DELETE FROM request_notification WHERE receiver_mail = ?;";
     private static final String deleteNotification = "DELETE FROM request_notification WHERE notification_id = ?;";
