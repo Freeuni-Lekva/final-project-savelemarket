@@ -1,10 +1,7 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Qorbuda
-  Date: 7/14/2021
-  Time: 19:39
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="DAO.ChatStore" %>
+<%@ page import="model.Chat" %>
+<%@ page import="model.Account" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -38,6 +35,34 @@
             </li>
         </form>
     </section>
+    <%
+        Account account = (Account) session.getAttribute("current-account");
+        ChatStore chatStore = (ChatStore) request.getServletContext().getAttribute("chat-store");
+        List<Chat> chats = chatStore.getUserChats(account.getMail());
+        for(Chat ch : chats){
+            String chatName;
+            if(ch.isPrivate()){
+                List<Account> members = ch.getMembers(chatStore);
+                chatName = (members.get(0).getMail().equals(account.getMail())) ?
+                        members.get(1).getMail() + members.get(1).getName() + members.get(1).getLastName() :
+                        members.get(0).getMail() + members.get(0).getName() + members.get(0).getLastName() ;
+    %>
+            <section class="private-message">
+                <%=chatName%>  <%-- აქ არი იტოქში სახელიც გვარიც და მეილიც, როგორც გინდა დატოვე რომელიც სჯობს --%>
+                <%=ch.getMemberCount()%> <%-- აქ შეგვიძლია ბოლო მესიჯი გამოვიტანოთ 1 ფუნქციის დაწერა მიწევს ჩატში მარტო--%>
+            </section>
+    <%
+            }else{
+                chatName = account.getLocation().getName() + "-" + account.getLocation().getSessionNumber();
+    %>
+            <section class="public-message">
+                <%=chatName%>
+                <%=ch.getMemberCount()%>
+            </section>
+    <%
+            }
+        }
+    %>
 </header>
 </body>
 </html>
