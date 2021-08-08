@@ -9,6 +9,7 @@ public interface NotificationStore {
     List<Notification> getNonPendingNotificationsFor(String mail);
     void clearAllNotificationsFor(String mail);
     void deleteNotification(int id);
+    boolean hasNotification(Notification notification);
     int addNotification(Notification notification);
     void acceptNotification(int id);
     void rejectNotification(int id);

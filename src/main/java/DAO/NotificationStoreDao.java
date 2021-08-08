@@ -16,6 +16,7 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
     private static final String prefixOfGetNotifications =  "SELECT * FROM request_notification r INNER JOIN locations l ON (r.location_id = l.location_id) WHERE receiver_mail = ? ";
     private static final String getPendingNotifications =   prefixOfGetNotifications + "AND notification_status = " + Notification.PENDING + ";";
     private static final String getNonPendingNotifications = prefixOfGetNotifications + "AND notification_status != " + Notification.PENDING + ";";
+    private static final String hasNotification = "SELECT * FROM request_notification WHERE sender_mail = ? AND receiver_mail = ? AND requested_price = ? AND location_id = ?;";
     private static final String clearAllNotificationsFor = "DELETE FROM request_notification WHERE receiver_mail = ?;";
     private static final String deleteNotification = "DELETE FROM request_notification WHERE notification_id = ?;";
     private static final String addNotification = "INSERT INTO request_notification(notification_status,location_id,sender_mail,receiver_mail,requested_price) VALUES(?,?,?,?,?) ;";
@@ -26,12 +27,31 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
         this.dataSource = dataSource;
     }
 
+    public boolean hasNotification(Notification n){
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            LocationStore locationStore = new LocationStoreDao(dataSource);
+            int id = locationStore.getLocationId(n.getRequestedLocation().getName(),n.getRequestedLocation().getSessionNumber());
+            PreparedStatement st = connection.prepareStatement(hasNotification);
+            st.setString(1,n.getSenderMail());
+            st.setString(2,n.getReceiverMail());
+            st.setDouble(3,n.getPrice());
+            st.setDouble(4,id);
+            ResultSet rs = st.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally{
+            closeConnection(connection);
+        }
+        return false;
+    }
 
     private List<Notification> getNotificationsFor(String getQuery,String mail) {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            System.out.println(getQuery);
             PreparedStatement st = connection.prepareStatement(getQuery);
             st.setString(1,mail);
             ResultSet rs = st.executeQuery();
