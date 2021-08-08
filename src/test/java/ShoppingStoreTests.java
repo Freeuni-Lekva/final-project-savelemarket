@@ -48,7 +48,7 @@ public class ShoppingStoreTests {
         ds.setUser(user);
         ds.setPassword(password);
 
-        initDbs(ds);
+//        initDbs(ds);
 
         shoppingStore = new ShoppingStoreDao(ds);
         locationStore = new LocationStoreDao(ds);
@@ -161,6 +161,18 @@ public class ShoppingStoreTests {
             System.out.println("there are some items left");
         }
     }
+
+
+
+
+    @Test
+    public void test(){
+//        shoppingStore.getFilteredItems("Kazbegi", 1, 100);
+//        shoppingStore.getFilteredItems("Svaneti", 2, 200);
+//        shoppingStore.getFilteredItems("Marelisi", 1, 200);
+    }
+
+
 
 
     private void initDbs(MysqlConnectionPoolDataSource ds){

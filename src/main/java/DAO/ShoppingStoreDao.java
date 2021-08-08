@@ -7,7 +7,9 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ShoppingStoreDao extends DAO implements ShoppingStore {
     private final DataSource dataSource;
@@ -158,6 +160,55 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
             closeConnection(conn);
         }
         return ret;
+    }
+
+    @Override
+    public List<ShoppingItem> getFilteredItems(String locationName, int sessinNum, double price) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement("SELECT shop_store.shop_item_id FROM locations INNER JOIN " +
+                    "shop_locations USING (location_id) INNER JOIN shop_store USING (shop_item_id) WHERE locations.location_name = ?" +
+                    "AND locations.sess = ? AND shop_store.price <= ?" );
+            statement.setString(1, locationName);
+            statement.setInt(2, sessinNum);
+            statement.setDouble(3, price);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                int itemId = rs.getInt("shop_store.shop_item_id");
+                System.out.println(getItemById(itemId));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+
+        return null;
+    }
+
+
+    private ShoppingItem getItemById(int id){
+        Connection conn = null;
+        try {
+            conn = dataSource.getConnection();
+            PreparedStatement stm = conn.prepareStatement("SELECT shop_item_id, price, create_time FROM shop_store " +
+                    "WHERE shop_item_id = ?;");
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()) {
+                int itemId = rs.getInt(1);
+                Account writerAccount = getWriterAccount(conn, itemId);
+                List<Location> desiredLocations = getLocationsFor(conn, itemId);
+                double price = rs.getDouble(2);
+                String time = rs.getString(3);
+                return new SaveleShoppingItem(itemId,time, writerAccount, desiredLocations, price);
+            }
+        } catch (SQLException throwables) { throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return null;
     }
 
 

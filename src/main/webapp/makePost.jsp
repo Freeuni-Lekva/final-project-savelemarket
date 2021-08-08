@@ -66,7 +66,7 @@
                 <a class="input_name">გავყიდი </a>
                 </div>
             </div>
-            <input type="number" name="amount" class="chose-amount-input" value = '0'/>
+            <input type="number" name="amount" class="chose-amount-input" value = '0' min='0'/>
             <a class="gel-symbol">₾</a>
         </div>
 

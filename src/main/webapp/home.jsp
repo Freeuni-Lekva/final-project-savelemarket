@@ -69,8 +69,8 @@
 
             </div>
             <div class="amount-filter">
-                <a class="input_name">უდიდესი თანხი: </a>
-                <input type="number" name="amount" class="amount-input"/>
+                <a class="input_name">უდიდესი თანხა: </a>
+                <input type="number" name="amount" class="amount-input" value = '0' min='0' />
                 <a class="gel-symbol">₾</a>
             </div>
             <input type="submit" value="გაფილტვრა" class="filter-btn"/>
