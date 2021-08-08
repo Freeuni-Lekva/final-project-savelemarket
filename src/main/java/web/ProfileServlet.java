@@ -38,6 +38,8 @@ public class ProfileServlet extends GeneralServlet {
             return;
         }
         // ეს ექაუნთი უნდა აჩვენო ლევან, რო ნახავ ეს კომენტარი წაშალე
+        req.getSession().setAttribute("profile-account",accToShow); // ამითი ვაწვდი ინფორმაციას privateChatServlet-ს
+        // ალბათ შევცვლი
         req.setAttribute("profile-account",accToShow);
         req.getRequestDispatcher("profileOther.jsp").forward(req,resp);
 

@@ -179,6 +179,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
     }
     @Override
     public int createPrivateChat(String senderMail, String receiverMail) {
+        System.out.println("sheqmna chati");
         int id = WRONG_ID;
         Connection c = null;
         try {
@@ -190,13 +191,14 @@ public class ChatStoreDao extends DAO implements ChatStore {
                 PreparedStatement st = c.prepareStatement(createPrivateChat, Statement.RETURN_GENERATED_KEYS);
                 st.executeUpdate();
                 id = getID(st);
+                System.out.println(id);
                 PreparedStatement st1 = c.prepareStatement(insertIntoChatUsers);
-                PreparedStatement st2 = c.prepareStatement(insertIntoChatUsers);
                 st1.setInt(1, id);
                 st1.setString(2, senderMail);
+                st1.executeUpdate();
+                PreparedStatement st2 = c.prepareStatement(insertIntoChatUsers);
                 st2.setInt(1, id);
                 st2.setString(2, receiverMail);
-                st1.executeUpdate();
                 st2.executeUpdate();
             }else{
                 return existingID;
@@ -336,6 +338,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
 
     @Override
     // returns chats without messages for now
+    // if private 0th element is the mail given.
     public List<Chat> getUserChats(String mail) {
         List<Chat> chats = new ArrayList<>();
         Connection connection = null;
@@ -350,7 +353,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
                 if(rs.getBoolean("is_private") == true){
                     List<Account> accs = getChatMembers(chat_id);
                     if(mail.equals(accs.get(0).getMail())) {
-                        ch = new PrivateChat( accs.get(0), accs.get(1),this);
+                        ch = new PrivateChat(accs.get(0), accs.get(1),this);
                     }else{
                         ch = new PrivateChat(accs.get(1),accs.get(0),this);
                     }
