@@ -2,6 +2,7 @@ package web;
 
 import DAO.ChatStore;
 import DAO.ChatStoreDao;
+import model.Account;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -16,8 +17,11 @@ public class PrivateChatServlet extends GeneralServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         redirectIfNotLogged(request,response);
-        String otherMail = request.getParameter("profile-account"); // might be Attribute
+        String otherMail = ((Account)request.getSession().getAttribute("profile-account")).getMail(); // might be Attribute
         String myMail = getCurrentAccount(request).getMail();
+        if(myMail.equals(otherMail)){
+            return;
+        }
         ChatStore chatStore = getChatStoreDao(request);
         int id = chatStore.getPrivateChatID(myMail,otherMail);
         if(id == ChatStoreDao.ID_DOESNT_EXIST){

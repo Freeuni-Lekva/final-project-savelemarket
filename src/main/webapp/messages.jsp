@@ -42,10 +42,8 @@
         for(Chat ch : chats){
             String chatName;
             if(ch.isPrivate()){
-                List<Account> members = ch.getMembers(chatStore);
-                chatName = (members.get(0).getMail().equals(account.getMail())) ?
-                        members.get(1).getMail() + members.get(1).getName() + members.get(1).getLastName() :
-                        members.get(0).getMail() + members.get(0).getName() + members.get(0).getLastName() ;
+                List<Account> members = ch.getMembers(chatStore); // members(0) is always the account.getMail();
+                chatName = members.get(1).getMail();
     %>
             <section class="private-message">
                 <%=chatName%>  <%-- აქ არი იტოქში სახელიც გვარიც და მეილიც, როგორც გინდა დატოვე რომელიც სჯობს --%>
