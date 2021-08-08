@@ -80,7 +80,7 @@
                     out.println("<div class=\"post\">\n" +
                             "            <div class=\"post-header\">\n" +
                             "                <div class=\"post-author-date\">\n" +
-                            "                    <a class=\"post-author\" id=\"post-author" + i + "\"name=\"post-author\" value=\"" + currentAccount.getMail() +"\">" +
+                            "                    <a  class=\"post-author\" id=\"post-author" + i + "\"name=\"post-author\" value=\"" + currentAccount.getMail() +"\">" +
                             currentAccount.getMail() + "</a>");
 
                     out.println("<a class=\"post-time\" id=\"post-time" + i + "\"value=\""+shoppingItem.getCreateTime()+ "\" >" + shoppingItem.getCreateTime() + "</a>\n" +

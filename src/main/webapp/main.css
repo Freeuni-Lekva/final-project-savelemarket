@@ -480,6 +480,11 @@ select{
 .post-author{
     font-size: 23px;
     color: green;
+    text-decoration: none;
+}
+
+.post-author:hover{
+    color: #00e1ff;
 }
 
 .post-time{
@@ -614,10 +619,19 @@ select{
     height: 30px;
     margin-top: 5px;
     border-radius: 5px;
+    margin-left: 10px;
 }
 
 .amount-filter, .session-filter, .filter-btn{
     margin-top: 10px;
+}
+
+.amount-filter{
+    display: flex;
+    flex-direction: row;
+    margin-right: 10px;
+    align-items: center;
+
 }
 
 .filter-btn{
