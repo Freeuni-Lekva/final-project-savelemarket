@@ -17,7 +17,7 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
     private static final String getPendingNotifications =   prefixOfGetNotifications + "AND notification_status = " + Notification.PENDING + "ORDER BY notification_id DESC;";
     private static final String getNonPendingNotifications = prefixOfGetNotifications + "AND notification_status != " + Notification.PENDING + "ORDER BY notification_id DESC;";
     private static final String hasNotification = "SELECT * FROM request_notification WHERE sender_mail = ? AND receiver_mail = ? AND requested_price = ? AND location_id = ?;";
-    private static final String clearAllNotificationsFor = "DELETE FROM request_notification WHERE receiver_mail = ?;";
+    private static final String clearAllNotificationsFor = "DELETE FROM request_notification WHERE receiver_mail = ? AND notification_status != " + Notification.PENDING + ";";
     private static final String deleteNotification = "DELETE FROM request_notification WHERE notification_id = ?;";
     private static final String addNotification = "INSERT INTO request_notification(notification_status,location_id,sender_mail,receiver_mail,requested_price) VALUES(?,?,?,?,?) ;";
     private static final String changeNotificationStatus = "UPDATE request_notification SET notification_status = ? WHERE notification_id = ?;";
