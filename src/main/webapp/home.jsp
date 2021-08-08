@@ -69,7 +69,21 @@
 
             </div>
             <div class="amount-filter">
+<<<<<<< Updated upstream
                 <a class="input_name">უდიდესი თანხა: </a>
+=======
+                <div class="buy-or-sell">
+                    <div class="buy-or-sell-item">
+                        <input type="radio" name="buy-or-sell" value="buy" checked = "checked">
+                        <a class="input_name">ვიყიდი ნაკლებად</a>
+                    </div>
+                    <div class="buy-or-sell-item">
+                        <input type="radio" name="buy-or-sell" value="sell">
+                        <a class="input_name">გავყიდი მეტად</a>
+                    </div>
+                </div>
+                <a class="input_name">თანხა: </a>
+>>>>>>> Stashed changes
                 <input type="number" name="amount" class="amount-input" value = '0' min='0' />
                 <a class="gel-symbol">₾</a>
             </div>
