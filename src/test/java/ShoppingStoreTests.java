@@ -168,13 +168,8 @@ public class ShoppingStoreTests {
     @Test
     public void test(){
 //        shoppingStore.getFilteredItems("Kazbegi", 1, 100);
-<<<<<<< Updated upstream
-//        shoppingStore.getFilteredItems("Svaneti", 2, 200);
-//        shoppingStore.getFilteredItems("Marelisi", 1, 200);
-=======
     //shoppingStore.getFilteredItems("Svaneti", 1,true, 200);
     shoppingStore.getFilteredItems(null, -1, false, -900);
->>>>>>> Stashed changes
     }
 
 
