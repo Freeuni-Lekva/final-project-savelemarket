@@ -93,7 +93,7 @@ public class RegistrationServlet extends GeneralServlet {
 
     private boolean invalidOrUsedMail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String mail = (String)(request.getParameter("mail"));
-        if(!mail.contains("@freeuni.edu.ge")){
+        if(!mail.endsWith("@freeuni.edu.ge") && !mail.endsWith("@agruni.edu.ge")){
             request.setAttribute("invalid-mail", true);
             request.getRequestDispatcher("registration.jsp").forward(request, response);
             return true;

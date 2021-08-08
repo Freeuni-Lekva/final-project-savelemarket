@@ -334,15 +334,4 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
         return df.format(dt);
     }
 
-    private int getID(PreparedStatement st){
-        try {
-            ResultSet set = st.getGeneratedKeys();
-            if(set.next()){
-                return set.getInt(1);
-            }
-        } catch (SQLException sqlException) {
-            sqlException.printStackTrace();
-        }
-        return -1;
-    }
 }

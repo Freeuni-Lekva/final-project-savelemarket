@@ -1,6 +1,11 @@
 <%@ page import="DAO.LocationStore" %>
 <%@ page import="DAO.LocationStoreDao" %>
-<%@ page import="java.util.List" %><%--
+<%@ page import="java.util.List" %>
+<%@ page import="DAO.ShoppingStore" %>
+<%@ page import="DAO.ShoppingStoreDao" %>
+<%@ page import="model.Account" %>
+<%@ page import="model.ShoppingItem" %>
+<%@ page import="model.Location" %><%--
   Created by IntelliJ IDEA.
   User: Qorbuda
   Date: 7/14/2021
@@ -13,6 +18,12 @@
     <meta charset="UTF-8">
     <title>Home</title>
     <link rel="stylesheet" href="main.css">
+    <%
+        ShoppingStore shoppingStore = (ShoppingStoreDao) request.getServletContext().getAttribute("shopping-items-store");
+        List<ShoppingItem> allItems = shoppingStore.getAllItems();
+        Account currentAccount = (Account)request.getSession().getAttribute("current-account");
+
+    %>
 </head>
 <body>
 <header>
@@ -34,7 +45,7 @@
             </ul>
 
         </nav>
-        <form action="/LogOut" method="post" class="logout-form">
+        <form action="/logout" method="post" class="logout-form">
             <li>
                 <input type="submit" value="გასვლა" class="sing-out"/>
             </li>
@@ -69,9 +80,6 @@
 
             </div>
             <div class="amount-filter">
-<<<<<<< Updated upstream
-                <a class="input_name">უდიდესი თანხა: </a>
-=======
                 <div class="buy-or-sell">
                     <div class="buy-or-sell-item">
                         <input type="radio" name="buy-or-sell" value="buy" checked = "checked">
@@ -82,9 +90,7 @@
                         <a class="input_name">გავყიდი მეტად</a>
                     </div>
                 </div>
-                <a class="input_name">თანხა: </a>
->>>>>>> Stashed changes
-                <input type="number" name="amount" class="amount-input" value = '0' min='0' />
+                <input type="number" name="amount" class="amount-input"/>
                 <a class="gel-symbol">₾</a>
             </div>
             <input type="submit" value="გაფილტვრა" class="filter-btn"/>
@@ -92,27 +98,41 @@
     </section>
 
     <section class="posts-section">
-        <div class="post">
-            <a class="post-author">ლირემ18@ფრეეუნი.ედუ.გე</a>
-            <a class="post-time">12:12:12:12:12</a>
-            <div class="location-from">
-                <a class="location-parameter">მაქვს:</a>
-                <a class="post-location">ძეგვი</a>
-            </div>
-            <div class="location-to">
-                <a class="location-parameter">მინდა:</a>
-                <a class="post-location">მალდივის კუნძულები</a>
-            </div>
-            <div class="post-footer">
-                <a class="post-price">ფასი: 1.20$</a>
-                <form action="/serveletissaxeli" method="post" class="">
-                    <input type="submit" name="send-request" class="send-request" value ="გაცვლის მოთხოვნა"/>
-                </form>
-            </div>
+        <%
+            if(allItems.size() == 0){
+                out.println("<a class=\"no-posts\">პოსტები არ არის</a>");
+            }else {
+                for (int i = allItems.size() - 1; i >= 0; i--) {
+                    ShoppingItem shoppingItem = allItems.get(i);
+                    if(!shoppingItem.getWriterAccount().getMail().equals(currentAccount.getMail())) {
+                        out.println("<div class=\"post\"><a href =\"profile?id=" + shoppingItem.getWriterAccount().getMail()+"\"class=\"post-author\" id=\"post-author" + i + "\"name=\"post-author\">" +
+                                shoppingItem.getWriterAccount().getMail() + "</a>");
 
-        </div>
+                        out.println("<a class=\"post-time\" id=\"post-time" + i + " \">" + shoppingItem.getCreateTime() + "</a>");
+                        out.println("<div class=\"location-from\"><a class=\"location-parameter\">მაქვს:</a>");
+                        out.println("<a class=\"post-location\"  >");
+                        out.println(shoppingItem.getWriterAccount().getLocation().getName() + " " + shoppingItem.getWriterAccount().getLocation().getSessionNumber() + "</a></div>");
+                        out.println("<div class=\"location-to\"><a class=\"location-parameter\">მინდა:</a><div class=\"locations-want\">");
+                        for (Location l : shoppingItem.getDesiredLocations()) {
+                            out.println("<a class=\"post-location-want\">" + l.getName() + " " + l.getSessionNumber() + "</a>");
+                        }
+                        out.println("</div></div><div class=\"post-footer\">");
+                        if (shoppingItem.getPrice() < 0)
+                            out.println("<a class=\"post-price\">" + "ვიყიდი: " + shoppingItem.getPrice() * (-1) + " ₾</a>");
+                        else if (shoppingItem.getPrice() > 0)
+                            out.println("<a class=\"post-price\">" + "გავყიდი: " + shoppingItem.getPrice() + " ₾</a>");
+                        out.println("<form action=\"/serveletissaxeli\" method=\"post\" class=\"\">\n" +
+                                "                    <input type=\"submit\" name=\"send-request\" class=\"send-request\" value =\"გაცვლის მოთხოვნა\"/>\n" +
+                                "                </form>");
+                        out.println("</div></div>");
+                    }
+                }
+            }
+        %>
+
     </section>
 </section>
 </body>
 </body>
 </html>
+
