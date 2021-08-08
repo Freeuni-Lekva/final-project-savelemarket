@@ -162,31 +162,7 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
         return ret;
     }
 
-    @Override
-    public List<ShoppingItem> getFilteredItems(String locationName, int sessinNum, double price) {
-        Connection connection = null;
-        try {
-            connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement("SELECT shop_store.shop_item_id FROM locations INNER JOIN " +
-                    "shop_locations USING (location_id) INNER JOIN shop_store USING (shop_item_id) WHERE locations.location_name = ?" +
-                    "AND locations.sess = ? AND shop_store.price <= ?" );
-            statement.setString(1, locationName);
-            statement.setInt(2, sessinNum);
-            statement.setDouble(3, price);
-            ResultSet rs = statement.executeQuery();
-            while(rs.next()){
-                int itemId = rs.getInt("shop_store.shop_item_id");
-                System.out.println(getItemById(itemId));
-            }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        } finally {
-            closeConnection(connection);
-        }
-
-        return null;
-    }
-
+    
 
     private ShoppingItem getItemById(int id){
         Connection conn = null;
