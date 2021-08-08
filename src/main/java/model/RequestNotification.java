@@ -56,6 +56,10 @@ public class RequestNotification implements Notification{
         return (status == Notification.ACCEPTED ? ACCEPTED_MSG : REJECTED_MSG);
     }
     @Override
+    public boolean isPending(){
+        return (status == Notification.PENDING);
+    }
+    @Override
     public String toString() {
         return "RequestNotification{" +
                 "status=" + status +

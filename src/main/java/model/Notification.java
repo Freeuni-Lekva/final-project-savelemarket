@@ -12,6 +12,7 @@ public interface Notification {
     String getReceiverMail();
     Location getRequestedLocation();
     double getPrice();
+    boolean isPending();
     String getStatusMessage();
     int getNotificationID();
 }
