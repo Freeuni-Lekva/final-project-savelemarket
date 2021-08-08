@@ -98,7 +98,7 @@
 
   <servlet-mapping>
     <servlet-name>LogOutServlet</servlet-name>
-    <url-pattern>/LogOut</url-pattern>
+    <url-pattern>/logout</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
     <servlet-name>PostDeleteServlet</servlet-name>

@@ -1,10 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: Qorbuda
-  Date: 7/14/2021
-  Time: 19:41
-  To change this template use File | Settings | File Templates.
---%>
+<%@ page import="DAO.ChatStore" %>
+<%@ page import="model.Account" %>
+<%@ page import="DAO.NotificationStore" %>
+<%@ page import="model.Notification" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -32,12 +30,46 @@
             </ul>
 
         </nav>
-        <form action="/LogOut" method="post" class="logout-form">
+        <form action="/logout" method="post" class="logout-form">
             <li>
                 <input type="submit" value="გასვლა" class="sing-out"/>
             </li>
         </form>
     </section>
+    <%
+        NotificationStore notifStore = (NotificationStore) request.getServletContext().getAttribute("notification-store");
+        Account currentAccount  = (Account) session.getAttribute("current-account");
+        List<Notification> pendingNotifs = notifStore.getPendingNotificationsFor(currentAccount.getMail());
+
+        for(Notification n : pendingNotifs){
+            %>
+            რასაც უნდა დაეთანხმოს ან უარყოს.
+            <section class="notification">
+                <%=n.getStatusMessage()%>
+                <%=n.getSenderMail()%>
+                <%=n.getRequestedLocation().getName()%>
+                <%=n.getRequestedLocation().getSessionNumber()%>
+                <%=n.getPrice()%>
+            </section>
+            <%
+        }
+    %>
+    ძველი ნოთიფიქეიშენები
+    <%
+        List<Notification> nonPendingNotifs = notifStore.getNonPendingNotificationsFor(currentAccount.getMail());
+
+        for(Notification n : nonPendingNotifs){
+            %>
+        <section class="notification">
+            <%=n.getStatusMessage()%>
+            <%=n.getSenderMail()%>
+            <%=n.getRequestedLocation().getName()%>
+            <%=n.getRequestedLocation().getSessionNumber()%>
+            <%=n.getPrice()%>
+        </section>
+            <%
+        }
+    %>
 </header>
 </body>
 </html>

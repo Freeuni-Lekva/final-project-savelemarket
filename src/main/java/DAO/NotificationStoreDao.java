@@ -13,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationStoreDao extends DAO implements NotificationStore{
-    private static final String prefixOfGetNotifications =  "SELECT * FROM (request_notification INNER JOIN locations l) WHERE receiver_mail = ? ";
+    private static final String prefixOfGetNotifications =  "SELECT * FROM request_notification r INNER JOIN locations l ON (r.location_id = l.location_id) WHERE receiver_mail = ? ";
     private static final String getPendingNotifications =   prefixOfGetNotifications + "AND notification_status = " + Notification.PENDING + ";";
     private static final String getNonPendingNotifications = prefixOfGetNotifications + "AND notification_status != " + Notification.PENDING + ";";
     private static final String clearAllNotificationsFor = "DELETE FROM request_notification WHERE receiver_mail = ?;";
@@ -31,6 +31,7 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
+            System.out.println(getQuery);
             PreparedStatement st = connection.prepareStatement(getQuery);
             st.setString(1,mail);
             ResultSet rs = st.executeQuery();
@@ -60,6 +61,7 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
             Notification notification = new RequestNotification(
                     rs.getInt("notification_status"),rs.getString("sender_mail"), rs.getString("receiver_mail")
                     ,location,rs.getDouble("requested_price"),rs.getInt("notification_id"));
+            System.out.println(notification);
             notificationList.add(notification);
         }
         return notificationList;
