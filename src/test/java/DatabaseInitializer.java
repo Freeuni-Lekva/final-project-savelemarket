@@ -6,7 +6,8 @@ import java.sql.Statement;
 
 public class DatabaseInitializer {
 
-    public static final String dropAllTables = "DROP TABLE IF EXISTS shop_locations;"+
+    public static final String dropAllTables = "DROP TABLE IF EXISTS request_notification;" +
+            "DROP TABLE IF EXISTS shop_locations;"+
             "DROP TABLE IF EXISTS shop_store;" +
             "DROP TABLE IF EXISTS message;" +
             "DROP TABLE IF EXISTS chat_users;" +
@@ -64,9 +65,19 @@ public class DatabaseInitializer {
             "    FOREIGN KEY (`shop_item_id`) REFERENCES shop_store(`shop_item_id`)," +
             "    FOREIGN KEY (`location_id`) REFERENCES locations(`location_id`)" +
             ");";
+    public static final String createRequestNotif = "CREATE TABLE IF NOT EXISTS request_notification(" +
+            "   `notification_id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL," +
+            "   `notification_status` INT NOT NULL," +
+            "   `location_id` INT NOT NULL," +
+            "   `sender_mail` VARCHAR(64) NOT NULL," +
+            "   `receiver_mail` VARCHAR(64) NOT NULL," +
+            "   `requested_price` DOUBLE NOT NULL," +
+            "   FOREIGN KEY (`location_id`) REFERENCES locations(`location_id`)," +
+            "   FOREIGN KEY (`sender_mail`) REFERENCES accounts(`mail`)," +
+            "   FOREIGN KEY (`receiver_mail`) REFERENCES accounts(`mail`));";
 
     public static final String initializeDatabase = createChat + createLocations + createAccounts + createChatUsers +
-            createMessage + createShopStore + createShopLoc;
+            createMessage + createShopStore + createShopLoc + createRequestNotif;
 
     public static final String recreateDatabase = dropAllTables + initializeDatabase;
 
