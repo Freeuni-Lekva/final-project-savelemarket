@@ -7,7 +7,9 @@ import javax.sql.DataSource;
 import java.sql.*;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ShoppingStoreDao extends DAO implements ShoppingStore {
     private final DataSource dataSource;
@@ -158,6 +160,113 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
             closeConnection(conn);
         }
         return ret;
+    }
+
+    
+
+    private ShoppingItem getItemById(int id){
+        Connection conn = null;
+        try {
+            conn = dataSource.getConnection();
+            PreparedStatement stm = conn.prepareStatement("SELECT shop_item_id, price, create_time FROM shop_store " +
+                    "WHERE shop_item_id = ?;");
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()) {
+                int itemId = rs.getInt(1);
+                Account writerAccount = getWriterAccount(conn, itemId);
+                List<Location> desiredLocations = getLocationsFor(conn, itemId);
+                double price = rs.getDouble(2);
+                String time = rs.getString(3);
+                return new SaveleShoppingItem(itemId,time, writerAccount, desiredLocations, price);
+            }
+        } catch (SQLException throwables) { throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return null;
+    }
+
+
+    /**
+     * If price < 0 you want to sell something and get items in which writer
+     * buys location/locations, otherwise you want to buy item.
+     */
+    @Override
+    public List<ShoppingItem> getFilteredItems(String location_name, int sess,  boolean wantToBuy, double price) {
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement statement = connection.prepareStatement(getAppropriateSqlCommand(location_name, sess, wantToBuy));
+            setFieldsToStatement(statement, location_name, sess, price);
+            System.out.println(statement);
+            ResultSet rs = statement.executeQuery();
+            while(rs.next()){
+                int itemId = rs.getInt("shop_store.shop_item_id");
+                System.out.println(getItemById(itemId));
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+        return null;
+    }
+
+
+    private String getAppropriateSqlCommand(String location_name, int sess,  boolean wantToBuy){
+        StringBuilder stringBuilder = new StringBuilder();
+        if(wantToBuy){
+            stringBuilder.append("SELECT DISTINCT shop_store.shop_item_id FROM locations INNER JOIN " +
+                    "shop_locations USING (location_id) INNER JOIN shop_store USING (shop_item_id) WHERE");
+        }else{
+            stringBuilder.append("SELECT DISTINCT shop_store.shop_item_id FROM shop_store INNER JOIN locations WHERE");
+        }
+        if(location_name == null && sess != -1){ stringBuilder.append(" locations.sess = ? AND ");}
+        if(location_name != null && sess == -1){ stringBuilder.append(" locations.location_name = ? AND ");}
+        if(location_name != null && sess != -1){ stringBuilder.append(" locations.location_name = ? AND locations.sess = ? AND ");}
+        stringBuilder.append(" shop_store.price <= ?;");
+        return stringBuilder.toString();
+    }
+
+    private void setFieldsToStatement(PreparedStatement statement, String location_name, int sess, double price) throws SQLException {
+        if(location_name == null && sess == -1){
+            statement.setDouble(1, price);
+        } else if(location_name != null && sess == -1){
+            statement.setString(1, location_name);
+            statement.setDouble(2, price);
+        } else if(location_name == null && sess != -1){
+            statement.setInt(1, sess);
+            statement.setDouble(2, price);
+        } else{
+            statement.setString(1, location_name);
+            statement.setInt(2, sess);
+            statement.setDouble(3, price);
+        }
+    }
+
+
+    private ShoppingItem getItemById(int id){
+        Connection conn = null;
+        try {
+            conn = dataSource.getConnection();
+            PreparedStatement stm = conn.prepareStatement("SELECT shop_item_id, price, create_time FROM shop_store " +
+                    "WHERE shop_item_id = ?;");
+            stm.setInt(1, id);
+            ResultSet rs = stm.executeQuery();
+            if(rs.next()) {
+                int itemId = rs.getInt(1);
+                Account writerAccount = getWriterAccount(conn, itemId);
+                List<Location> desiredLocations = getLocationsFor(conn, itemId);
+                double price = rs.getDouble(2);
+                String time = rs.getString(3);
+                return new SaveleShoppingItem(itemId,time, writerAccount, desiredLocations, price);
+            }
+        } catch (SQLException throwables) { throwables.printStackTrace();
+        } finally {
+            closeConnection(conn);
+        }
+        return null;
     }
 
 
