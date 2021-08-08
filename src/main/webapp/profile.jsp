@@ -70,7 +70,7 @@
         <a class="make-post" href="makePost.jsp">განცხადების დამატება</a>
     </section>
 
-    <section class="posts-section">
+    <section class="posts-section" id="posts-section">
         <%
             if(allItems.size() == 0){
                 out.println("<a class=\"no-posts\">პოსტები არ არის</a>");
@@ -80,17 +80,18 @@
                     out.println("<div class=\"post\">\n" +
                             "            <div class=\"post-header\">\n" +
                             "                <div class=\"post-author-date\">\n" +
-                            "                    <a class=\"post-author\">");
-                    out.println(currentAccount.getMail() + "</a>");
-                    out.println("<a class=\"post-time\">" + shoppingItem.getCreateTime() + "</a>\n" +
+                            "                    <a class=\"post-author\" id=\"post-author" + i + "\"name=\"post-author\" value=\"" + currentAccount.getMail() +"\">" +
+                            currentAccount.getMail() + "</a>");
+
+                    out.println("<a class=\"post-time\" id=\"post-time" + i + "\"value=\""+shoppingItem.getCreateTime()+ "\" >" + shoppingItem.getCreateTime() + "</a>\n" +
                             "                </div>");
-                    out.println("<form action=\"/deletePost\" method=\"post\" class=\"\">\n" +
+                    out.println("<div class=\"post-delete-div\"  id=\""+i+"\">\n" +
                             "                    <input type=\"submit\" name=\"post-delete\" class=\"post-delete\" value =\"წაშლა\"/>\n" +
-                            "                </form>\n" +
+                            "                </div>\n" +
                             "            </div>");
                     out.println("<div class=\"location-from\">\n" +
                             "                <a class=\"location-parameter\">მაქვს:</a>");
-                    out.println("<a class=\"post-location\">");
+                    out.println("<a class=\"post-location\"  >");
                     out.println(currentAccount.getLocation().getName() + " " + currentAccount.getLocation().getSessionNumber() + "</a>\n" +
                             "            </div>");
 
@@ -113,5 +114,23 @@
     </section>
 </section>
 </body>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(document).on("click", '.post-delete-div', function (e){
+            var itemId = $(this).attr('id');
+            console.log("aqaneee");
+            $.ajax({
+                type:"POST",
+                url:"PostDelete",
+                data:{ author: $("#post-author" + itemId).text(), date: $("#post-time" + itemId).text() },
+                success:function(data){
+                    $("#posts-section").html(data);
+                }
+            });
+        })
+    });
+</script>
 </body>
 </html>
