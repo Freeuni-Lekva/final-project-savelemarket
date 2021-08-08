@@ -483,8 +483,12 @@ select{
     text-decoration: none;
 }
 
+.post-author1{
+    font-size: 23px;
+    color: green;
+}
 .post-author:hover{
-    color: #00e1ff;
+    color: #25a079;
 }
 
 .post-time{
