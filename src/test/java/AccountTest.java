@@ -6,6 +6,7 @@ import model.Location;
 import model.StudentAccount;
 import org.junit.jupiter.api.Test;
 
+import javax.sql.DataSource;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Arrays;
@@ -16,18 +17,8 @@ public class AccountTest {
 
     @Test
     public void test() throws SQLException {
-        MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
-        ds.setServerName("localhost");
-        ds.setPort(3306);
-        ds.setDatabaseName("testDatabase");
-        ds.setUser("root");
-        ds.setPassword("");
-        Statement st = ds.getConnection().createStatement();
-        st.executeUpdate("delete from message");
-        st.executeUpdate("delete from chat_users");
-        st.executeUpdate("delete from accounts");
-        st.executeUpdate("delete from locations");
-        st.executeUpdate("delete from chat");
+        DataSource ds = DatabaseInitializer.createDataSource();
+        DatabaseInitializer.recreateDatabase(ds);
         AccountsStore accDao = new AccountsStoreDao(ds);
         Location l = new SaveleLocation("lokacia",2);
         ChatStore chatStore = new ChatStoreDao(ds);
