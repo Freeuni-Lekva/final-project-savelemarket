@@ -32,7 +32,6 @@ public class ChatStoreDao extends DAO implements ChatStore {
     private static final String getMemberCount = "SELECT COUNT(chat_id) AS count FROM chat_users WHERE chat_id = ?";
     private static final String getUserChats = "SELECT * FROM chat_users c INNER JOIN chat ch ON c.chat_id = ch.chat_id INNER JOIN accounts a ON c.account_mail = a.mail INNER JOIN locations l ON (a.location_id = l.location_id) WHERE a.mail = ?;";
     public static final int ID_DOESNT_EXIST = 0;
-    public static final int WRONG_ID = -1;
     public static final int MORE_THAN_ONE_PRIVATE = -2;
     public static final int ERROR_CODE = -3;
 
@@ -42,14 +41,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
         this.dataSource = dataSource;
     }
 
-    private int getID(PreparedStatement st) throws SQLException {
-        ResultSet set = st.getGeneratedKeys();
-        if(set.next()) {
-            return set.getInt(1);
-        }
 
-        return WRONG_ID;
-    }
 
     @Override
     public int getPrivateChatID(String senderMail, String receiverMail) {

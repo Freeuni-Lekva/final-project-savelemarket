@@ -7,12 +7,15 @@ import model.RequestNotification;
 import model.SaveleLocation;
 
 import javax.sql.DataSource;
+import javax.xml.transform.Result;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class NotificationStoreDao extends DAO implements NotificationStore{
-    private static final String getNotificationsFor = "SELECT (notification_id,notification_status,sender_mail,receiver_mail,location_name,sess,l.location_id,chat_id, requested_price) FROM (request_notification INNER JOIN locations l) WHERE receiver_mail = ?;";
+    private static final String prefixOfGetNotifications =  "SELECT * FROM (request_notification INNER JOIN locations l) WHERE receiver_mail = ? ";
+    private static final String getPendingNotifications =   prefixOfGetNotifications + "AND notification_status = " + Notification.PENDING + ";";
+    private static final String getNonPendingNotifications = prefixOfGetNotifications + "AND notification_status != " + Notification.PENDING + ";";
     private static final String clearAllNotificationsFor = "DELETE FROM request_notification WHERE receiver_mail = ?;";
     private static final String deleteNotification = "DELETE FROM request_notification WHERE notification_id = ?;";
     private static final String addNotification = "INSERT INTO request_notification(notification_status,location_id,sender_mail,receiver_mail,requested_price) VALUES(?,?,?,?,?) ;";
@@ -23,12 +26,13 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
         this.dataSource = dataSource;
     }
 
-    @Override
-    public List<Notification> getNotificationsFor(String mail) {
+
+    private List<Notification> getNotificationsFor(String getQuery,String mail) {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement st = connection.prepareStatement(getNotificationsFor);
+            PreparedStatement st = connection.prepareStatement(getQuery);
+            st.setString(1,mail);
             ResultSet rs = st.executeQuery();
             return createNotifications(rs);
         } catch (SQLException e) {
@@ -39,12 +43,23 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
         return null;
     }
 
+    @Override
+    public List<Notification> getNonPendingNotificationsFor(String mail){
+        return getNotificationsFor(getNonPendingNotifications,mail);
+    }
+
+    @Override
+    public List<Notification> getPendingNotificationsFor(String mail) {
+        return getNotificationsFor(getPendingNotifications,mail);
+    }
+
     private List<Notification> createNotifications(ResultSet rs) throws SQLException {
         List<Notification> notificationList = new ArrayList<>();
         while(rs.next()) {
             Location location = new SaveleLocation(rs.getString("location_name"),rs.getInt("sess"),rs.getInt("chat_id"));
             Notification notification = new RequestNotification(
-                    rs.getInt("notification_status"),rs.getString("sender_mail"),rs.getString("receiver_mail"),location,rs.getDouble("requested_price"));
+                    rs.getInt("notification_status"),rs.getString("sender_mail"), rs.getString("receiver_mail")
+                    ,location,rs.getDouble("requested_price"),rs.getInt("notification_id"));
             notificationList.add(notification);
         }
         return notificationList;
@@ -53,6 +68,7 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
     public void clearAllNotificationsFor(String mail) {
         Connection connection = null;
         try {
+            connection = dataSource.getConnection();
             PreparedStatement st = connection.prepareStatement(clearAllNotificationsFor);
             st.setString(1,mail);
             st.executeUpdate();
@@ -67,6 +83,7 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
     public void deleteNotification(int id) {
         Connection connection = null;
         try {
+            connection = dataSource.getConnection();
             PreparedStatement st = connection.prepareStatement(deleteNotification);
             st.setInt(1,id);
             st.executeUpdate();
@@ -76,16 +93,11 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
             closeConnection(connection);
         }
     }
-    private int getID(ResultSet rs) throws SQLException {
-        if(rs.next()) {
-            return rs.getInt("notification_id");
-        }
-        return -1;
-    }
     @Override
     public int addNotification(Notification n) {
         Connection connection = null;
         try {
+            connection = dataSource.getConnection();
             LocationStore locationStore = new LocationStoreDao(dataSource);
             PreparedStatement st = connection.prepareStatement(addNotification, Statement.RETURN_GENERATED_KEYS);
             int id = locationStore.getLocationId(n.getRequestedLocation().getName(),n.getRequestedLocation().getSessionNumber());
@@ -95,7 +107,7 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
             st.setString(4,n.getReceiverMail());
             st.setDouble(5,n.getPrice());
             st.executeUpdate();
-            return getID(st.getGeneratedKeys());
+            return getID(st);
         } catch (SQLException e) {
             e.printStackTrace();
         } finally {

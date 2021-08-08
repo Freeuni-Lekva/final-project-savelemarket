@@ -50,4 +50,16 @@ public class RequestNotification implements Notification{
     public double getPrice() {
         return price;
     }
+
+    @Override
+    public String toString() {
+        return "RequestNotification{" +
+                "status=" + status +
+                ", sender='" + sender + '\'' +
+                ", receiver='" + receiver + '\'' +
+                ", requestLocation=" + requestLocation +
+                ", price=" + price +
+                ", id=" + id +
+                '}';
+    }
 }
