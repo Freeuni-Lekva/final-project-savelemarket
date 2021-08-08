@@ -27,7 +27,7 @@
 
         </nav>
 
-        <form action="/LogOut" method="post" class="logout-form">
+        <form action="/logout" method="post" class="logout-form">
             <li>
                 <input type="submit" value="გასვლა" class="sing-out"/>
             </li>

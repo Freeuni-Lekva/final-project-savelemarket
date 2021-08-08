@@ -32,7 +32,6 @@ public class ChatStoreDao extends DAO implements ChatStore {
     private static final String getMemberCount = "SELECT COUNT(chat_id) AS count FROM chat_users WHERE chat_id = ?";
     private static final String getUserChats = "SELECT * FROM chat_users c INNER JOIN chat ch ON c.chat_id = ch.chat_id INNER JOIN accounts a ON c.account_mail = a.mail INNER JOIN locations l ON (a.location_id = l.location_id) WHERE a.mail = ?;";
     public static final int ID_DOESNT_EXIST = 0;
-    public static final int WRONG_ID = -1;
     public static final int MORE_THAN_ONE_PRIVATE = -2;
     public static final int ERROR_CODE = -3;
 
@@ -42,14 +41,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
         this.dataSource = dataSource;
     }
 
-    private int getID(PreparedStatement st) throws SQLException {
-        ResultSet set = st.getGeneratedKeys();
-        if(set.next()) {
-            return set.getInt(1);
-        }
 
-        return WRONG_ID;
-    }
 
     @Override
     public int getPrivateChatID(String senderMail, String receiverMail) {
@@ -187,6 +179,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
     }
     @Override
     public int createPrivateChat(String senderMail, String receiverMail) {
+        System.out.println("sheqmna chati");
         int id = WRONG_ID;
         Connection c = null;
         try {
@@ -198,13 +191,14 @@ public class ChatStoreDao extends DAO implements ChatStore {
                 PreparedStatement st = c.prepareStatement(createPrivateChat, Statement.RETURN_GENERATED_KEYS);
                 st.executeUpdate();
                 id = getID(st);
+                System.out.println(id);
                 PreparedStatement st1 = c.prepareStatement(insertIntoChatUsers);
-                PreparedStatement st2 = c.prepareStatement(insertIntoChatUsers);
                 st1.setInt(1, id);
                 st1.setString(2, senderMail);
+                st1.executeUpdate();
+                PreparedStatement st2 = c.prepareStatement(insertIntoChatUsers);
                 st2.setInt(1, id);
                 st2.setString(2, receiverMail);
-                st1.executeUpdate();
                 st2.executeUpdate();
             }else{
                 return existingID;
@@ -287,7 +281,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
         try {
             for(int i = 0;i<newSize;i++) {
                 if(!rs.next()){
-                    fetchNumberForChat.put(id,i); // this should fix integer overflow
+                    fetchNumberForChat.put(id,Math.max(i,DEFAULT_FETCH_SIZE)); // this should fix integer overflow
                     closeConnection(c);
                     break;
                 }
@@ -344,6 +338,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
 
     @Override
     // returns chats without messages for now
+    // if private 0th element is the mail given.
     public List<Chat> getUserChats(String mail) {
         List<Chat> chats = new ArrayList<>();
         Connection connection = null;
@@ -358,7 +353,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
                 if(rs.getBoolean("is_private") == true){
                     List<Account> accs = getChatMembers(chat_id);
                     if(mail.equals(accs.get(0).getMail())) {
-                        ch = new PrivateChat( accs.get(0), accs.get(1),this);
+                        ch = new PrivateChat(accs.get(0), accs.get(1),this);
                     }else{
                         ch = new PrivateChat(accs.get(1),accs.get(0),this);
                     }

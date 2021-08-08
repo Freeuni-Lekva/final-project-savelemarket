@@ -51,6 +51,10 @@
     <servlet-class>web.LogOutServlet</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>PostDeleteServlet</servlet-name>
+    <servlet-class>web.PostDeleteServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>PrivateChatServlet</servlet-name>
@@ -94,7 +98,11 @@
 
   <servlet-mapping>
     <servlet-name>LogOutServlet</servlet-name>
-    <url-pattern>/LogOut</url-pattern>
+    <url-pattern>/logout</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>PostDeleteServlet</servlet-name>
+    <url-pattern>/PostDelete</url-pattern>
   </servlet-mapping>
 
 </web-app>

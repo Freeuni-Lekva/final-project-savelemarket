@@ -11,6 +11,7 @@ USE myDatabase;
 # DROP TABLE accounts;
 # DROP TABLE locations;
 # DROP TABLE chat;
+# DROP TABLE request_notification;
 
 
 
@@ -78,3 +79,15 @@ CREATE TABLE IF NOT EXISTS shop_locations(
     FOREIGN KEY (`shop_item_id`) REFERENCES shop_store(`shop_item_id`),
     FOREIGN KEY (`location_id`) REFERENCES locations(`location_id`)
 );
+
+CREATE TABLE IF NOT EXISTS request_notification(
+   `notification_id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL,
+   `notification_status` INT NOT NULL, # 1 is accepted, 0 is pending, -1 is declined (should just delete)
+   `location_id` INT NOT NULL,
+   `sender_mail` VARCHAR(64) NOT NULL,
+   `receiver_mail` VARCHAR(64) NOT NULL,
+   `requested_price` DOUBLE NOT NULL,
+   FOREIGN KEY (`location_id`) REFERENCES locations(`location_id`),
+   FOREIGN KEY (`sender_mail`) REFERENCES accounts(`mail`),
+   FOREIGN KEY (`receiver_mail`) REFERENCES accounts(`mail`)
+)

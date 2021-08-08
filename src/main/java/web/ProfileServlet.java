@@ -12,16 +12,21 @@ public class ProfileServlet extends GeneralServlet {
     private static final int uLen = "id=".length();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getSession().setAttribute("profile-account",null);
         redirectIfNotLogged(req,resp);
-        if(req.getQueryString()== null || req.getQueryString().length()<uLen)  return; // wrong url
-        String mail = req.getQueryString().substring(uLen);
-
         Account current = getCurrentAccount(req);
         if (current == null) {
             // user not logged in
             req.getRequestDispatcher("index.jsp").forward(req,resp);
             return;
         }
+        if(req.getQueryString()== null || req.getQueryString().length()<uLen)  {
+            req.getRequestDispatcher("profile.jsp").forward(req,resp);
+            return;
+        }
+
+        String mail = req.getQueryString().substring(uLen);
+
         if(current.getMail().equals(mail)){
             // same profile as logged in user
             req.getRequestDispatcher("profile.jsp").forward(req,resp);
@@ -34,6 +39,8 @@ public class ProfileServlet extends GeneralServlet {
             return;
         }
         // ეს ექაუნთი უნდა აჩვენო ლევან, რო ნახავ ეს კომენტარი წაშალე
+        req.getSession().setAttribute("profile-account",accToShow); // ამითი ვაწვდი ინფორმაციას privateChatServlet-ს
+        // ალბათ შევცვლი
         req.setAttribute("profile-account",accToShow);
         req.getRequestDispatcher("profileOther.jsp").forward(req,resp);
 
