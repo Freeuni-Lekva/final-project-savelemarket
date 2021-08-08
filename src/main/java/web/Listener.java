@@ -2,6 +2,7 @@ package web;
 
 import DAO.*;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
+import model.Notification;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -18,7 +19,7 @@ public class Listener implements ServletContextListener, HttpSessionListener, Ht
         MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
         ds.setServerName("localhost");
         ds.setPort(3306);
-        ds.setDatabaseName("testDatabase");
+        ds.setDatabaseName("myDatabase");
         ds.setUser("root");
         ds.setPassword("");
 
@@ -26,10 +27,12 @@ public class Listener implements ServletContextListener, HttpSessionListener, Ht
         ChatStore chatStore = new ChatStoreDao(ds);
         LocationStore locationStore = new LocationStoreDao(ds);
         ShoppingStore shoppingStore = new ShoppingStoreDao(ds);
+        NotificationStore notificationStore = new NotificationStoreDao(ds);
         sce.getServletContext().setAttribute("chat-store",chatStore);
         sce.getServletContext().setAttribute("accounts-store", accountsStore);
         sce.getServletContext().setAttribute("locations-store", locationStore);
         sce.getServletContext().setAttribute("shopping-items-store", shoppingStore);
+        sce.getServletContext().setAttribute("notification-store", notificationStore);
     }
 
     @Override
