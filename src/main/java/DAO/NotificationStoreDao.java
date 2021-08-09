@@ -21,6 +21,7 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
     private static final String deleteNotification = "DELETE FROM request_notification WHERE notification_id = ?;";
     private static final String addNotification = "INSERT INTO request_notification(notification_status,location_id,sender_mail,receiver_mail,requested_price) VALUES(?,?,?,?,?) ;";
     private static final String changeNotificationStatus = "UPDATE request_notification SET notification_status = ? WHERE notification_id = ?;";
+    private static final String getAllSentNotifications = "SELECT * FROM request_notification r INNER JOIN locations l ON (r.location_id = l.location_id) WHERE sender_mail = ? ORDER BY notification_id DESC;";
     DataSource dataSource;
 
     public NotificationStoreDao(DataSource dataSource) {
@@ -67,6 +68,24 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
     @Override
     public List<Notification> getNonPendingNotificationsFor(String mail){
         return getNotificationsFor(getNonPendingNotifications,mail);
+    }
+
+    @Override
+    public List<Notification> getSentNotifications(String mail) {
+        List<Notification> notifs = new ArrayList<>();
+        Connection connection = null;
+        try{
+            connection = dataSource.getConnection();
+            PreparedStatement st = connection.prepareStatement(getAllSentNotifications);
+            st.setString(1,mail);
+            ResultSet rs = st.executeQuery();
+            notifs = createNotifications(rs);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            closeConnection(connection);
+        }
+        return notifs;
     }
 
     @Override
