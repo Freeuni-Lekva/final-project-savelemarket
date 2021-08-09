@@ -113,7 +113,6 @@
                     if(!shoppingItem.getWriterAccount().getMail().equals(currentAccount.getMail())) {
                         out.println("<div class=\"post\"><a href =\"profile?id=" + shoppingItem.getWriterAccount().getMail()+"\"class=\"post-author\" id=\"post-author" + i + "\"name=\"post-author\">" +
                                 shoppingItem.getWriterAccount().getMail() + "</a>");
-
                         out.println("<a class=\"post-time\" id=\"post-time" + i + " \">" + shoppingItem.getCreateTime() + "</a>");
                         out.println("<div class=\"location-from\"><a class=\"location-parameter\">მაქვს:</a>");
                         out.println("<a class=\"post-location\"  >");
@@ -127,8 +126,9 @@
                             out.println("<a class=\"post-price\">" + "ვიყიდი: " + shoppingItem.getPrice() * (-1) + " ₾</a>");
                         else if (shoppingItem.getPrice() > 0)
                             out.println("<a class=\"post-price\">" + "გავყიდი: " + shoppingItem.getPrice() + " ₾</a>");
-                        out.println("<form action=\"/serveletissaxeli\" method=\"post\" class=\"\">\n" +
-                                "                    <input type=\"submit\" name=\"send-request\" class=\"send-request\" value =\"გაცვლის მოთხოვნა\"/>\n" +
+                        out.println("<iframe name=\"frame\" style=\"display:none;\" ></iframe>" +
+                                "<form target=\"frame\" action=\"/send-request\" method=\"post\" class=\"\" id=\"" + shoppingItem.getItemId() + "\">\n" +
+                                "                    <input type=\"submit\" name=\"" + shoppingItem.getItemId() + "\" class=\"send-request\" value =\"გაცვლის მოთხოვნა\"/>\n" +
                                 "                </form>");
                         out.println("</div></div>");
                     }

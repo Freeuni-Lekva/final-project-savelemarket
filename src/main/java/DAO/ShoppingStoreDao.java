@@ -90,6 +90,7 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
         return -1;
     }
 
+
     @Override
     public void removeAllItemFor(String accountMail) {
         Connection connection = null;
@@ -163,8 +164,8 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
     }
 
     
-
-    private ShoppingItem getItemById(int id){
+    @Override
+    public ShoppingItem getItemById(int id){
         Connection conn = null;
         try {
             conn = dataSource.getConnection();

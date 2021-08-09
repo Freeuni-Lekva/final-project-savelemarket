@@ -45,7 +45,9 @@ public class GeneralServlet extends HttpServlet {
     public ShoppingStore getShoppingStoreDao(HttpServletRequest request){
        return (ShoppingStoreDao) request.getServletContext().getAttribute("shopping-items-store");
     }
-
+    public NotificationStore getNotificationStoreDao(HttpServletRequest request){
+        return (NotificationStore) request.getServletContext().getAttribute("notification-store");
+    }
     public void showChats(HttpServletResponse response, Account current, String result, List<Message> messages) throws IOException {
         for(int i = 0; i < messages.size(); i++){
             Message message = messages.get(i);
