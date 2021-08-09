@@ -52,6 +52,7 @@ public class ShoppingStoreTests {
 
         shoppingStore = new ShoppingStoreDao(ds);
         locationStore = new LocationStoreDao(ds);
+        accountsStoreDao = new AccountsStoreDao(ds);
     }
 
 //    @Test
