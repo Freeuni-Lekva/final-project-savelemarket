@@ -19,13 +19,13 @@
     <title>Home</title>
     <link rel="stylesheet" href="main.css">
     <%
-        ShoppingStore shoppingStore = (ShoppingStoreDao) request.getServletContext().getAttribute("shopping-items-store");
+        ShoppingStore shoppingStore = (ShoppingStore) request.getServletContext().getAttribute("shopping-items-store");
         List<ShoppingItem> allItems;
-        if(request.getAttribute("filtered-posts") == null){
+        if(request.getSession().getAttribute("filtered-posts") == null){
             allItems = shoppingStore.getAllItems();
         } else{
             System.out.println("filtered posts");
-            allItems = (List<ShoppingItem>)request.getAttribute("filtered-posts");
+            allItems = (List<ShoppingItem>)request.getSession().getAttribute("filtered-posts");
         }
         Account currentAccount = (Account)request.getSession().getAttribute("current-account");
 

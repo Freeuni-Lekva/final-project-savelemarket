@@ -14,13 +14,13 @@ import java.util.List;
 public class PostsFilterServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        redirectIfNotLogged(request,response);
+        if(redirectIfNotLogged(request,response)) return;
         request.getRequestDispatcher("home.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        redirectIfNotLogged(request,response);
+        if(redirectIfNotLogged(request,response)) return;
         request.setCharacterEncoding("UTF-8");
 
         ShoppingStore shoppingStore = getShoppingStoreDao(request);
@@ -52,7 +52,9 @@ public class PostsFilterServlet extends GeneralServlet {
 
         List<ShoppingItem> filteredPosts = shoppingStore.getFilteredItems(locationName, sessionNum, wantToBuy, price);
         System.out.println("---------------------------------");
-        request.setAttribute("filtered-posts", filteredPosts);
+        System.out.println(filteredPosts);
+        request.getSession().setAttribute("filtered-posts", filteredPosts);
+//        request.getRequestDispatcher("home.jsp").forward(request, response);
         response.sendRedirect("/PostsFilter");
     }
 }

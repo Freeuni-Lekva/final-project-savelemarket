@@ -195,6 +195,7 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
     @Override
     public List<ShoppingItem> getFilteredItems(String location_name, int sess,  boolean wantToBuy, double price) {
         Connection connection = null;
+        List<ShoppingItem> shoppingItems = new ArrayList<>();
         try {
             connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(getAppropriateSqlCommand(location_name, sess, wantToBuy));
@@ -203,6 +204,7 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 int itemId = rs.getInt("shop_store.shop_item_id");
+                shoppingItems.add(getItemById(itemId));
                 System.out.println(getItemById(itemId));
             }
         } catch (SQLException throwables) {
@@ -210,7 +212,7 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
         } finally {
             closeConnection(connection);
         }
-        return null;
+        return shoppingItems;
     }
 
 
