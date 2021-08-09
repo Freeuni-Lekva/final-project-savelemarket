@@ -16,7 +16,6 @@ public class CreatePostServlet extends GeneralServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         redirectIfNotLogged(request,response);
         request.getRequestDispatcher("profile.jsp").forward(request, response); /// may change and forward to home.jsp
-
     }
 
     @Override
