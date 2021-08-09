@@ -203,7 +203,7 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
             System.out.println(statement);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
-                int itemId = rs.getInt("shop_store.shop_item_id");
+                int itemId = rs.getInt("ss.shop_item_id");
                 shoppingItems.add(getItemById(itemId));
                 System.out.println(getItemById(itemId));
             }
@@ -219,18 +219,20 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
     private String getAppropriateSqlCommand(String location_name, int sess,  boolean wantToBuy){
         StringBuilder stringBuilder = new StringBuilder();
         if(wantToBuy){
-            stringBuilder.append("SELECT DISTINCT shop_store.shop_item_id FROM locations INNER JOIN " +
-                    "shop_locations USING (location_id) INNER JOIN shop_store USING (shop_item_id) WHERE");
+            stringBuilder.append("SELECT DISTINCT ss.shop_item_id FROM shop_store ss INNER JOIN accounts a " +
+                    "ON (ss.writer_mail = a.mail) INNER JOIN locations l ON (a.location_id = l.location_id) WHERE");
         }else{
-            stringBuilder.append("SELECT DISTINCT shop_store.shop_item_id FROM shop_store INNER JOIN locations WHERE");
+            stringBuilder.append("SELECT DISTINCT ss.shop_item_id FROM shop_locations ss " +
+                    "INNER JOIN locations l ON (ss.location_id = l.location_id) " +
+                    "INNER JOIN shop_store sl ON (ss.shop_item_id = sl.shop_item_id) WHERE");
         }
-        if(location_name == null && sess != -1){ stringBuilder.append(" locations.sess = ? AND ");}
-        if(location_name != null && sess == -1){ stringBuilder.append(" locations.location_name = ? AND ");}
-        if(location_name != null && sess != -1){ stringBuilder.append(" locations.location_name = ? AND locations.sess = ? AND ");}
+        if(location_name == null && sess != -1){ stringBuilder.append(" l.sess = ? AND ");}
+        if(location_name != null && sess == -1){ stringBuilder.append(" l.location_name = ? AND ");}
+        if(location_name != null && sess != -1){ stringBuilder.append(" l.location_name = ? AND l.sess = ? AND ");}
         if(wantToBuy){
-            stringBuilder.append(" shop_store.price <= ? AND shop_store.price >= 0;");
+            stringBuilder.append(" ss.price <= ? AND ss.price >= 0;");
         }else{
-            stringBuilder.append(" shop_store.price <= ?;");
+            stringBuilder.append(" sl.price <= ?;");
         }
         return stringBuilder.toString();
     }
