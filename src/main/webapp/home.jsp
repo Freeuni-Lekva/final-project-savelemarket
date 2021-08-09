@@ -19,8 +19,14 @@
     <title>Home</title>
     <link rel="stylesheet" href="main.css">
     <%
-        ShoppingStore shoppingStore = (ShoppingStoreDao) request.getServletContext().getAttribute("shopping-items-store");
-        List<ShoppingItem> allItems = shoppingStore.getAllItems();
+        ShoppingStore shoppingStore = (ShoppingStore) request.getServletContext().getAttribute("shopping-items-store");
+        List<ShoppingItem> allItems;
+        if(request.getSession().getAttribute("filtered-posts") == null){
+            allItems = shoppingStore.getAllItems();
+        } else{
+            System.out.println("filtered posts");
+            allItems = (List<ShoppingItem>)request.getSession().getAttribute("filtered-posts");
+        }
         Account currentAccount = (Account)request.getSession().getAttribute("current-account");
 
     %>
@@ -55,7 +61,7 @@
 <body>
 <section class="profile-body">
     <section class="filter-section">
-        <form action="/filtrisservleti" method="post" class="filter-form">
+        <form action="/PostsFilter" method="post" class="filter-form">
             <div class="location-filter">
                 <a class="input_name">ლოკაცია: </a>
                 <select name="location" class="locations">
@@ -90,7 +96,7 @@
                         <a class="input_name">გავყიდი მეტად</a>
                     </div>
                 </div>
-                <input type="number" name="amount" class="amount-input"/>
+                <input type="number" name="amount" class="amount-input" value="0" min="0"/>
                 <a class="gel-symbol">₾</a>
             </div>
             <input type="submit" value="გაფილტვრა" class="filter-btn"/>

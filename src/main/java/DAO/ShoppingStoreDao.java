@@ -195,6 +195,7 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
     @Override
     public List<ShoppingItem> getFilteredItems(String location_name, int sess,  boolean wantToBuy, double price) {
         Connection connection = null;
+        List<ShoppingItem> shoppingItems = new ArrayList<>();
         try {
             connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(getAppropriateSqlCommand(location_name, sess, wantToBuy));
@@ -203,6 +204,7 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 int itemId = rs.getInt("shop_store.shop_item_id");
+                shoppingItems.add(getItemById(itemId));
                 System.out.println(getItemById(itemId));
             }
         } catch (SQLException throwables) {
@@ -210,7 +212,7 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
         } finally {
             closeConnection(connection);
         }
-        return null;
+        return shoppingItems;
     }
 
 
@@ -225,7 +227,11 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
         if(location_name == null && sess != -1){ stringBuilder.append(" locations.sess = ? AND ");}
         if(location_name != null && sess == -1){ stringBuilder.append(" locations.location_name = ? AND ");}
         if(location_name != null && sess != -1){ stringBuilder.append(" locations.location_name = ? AND locations.sess = ? AND ");}
-        stringBuilder.append(" shop_store.price <= ?;");
+        if(wantToBuy){
+            stringBuilder.append(" shop_store.price <= ? AND shop_store.price >= 0;");
+        }else{
+            stringBuilder.append(" shop_store.price <= ?;");
+        }
         return stringBuilder.toString();
     }
 
@@ -246,28 +252,6 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
     }
 
 
-    private ShoppingItem getItemById(int id){
-        Connection conn = null;
-        try {
-            conn = dataSource.getConnection();
-            PreparedStatement stm = conn.prepareStatement("SELECT shop_item_id, price, create_time FROM shop_store " +
-                    "WHERE shop_item_id = ?;");
-            stm.setInt(1, id);
-            ResultSet rs = stm.executeQuery();
-            if(rs.next()) {
-                int itemId = rs.getInt(1);
-                Account writerAccount = getWriterAccount(conn, itemId);
-                List<Location> desiredLocations = getLocationsFor(conn, itemId);
-                double price = rs.getDouble(2);
-                String time = rs.getString(3);
-                return new SaveleShoppingItem(itemId,time, writerAccount, desiredLocations, price);
-            }
-        } catch (SQLException throwables) { throwables.printStackTrace();
-        } finally {
-            closeConnection(conn);
-        }
-        return null;
-    }
 
 
     private Account getWriterAccount(Connection connection, int itemId) throws SQLException {

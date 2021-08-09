@@ -56,6 +56,11 @@
     <servlet-class>web.PostDeleteServlet</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>PostsFilterServlet</servlet-name>
+    <servlet-class>web.PostsFilterServlet</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>PrivateChatServlet</servlet-name>
     <url-pattern>/pchat</url-pattern>
@@ -100,9 +105,15 @@
     <servlet-name>LogOutServlet</servlet-name>
     <url-pattern>/logout</url-pattern>
   </servlet-mapping>
+
   <servlet-mapping>
     <servlet-name>PostDeleteServlet</servlet-name>
     <url-pattern>/PostDelete</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>PostsFilterServlet</servlet-name>
+    <url-pattern>/PostsFilter</url-pattern>
   </servlet-mapping>
 
 </web-app>
