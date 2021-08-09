@@ -21,7 +21,7 @@
         <nav class="menu-nav">
             <ul class="menu-list">
                 <li class="menu-item">
-                    <a class="leave-chat" href="profile.jsp">უკან დაბრუნება</a>
+                    <a class="leave-chat" href="/profile">უკან დაბრუნება</a>
                 </li>
             </ul>
 

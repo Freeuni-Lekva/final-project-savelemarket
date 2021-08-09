@@ -19,13 +19,13 @@
                     <a class="menu-link" href="/home">მთავარი</a>
                 </li>
                 <li class="menu-item">
-                    <a class="menu-link" href="messages.jsp" >წერილები</a>
+                    <a class="menu-link" href="/messages" >წერილები</a>
                 </li>
                 <li class="menu-item">
-                    <a class="menu-link" href="notifications.jsp" style="font-weight: bold; color:#051c8f">შეტყობინებები</a>
+                    <a class="menu-link" href="/notifications" style="font-weight: bold; color:#051c8f">შეტყობინებები</a>
                 </li>
                 <li class="menu-item">
-                    <a class="menu-link" href="profile.jsp" >პროფილი</a>
+                    <a class="menu-link" href="/profile" >პროფილი</a>
                 </li>
             </ul>
 

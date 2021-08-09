@@ -24,7 +24,7 @@
     <header>
         <section class="chat-menu-section">
             <li>
-                <a class="leave-chat" href="messages.jsp">უკან დაბრუნება</a>
+                <a class="leave-chat" href="/messages">უკან დაბრუნება</a>
             </li>
             <a class="chat-name"><%
                 out.println(currAccount.getLocation().getName() + " " + currAccount.getLocation().getSessionNumber());
