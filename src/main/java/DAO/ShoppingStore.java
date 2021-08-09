@@ -11,5 +11,6 @@ public interface ShoppingStore {
     List<ShoppingItem> getAllItemsForAccount(String accountMail);
     List<ShoppingItem> getAllItems();
     List<ShoppingItem> getFilteredItems(String locationName, int sessionNum,  boolean wantToBuy, double price);
-    public int getItemId(String writerMail, String postTime);
+    int getItemId(String writerMail, String postTime);
+    ShoppingItem getItemById(int itemId);
 }

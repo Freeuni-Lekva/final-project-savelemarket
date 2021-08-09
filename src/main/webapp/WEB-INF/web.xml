@@ -66,6 +66,11 @@
     <servlet-class>web.HomeServlet</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>SendRequestServlet</servlet-name>
+    <servlet-class>web.SendRequestServlet</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>PrivateChatServlet</servlet-name>
     <url-pattern>/pchat</url-pattern>
@@ -124,6 +129,11 @@
   <servlet-mapping>
     <servlet-name>HomeServlet</servlet-name>
     <url-pattern>/home</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>SendRequestServlet</servlet-name>
+    <url-pattern>/send-request</url-pattern>
   </servlet-mapping>
 
 </web-app>
