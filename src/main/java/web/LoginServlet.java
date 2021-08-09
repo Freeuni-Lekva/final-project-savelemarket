@@ -22,9 +22,12 @@ public class LoginServlet extends GeneralServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         AccountsStore accountsStore = getAccountsStoreDao(request);
         if(getCurrentAccount(request) == null){} //gaakete ragaca
-        String userName = request.getParameter("username");
+        String username = request.getParameter("username");
         String password = request.getParameter("password");
-        Account requiredAccount = accountsStore.getAccount(userName);
+        if(doAdminRedirect(username,password,request,response)){
+            return;
+        }
+        Account requiredAccount = accountsStore.getAccount(username);
         //System.out.println("account: " + requiredAccount);
         if(requiredAccount == null || !requiredAccount.isValidPassword(password)){
             request.setAttribute("try-again", true);

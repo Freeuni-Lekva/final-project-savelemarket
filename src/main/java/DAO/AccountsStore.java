@@ -13,4 +13,5 @@ public interface AccountsStore {
     boolean containsAccount(String mail); // to not have two accounts with same name (name is basically unique uni id, like nshug18 etc.
     Account getAccount(String mail);
     List<Account> getAllAccounts(); // maybe helpful for testing;
+    boolean isAdmin(String username, String password);
 }

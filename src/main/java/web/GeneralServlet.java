@@ -21,6 +21,14 @@ public class GeneralServlet extends HttpServlet {
         }
         return false;
     }
+    public boolean doAdminRedirect(String username, String password, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        AccountsStore accountsStore = getAccountsStoreDao(request);
+        if(accountsStore.isAdmin(username,password) == true){
+            request.getRequestDispatcher("/admin.jsp").forward(request,response);
+            return true;
+        }
+        return false;
+    }
     public Account getCurrentAccount(HttpServletRequest request){
         return (Account)request.getSession().getAttribute("current-account");
     }

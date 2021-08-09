@@ -1,5 +1,7 @@
 package DAO;
 
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -26,5 +28,15 @@ public class DAO {
 
         return WRONG_ID;
     }
-
+    public byte[] getHash(String password) {
+         byte[] passwordBytes = null;
+        try {
+            MessageDigest md = MessageDigest.getInstance("SHA-256");
+            MessageDigest mdc = (MessageDigest) md.clone();
+            passwordBytes = mdc.digest(password.getBytes());
+        } catch (CloneNotSupportedException | NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
+        return passwordBytes;
+    }
 }
