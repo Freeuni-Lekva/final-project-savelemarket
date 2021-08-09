@@ -12,8 +12,9 @@ public class ProfileServlet extends GeneralServlet {
     private static final int uLen = "id=".length();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        if(redirectIfNotLogged(req,resp)) return;
         req.getSession().setAttribute("profile-account",null);
-        redirectIfNotLogged(req,resp);
+        //redirectIfNotLogged(req,resp);
         Account current = getCurrentAccount(req);
         if (current == null) {
             // user not logged in
