@@ -31,6 +31,11 @@ public class LocationChat extends Chat{
     public int getChatID(){
         return id;
     }
+
+    @Override
+    public String getChatName() {
+        return chatName;
+    }
     //needs to be called after alternate constructor
 
     @Override

@@ -12,6 +12,7 @@ public class PrivateChat extends Chat{
     private Account sender;
     private Account receiver;
     private int id;
+    private String chatName;
     /**
      * receives initialized ChatStore Object that has database initialized with chat ID
      * basically chat exists in database before this constructor is called
@@ -28,11 +29,18 @@ public class PrivateChat extends Chat{
         this.sender = sender;
         this.receiver = receiver;
         this.id = db.getPrivateChatID(sender.getMail(),receiver.getMail());
+        chatName = sender.getName() + " " + sender.getLastName();
     }
     @Override
     public int getChatID(){
         return id;
     }
+
+    @Override
+    public String getChatName() {
+        return chatName;
+    }
+
     @Override
     public List<Message> getAllMessages() {
         return db.getAllChatMessages(id);
