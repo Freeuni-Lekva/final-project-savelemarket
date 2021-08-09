@@ -90,4 +90,9 @@ CREATE TABLE IF NOT EXISTS request_notification(
    FOREIGN KEY (`location_id`) REFERENCES locations(`location_id`),
    FOREIGN KEY (`sender_mail`) REFERENCES accounts(`mail`),
    FOREIGN KEY (`receiver_mail`) REFERENCES accounts(`mail`)
-)
+);
+
+CREATE TABLE IF NOT EXISTS admins(
+    `username` VARCHAR(64) NOT NULL,
+    `password` BLOB(64) NOT NULL
+);

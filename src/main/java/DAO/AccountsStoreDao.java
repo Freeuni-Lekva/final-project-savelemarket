@@ -1,5 +1,6 @@
 package DAO;
 
+import com.mysql.cj.x.protobuf.MysqlxPrepare;
 import model.*;
 
 import javax.sql.DataSource;
@@ -176,8 +177,31 @@ public class AccountsStoreDao extends DAO implements AccountsStore {
             throwables.printStackTrace();
         } finally {
             closeConnection(connection);
-    }
+        }
         return result;
+    }
+
+    /**
+     *
+     * pre: needs new connecton
+     * post: closed connection, returns true if admin exists with credentials.
+     */
+    public boolean isAdmin( String username, String password){
+        Connection connection = null;
+        byte[] hash = getHash(password);
+        try{
+            connection = dataSource.getConnection();
+            PreparedStatement st = connection.prepareStatement("SELECT * FROM admins WHERE username = ? AND password = ?;");
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                return true;
+            }
+        }catch (SQLException throwables){
+            throwables.printStackTrace();
+        } finally{
+            closeConnection(connection);
+        }
+        return false;
     }
 }
 
