@@ -31,6 +31,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
     private static final String getAllChats = "SELECT * FROM message WHERE chat_id = ? ORDER BY message_id DESC;";
     private static final String getMemberCount = "SELECT COUNT(chat_id) AS count FROM chat_users WHERE chat_id = ?";
     private static final String getUserChats = "SELECT * FROM chat_users c INNER JOIN chat ch ON c.chat_id = ch.chat_id INNER JOIN accounts a ON c.account_mail = a.mail INNER JOIN locations l ON (a.location_id = l.location_id) WHERE a.mail = ?;";
+    private static final String isChatPrivate = "SELECT is_private FROM chat WHERE chat_id = ?;";
     public static final int ID_DOESNT_EXIST = 0;
     public static final int MORE_THAN_ONE_PRIVATE = -2;
     public static final int ERROR_CODE = -3;
@@ -334,6 +335,30 @@ public class ChatStoreDao extends DAO implements ChatStore {
         List<Account> accounts = getChatMembers(id);
         Chat ch = new LocationChat(this,accounts,id);
         return ch;
+    }
+
+    @Override
+    public Chat getChat(int id) {
+        Connection c = null;
+        try {
+            c = dataSource.getConnection();
+            PreparedStatement st = c.prepareStatement(isChatPrivate);
+            st.setInt(1,id);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                boolean isPrivate = rs.getBoolean("is_private");
+                if(isPrivate){
+                    return getPrivateChat(id);
+                }else{
+                    return getPublicChat(id);
+                }
+            }
+        }catch (SQLException sqlException){
+            sqlException.printStackTrace();
+        } finally{
+            closeConnection(c);
+        }
+        return null;
     }
 
     @Override
