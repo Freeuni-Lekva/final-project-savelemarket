@@ -74,23 +74,24 @@
             <%}%>
     </section>
 
-    <%for(Notification n : nonPendingNotifs){
-        String locName = n.getRequestedLocation().getName() + " " + n.getRequestedLocation().getSessionNumber();
-    %>
+
         <section class="notifications-box">
-            <section class="nonpending-notification">
-                <div class="notification-text">
-                    <a class="sender-mail" href ="profile?id="><%=n.getSenderMail()%>></a>
-                    <a class="requested-location"><%=locName%></a>
-                    <a class="amount-type"><%=n.getStatusMessage()%></a>
-    <%--                ^ ეს არ უნდა იყოს amount-type :D --%>
-                </div>
-                <form action="/servletissaxeli" method="post">
-                    <input type="submit" value="წაშლა" class="delete-notification">
-                </form>
-            </section>
+            <%for(Notification n : nonPendingNotifs){
+                String locName = n.getRequestedLocation().getName() + " " + n.getRequestedLocation().getSessionNumber();
+            %>
+                <section class="nonpending-notification">
+                    <div class="notification-text">
+                        <a class="sender-mail" href ="profile?id="><%=n.getSenderMail()%>></a>
+                        <a class="requested-location"><%=locName%></a>
+                        <a class="amount-type"><%=n.getStatusMessage()%></a>
+        <%--                ^ ეს არ უნდა იყოს amount-type :D --%>
+                    </div>
+                    <form action="/servletissaxeli" method="post">
+                        <input type="submit" value="წაშლა" class="delete-notification">
+                    </form>
+                </section>
+            <%}%>
         </section>
-    <%}%>
 </section>
 </body>
 </body>
