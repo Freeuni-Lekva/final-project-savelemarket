@@ -20,10 +20,11 @@ public class AdminDao extends DAO {
         ds.setDatabaseName("myDatabase");
         ds.setUser("root");
         ds.setPassword("");
-        addAdminAccount(ds,"admin","admin");
+        AdminDao dao = new AdminDao();
+        dao.addAdminAccount(ds,"admin","admin");
 
     }
-    private static void addAdminAccount(DataSource ds, String username, String password){
+    private void addAdminAccount(DataSource ds, String username, String password){
         Connection connection = null;
         try {
             connection = ds.getConnection();
@@ -36,6 +37,8 @@ public class AdminDao extends DAO {
             st.executeUpdate();
         } catch (NoSuchAlgorithmException | CloneNotSupportedException | SQLException e) {
             e.printStackTrace();
+        } finally{
+            closeConnection(connection);
         }
 
     }

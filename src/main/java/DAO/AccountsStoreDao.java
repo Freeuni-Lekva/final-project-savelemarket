@@ -192,6 +192,8 @@ public class AccountsStoreDao extends DAO implements AccountsStore {
         try{
             connection = dataSource.getConnection();
             PreparedStatement st = connection.prepareStatement("SELECT * FROM admins WHERE username = ? AND password = ?;");
+            st.setString(1,username);
+            st.setBytes(2,hash);
             ResultSet rs = st.executeQuery();
             if(rs.next()){
                 return true;
