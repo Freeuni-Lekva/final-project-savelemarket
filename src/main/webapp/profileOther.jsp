@@ -22,7 +22,7 @@
         <nav class="menu-nav">
             <ul class="menu-list">
                 <li class="menu-item">
-                    <a class="menu-link" href="home.jsp">მთავარ გვერდზე დაბრუნება</a>
+                    <a class="menu-link" href="/home">მთავარ გვერდზე დაბრუნება</a>
                 </li>
 
             </ul>
