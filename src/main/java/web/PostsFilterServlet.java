@@ -54,7 +54,6 @@ public class PostsFilterServlet extends GeneralServlet {
         System.out.println("---------------------------------");
         System.out.println(filteredPosts);
         request.getSession().setAttribute("filtered-posts", filteredPosts);
-//        request.getRequestDispatcher("home.jsp").forward(request, response);
         response.sendRedirect("/PostsFilter");
     }
 }

@@ -61,6 +61,11 @@
     <servlet-class>web.PostsFilterServlet</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>HomeServlet</servlet-name>
+    <servlet-class>web.HomeServlet</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>PrivateChatServlet</servlet-name>
     <url-pattern>/pchat</url-pattern>
@@ -114,6 +119,11 @@
   <servlet-mapping>
     <servlet-name>PostsFilterServlet</servlet-name>
     <url-pattern>/PostsFilter</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>HomeServlet</servlet-name>
+    <url-pattern>/home</url-pattern>
   </servlet-mapping>
 
 </web-app>
