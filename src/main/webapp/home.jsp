@@ -37,7 +37,7 @@
         <nav class="menu-nav">
             <ul class="menu-list">
                 <li class="menu-item">
-                    <a class="menu-link" href="home.jsp" style="font-weight: bold; color:#051c8f">მთავარი</a>
+                    <a class="menu-link" href="/home" style="font-weight: bold; color:#051c8f">მთავარი</a>
                 </li>
                 <li class="menu-item">
                     <a class="menu-link" href="messages.jsp">წერილები</a>
