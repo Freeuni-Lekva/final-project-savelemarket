@@ -47,55 +47,50 @@
         NotificationStore notifStore = (NotificationStore) request.getServletContext().getAttribute("notification-store");
         Account currentAccount  = (Account) session.getAttribute("current-account");
         List<Notification> pendingNotifs = notifStore.getPendingNotificationsFor(currentAccount.getMail());
+        List<Notification> nonPendingNotifs = notifStore.getNonPendingNotificationsFor(currentAccount.getMail());
+        List<Notification> sentByUser = notifStore.getSentNotifications(currentAccount.getMail());
         %>
-    <section class="notifications-box">
+        <section class="notifications-box">
 
-<%--        <%for(Notification n : pendingNotifs){%>--%>
-    <div class="pending-notification">
-<%--        <%=n.getStatusMessage()%>--%>
-<%--    <%=n.getSenderMail()%>--%>
-<%--    <%=n.getRequestedLocation().getName()%>  <%=n.getRequestedLocation().getSessionNumber()%>--%>
-         <div class="notification-text">
-            <a class="sender-mail" href ="profile?id=">ლირემ18@გმაილ.ცომ</a>
-            <a class="requested-location">გიჟიურთა 3</a>
-            <a class="amount-type">ითხოვს: 29 ₾</a>
-         </div>
-<%--        <%=n.getPrice()%>--%>
-        <form action="/servletissaxeli" method="post">
-            <input type="submit" value="დათანხმება" class="accsept">
-            <input type="submit" value="უარყოფა" class="deny">
-        </form>
-    </div>
+        <%for(Notification n : pendingNotifs){
+            String locationName = n.getRequestedLocation().getName() +" " + n.getRequestedLocation().getSessionNumber();
+        %>
+            <div class="pending-notification">
+                <%=n.getStatusMessage()%>
 
-<%--    <%--%>
-<%--        }--%>
-<%--    %>--%>
-    </section>
-<%--    <%--%>
-<%--        List<Notification> nonPendingNotifs = notifStore.getNonPendingNotificationsFor(currentAccount.getMail());--%>
-
-<%--        for(Notification n : nonPendingNotifs){--%>
-<%--    %>--%>
-    <section class="notifications-box">
-        <section class="nonpending-notification">
-            <div class="notification-text">
-                <a class="sender-mail" href ="profile?id=">ლირემ18@გმაილ.ცომ</a>
-                <a class="requested-location">გიჟიურთა 3</a>
-                <a class="amount-type">მოთხოვნა დადასტურებულია</a>
+                 <div class="notification-text">
+                    <a class="sender-mail" href ="profile?id="><%=n.getSenderMail()%></a>
+                    <a class="requested-location"><%=locationName%></a>
+                    <a class="amount-type">ითხოვს: <%=n.getPrice()%> ₾</a>
+                 </div>
+                <form action="/servletissaxeli" method="post">
+                    <input type="submit" value="დათანხმება" class="accsept">
+                    <input type="submit" value="უარყოფა" class="deny">
+                </form>
             </div>
-            <form action="/servletissaxeli" method="post">
-                <input type="submit" value="წაშლა" class="delete-notification">
-            </form>
-<%--            <%=n.getStatusMessage()%>--%>
-<%--            <%=n.getSenderMail()%>--%>
-<%--            <%=n.getRequestedLocation().getName()%>--%>
-<%--            <%=n.getRequestedLocation().getSessionNumber()%>--%>
-<%--            <%=n.getPrice()%>--%>
-        </section>
+        <%}%>
+            <%for(Notification n : sentByUser){%>
+<%--            აქ იქნება ის კლასი სადაც ჩემი გაგზავნილებია --%>
+            <%}%>
     </section>
-<%--    <%--%>
-<%--        }--%>
-<%--    %>--%>
+
+    <%for(Notification n : nonPendingNotifs){
+        String locName = n.getRequestedLocation().getName() + " " + n.getRequestedLocation().getSessionNumber();
+    %>
+        <section class="notifications-box">
+            <section class="nonpending-notification">
+                <div class="notification-text">
+                    <a class="sender-mail" href ="profile?id="><%=n.getSenderMail()%>></a>
+                    <a class="requested-location"><%=locName%></a>
+                    <a class="amount-type"><%=n.getStatusMessage()%></a>
+    <%--                ^ ეს არ უნდა იყოს amount-type :D --%>
+                </div>
+                <form action="/servletissaxeli" method="post">
+                    <input type="submit" value="წაშლა" class="delete-notification">
+                </form>
+            </section>
+        </section>
+    <%}%>
 </section>
 </body>
 </body>
