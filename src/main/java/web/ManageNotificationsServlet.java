@@ -58,8 +58,10 @@ public class ManageNotificationsServlet extends GeneralServlet{
             Location suggestedLocation = locationStore.getLocation(senderMail); // გამომგზავნის მიერ შემოთავაზებული ლოკაცია
             Location requiredLocation = locationStore.getLocation(receiverMail); // გამომგზავნს რა ლოკაციაც უნდა
             accountsStore.updateLocation(currentAccount, suggestedLocation);
+            Account newCurrAccount = accountsStore.getAccount(receiverMail);
+            request.getSession().setAttribute("current-account", newCurrAccount);
             accountsStore.updateLocation(senderAccount, requiredLocation);
-            shoppingStore.removeAllItemFor(currentAccount.getMail());
+            shoppingStore.removeAllItemFor(receiverMail);
             shoppingStore.removeAllItemFor(senderMail);
         }
         response.sendRedirect("/manage-notifications");
