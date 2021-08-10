@@ -18,7 +18,8 @@ public class ChatServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(redirectIfNotLogged(request,response)) return;
-        if(request.getQueryString()== null || request.getQueryString().length()<uLen) {
+        System.out.println(request.getQueryString());
+        if(request.getQueryString()== null || request.getQueryString().length()<=uLen) {
             request.getSession().setAttribute("chat-id",getCurrentAccount(request).getLocation().getChatID());
         }else{
             String mail = request.getQueryString().substring(uLen);
@@ -33,9 +34,14 @@ public class ChatServlet extends GeneralServlet {
                 request.getRequestDispatcher("/WEB-INF/profile.jsp");
                 return;
             }
+
             request.getSession().setAttribute("profile-account",chatAcc);
-            request.getRequestDispatcher("/pchat").forward(request,response);
+           // request.setAttribute("a", 1);
+            response.sendRedirect("/pchat");
+            //request.getRequestDispatcher("/pchat").forward(request,response);
+            return;
         }
+
         request.getRequestDispatcher("/WEB-INF/chat.jsp").forward(request, response);
 
     }
@@ -48,7 +54,7 @@ public class ChatServlet extends GeneralServlet {
         messageText = messageText.replaceAll("\\<.*?\\>", "");
         if(messageText.trim().length() > 0) {
             Account current = getCurrentAccount(request);
-            Message message = new GeneralMessage(current, messageText, false, current.getLocation().getChatID());
+            Message message = new GeneralMessage(current, messageText, false, getChatID(request));
             chatStore.addMessage(message);
             //request.getRequestDispatcher("chat.jsp").forward(request, response);
         }

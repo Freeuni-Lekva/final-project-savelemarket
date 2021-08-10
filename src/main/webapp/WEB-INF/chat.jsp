@@ -2,7 +2,8 @@
 <%@ page import="model.Message" %>
 <%@ page import="java.util.List" %>
 <%@ page import="model.GeneralMessage" %>
-<%@ page import="model.Account" %><%--
+<%@ page import="model.Account" %>
+<%@ page import="model.Chat" %><%--
   Created by IntelliJ IDEA.
   User: Qorbuda
   Date: 8/3/2021
@@ -19,6 +20,8 @@
 <%
     ChatStore chatStore = (ChatStore) request.getServletContext().getAttribute("chat-store");
     Account currAccount = ((Account)session.getAttribute("current-account"));
+    int chat_id = (Integer) session.getAttribute("chat-id");
+    Chat  chat = chatStore.getChat(chat_id);
 %>
 <body>
     <header>
@@ -26,9 +29,7 @@
             <li>
                 <a class="leave-chat" href="/messages">უკან დაბრუნება</a>
             </li>
-            <a class="chat-name"><%
-                out.println(currAccount.getLocation().getName() + " " + currAccount.getLocation().getSessionNumber());
-            %></a>
+            <a class="chat-name"><%=chat.getChatName()%></a>
         </section>
     </header>
     <body>
@@ -36,7 +37,7 @@
         <div class="members-div">
             <%
 
-                List<Account> accounts = chatStore.getChatMembers(currAccount.getLocation().getChatID());
+                List<Account> accounts = chatStore.getChatMembers(chat_id);
                 for(Account account:accounts){
                     out.println("<a href = \"profile?id=" + account.getMail() + "\"class=\"chat-member\">"+ account.getMail() +"</a>");
                 }

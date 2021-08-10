@@ -11,7 +11,9 @@ import java.io.IOException;
 public class PrivateChatServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        redirectIfNotLogged(request,response);
+        if(redirectIfNotLogged(request,response)) return;
+        this.doPost(request, response);
+
     }
 
     @Override

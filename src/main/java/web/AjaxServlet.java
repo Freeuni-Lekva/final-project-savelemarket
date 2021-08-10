@@ -22,7 +22,7 @@ public class AjaxServlet extends GeneralServlet {
         String result = "";
         ChatStore chatStore = getChatStoreDao(request);
         //ეს უნდა შეიცვალოს getMessages-ით და ჩამოიტანოს რაღაც რიცხვის მიხედვით.
-        List<Message> messages = chatStore.getMessages(current.getLocation().getChatID(), 0);
+        List<Message> messages = chatStore.getMessages(getChatID(request), 0);
         showChats(response, current, result, messages);
     }
 

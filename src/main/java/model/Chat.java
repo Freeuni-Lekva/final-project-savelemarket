@@ -25,4 +25,5 @@ public abstract class Chat {
     //void deleteMessage(int id); // No need for it yet
     public abstract int getMemberCount();
     public abstract boolean isPrivate();
+    public abstract String getChatURL();
 }

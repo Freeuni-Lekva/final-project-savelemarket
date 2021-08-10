@@ -53,9 +53,8 @@
     %>
             <section class="message-item">
                 <a class="message-name"><%=chatName%></a> <%-- აქ არი იტოქში სახელიც გვარიც და მეილიც, როგორც გინდა დატოვე რომელიც სჯობს --%>
-                <form action="/chat" method="post" class="">
-                    <input type="submit" name="open-message" class="open-message" value ="მიმოწერის გახსნა"/>
-                </form>
+                <a href="/chat?id=<%=ch.getChatURL()%>" class="send-private-message">მიმოწერის გახსნა</a>
+
             </section>
     <%
         }

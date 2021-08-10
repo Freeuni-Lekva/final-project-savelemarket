@@ -15,7 +15,9 @@ public class LocationChat extends Chat{
 
     // for this one need to create new public chat and give id here before making new LocationChat
     public LocationChat(ChatStore db,List<Account> accounts,String locationName, int id) {
-        this(db,accounts,id);
+        this.db = db;
+        this.accounts = accounts;
+        this.id = id;
         chatName = locationName;
         addAccounts(accounts);
     }
@@ -25,6 +27,8 @@ public class LocationChat extends Chat{
         this.db = db;
         this.accounts = accounts;
         this.id = id;
+        if(accounts.size() != 0)
+            chatName = accounts.get(0).getLocation().getName() + " " + accounts.get(0).getLocation().getSessionNumber();
     }
 
     @Override
@@ -41,6 +45,11 @@ public class LocationChat extends Chat{
     @Override
     public boolean isPrivate() {
         return false;
+    }
+
+    @Override
+    public String getChatURL() {
+        return "";
     }
 
     @Override
