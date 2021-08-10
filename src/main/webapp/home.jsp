@@ -106,12 +106,7 @@
     <section class="posts-section">
         <%
             boolean allPostsAreMine = true;
-            for(ShoppingItem sI : allItems){
-                if(!sI.getWriterAccount().getMail().equals(currentAccount.getMail())){
-                    allPostsAreMine = false;
-                    break;
-                }
-            }
+            
             if(allItems.size() == 0 || allPostsAreMine){
                 out.println("<a class=\"no-posts\">პოსტები არ არის</a>");
             }else {
@@ -119,6 +114,7 @@
                     ShoppingItem shoppingItem = allItems.get(i);
 
                     if(!shoppingItem.getWriterAccount().getMail().equals(currentAccount.getMail())) {
+                        allPostsAreMine = false;
                         out.println("<div class=\"post\"><a href =\"profile?id=" + shoppingItem.getWriterAccount().getMail()+"\"class=\"post-author\" id=\"post-author" + i + "\"name=\"post-author\">" +
                                 shoppingItem.getWriterAccount().getMail() + "</a>");
                         out.println("<a class=\"post-time\" id=\"post-time" + i + " \">" + shoppingItem.getCreateTime() + "</a>");
@@ -139,6 +135,9 @@
                                 "                    <input type=\"submit\" name=\"" + shoppingItem.getItemId() + "\" class=\"send-request\" value =\"გაცვლის მოთხოვნა\"/>\n" +
                                 "                </form>");
                         out.println("</div></div>");
+                    }
+                    if(i == 0 && allPostsAreMine){
+                        out.println("<a class=\"no-posts\">პოსტები არ არის</a>");
                     }
                 }
             }
