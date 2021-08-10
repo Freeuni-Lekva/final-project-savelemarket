@@ -62,7 +62,7 @@
             </div>
             <input type="submit" value="რეგისტრაცია" class="registration_btn_1"/>
         </form>
-        <a href="/index.jsp" class="cancel">უკან დაბრუნება</a>
+        <a href="/WEB-INF/index.jsp" class="cancel">უკან დაბრუნება</a>
         <%
             if (request.getAttribute("empty-fields") != null){
                 out.println("<a class=\"try_again\" style=\"color: red\">შეავსეთ ყველა ველი</a>");
