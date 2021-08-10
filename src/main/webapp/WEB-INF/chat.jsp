@@ -14,7 +14,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Chat</title>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="../main.css">
 </head>
 <%
     ChatStore chatStore = (ChatStore) request.getServletContext().getAttribute("chat-store");

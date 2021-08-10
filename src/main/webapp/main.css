@@ -775,7 +775,7 @@ select{
     overflow: scroll;
     overflow-y:scroll;
     overflow-x:hidden;
-    width: 40vw;
+    width: 600px;
     height: calc(100vh - 90px);
     background-color: #ceee6f;
 }

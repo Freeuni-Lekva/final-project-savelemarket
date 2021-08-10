@@ -17,7 +17,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Home</title>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="../main.css">
     <%
         ShoppingStore shoppingStore = (ShoppingStore) request.getServletContext().getAttribute("shopping-items-store");
         List<ShoppingItem> allItems;

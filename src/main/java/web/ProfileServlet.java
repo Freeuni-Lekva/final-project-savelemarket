@@ -18,11 +18,11 @@ public class ProfileServlet extends GeneralServlet {
         Account current = getCurrentAccount(req);
         if (current == null) {
             // user not logged in
-            req.getRequestDispatcher("index.jsp").forward(req,resp);
+            req.getRequestDispatcher("/WEB-INF/index.jsp").forward(req,resp);
             return;
         }
         if(req.getQueryString()== null || req.getQueryString().length()<uLen)  {
-            req.getRequestDispatcher("profile.jsp").forward(req,resp);
+            req.getRequestDispatcher("/WEB-INF/profile.jsp").forward(req,resp);
             return;
         }
 
@@ -30,20 +30,20 @@ public class ProfileServlet extends GeneralServlet {
 
         if(current.getMail().equals(mail)){
             // same profile as logged in user
-            req.getRequestDispatcher("profile.jsp").forward(req,resp);
+            req.getRequestDispatcher("/WEB-INF/profile.jsp").forward(req,resp);
             return;
         }
         AccountsStore as = getAccountsStoreDao(req);
         Account accToShow = as.getAccount(mail);
         if(accToShow == null) {
-            req.getRequestDispatcher("accNotFound.jsp").forward(req,resp);
+            req.getRequestDispatcher("/WEB-INF/accNotFound.jsp").forward(req,resp);
             return;
         }
         // ეს ექაუნთი უნდა აჩვენო ლევან, რო ნახავ ეს კომენტარი წაშალე
         req.getSession().setAttribute("profile-account",accToShow); // ამითი ვაწვდი ინფორმაციას privateChatServlet-ს
         // ალბათ შევცვლი
         req.setAttribute("profile-account",accToShow);
-        req.getRequestDispatcher("profileOther.jsp").forward(req,resp);
+        req.getRequestDispatcher("/WEB-INF/profileOther.jsp").forward(req,resp);
 
     }
 

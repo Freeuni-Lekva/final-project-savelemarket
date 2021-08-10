@@ -61,7 +61,7 @@ public class RegistrationServlet extends GeneralServlet {
         String password = (String)(request.getParameter("password"));
         if(accName.length() == 0 || lastName.length() == 0 || mail.length() == 0 || password.length() == 0){
             request.setAttribute("empty-fields", true);
-            request.getRequestDispatcher("registration.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/registration.jsp").forward(request, response);
             return true;
         }
         return false;
@@ -73,7 +73,7 @@ public class RegistrationServlet extends GeneralServlet {
         String repeatedPassword = (String)(request.getParameter("repeated_password"));
         if(!password.equals(repeatedPassword)){
             request.setAttribute("passwords-not-match", true);
-            request.getRequestDispatcher("registration.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/registration.jsp").forward(request, response);
             return true;
         }
         return false;
@@ -85,7 +85,7 @@ public class RegistrationServlet extends GeneralServlet {
         int sessionNumber = Integer.parseInt((String)(request.getParameter("session_numbers")));
         if(!locationStore.hasLocation(locationName, sessionNumber)){
             request.setAttribute("location-not-exists", true);
-            request.getRequestDispatcher("registration.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/registration.jsp").forward(request, response);
             return true;
         }
         return false;
@@ -95,12 +95,12 @@ public class RegistrationServlet extends GeneralServlet {
         String mail = (String)(request.getParameter("mail"));
         if(!mail.endsWith("@freeuni.edu.ge") && !mail.endsWith("@agruni.edu.ge")){
             request.setAttribute("invalid-mail", true);
-            request.getRequestDispatcher("registration.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/registration.jsp").forward(request, response);
             return true;
         }
         if(accountsStore.containsAccount(mail)){
             request.setAttribute("used-mail", true);
-            request.getRequestDispatcher("registration.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/registration.jsp").forward(request, response);
             return true;
         }
         return false;
