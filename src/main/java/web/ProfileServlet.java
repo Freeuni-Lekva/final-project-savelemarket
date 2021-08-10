@@ -9,7 +9,6 @@ import javax.ws.rs.NotFoundException;
 import java.io.IOException;
 
 public class ProfileServlet extends GeneralServlet {
-    private static final int uLen = "id=".length();
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         if(redirectIfNotLogged(req,resp)) return;

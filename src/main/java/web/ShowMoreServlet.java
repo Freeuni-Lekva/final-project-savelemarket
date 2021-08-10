@@ -19,7 +19,8 @@ public class ShowMoreServlet extends GeneralServlet {
         response.setContentType("text/html;charset=UTF-8");
         String result = "";
         ChatStore chatStore = getChatStoreDao(request);
-        List<Message> messages = chatStore.getMessages(current.getLocation().getChatID(), 20);
+        int id = getChatID(request);
+        List<Message> messages = chatStore.getMessages(id, 20);
         showChats(response, current, result, messages);
 
     }
