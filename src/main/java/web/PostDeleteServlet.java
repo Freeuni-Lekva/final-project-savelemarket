@@ -18,7 +18,7 @@ public class PostDeleteServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(redirectIfNotLogged(request,response)) return;
-        request.getRequestDispatcher("profile.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/profile.jsp").forward(request, response);
     }
 
     @Override

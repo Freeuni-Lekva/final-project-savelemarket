@@ -19,6 +19,6 @@ public class LogOutServlet extends GeneralServlet {
         session.setAttribute("current-account", null);
         session.setAttribute("profile-account",null);
         session.setAttribute("filtered-posts",null);
-        request.getRequestDispatcher("index.jsp").forward(request,response);
+        request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request,response);
     }
 }

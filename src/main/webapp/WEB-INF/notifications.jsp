@@ -8,7 +8,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Notifications</title>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="../main.css">
 </head>
 <body>
 <header>
@@ -63,14 +63,12 @@
         %>
             <div class="pending-notification">
                 <%=n.getStatusMessage()%>
-
-    <div class="pending-notification">
                  <div class="notification-text">
                     <a class="sender-mail" href ="profile?id="><%=n.getSenderMail()%></a>
                     <a class="requested-location"><%=locationName%></a>
-                    <a class="amount-type"><%=offerType><%=n.getPrice()%> ₾</a>
+                    <a class="amount-type"><%=offerType%><%=n.getPrice()%> ₾</a>
                  </div>
-                <form action="/servletissaxeli" method="post">
+                <form action="/manage-notifications" method="post">
                     <input type="submit" value="დათანხმება" class="accsept">
                     <input type="submit" value="უარყოფა" class="deny">
                 </form>

@@ -13,7 +13,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Create Post</title>
-    <link rel="stylesheet" href="main.css">
+    <link rel="stylesheet" href="../main.css">
 </head>
 <body>
 <header>

@@ -15,7 +15,7 @@ public class PostsFilterServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(redirectIfNotLogged(request,response)) return;
-        request.getRequestDispatcher("home.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/home.jsp").forward(request, response);
     }
 
     @Override

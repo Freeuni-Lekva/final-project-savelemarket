@@ -16,7 +16,7 @@ public class GeneralServlet extends HttpServlet {
 //    void
     public boolean redirectIfNotLogged(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(getCurrentAccount(request) == null){
-            request.getRequestDispatcher("/index.jsp").forward(request,response);
+            request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request,response);
             return true;
         }
         return false;
@@ -24,7 +24,7 @@ public class GeneralServlet extends HttpServlet {
     public boolean doAdminRedirect(String username, String password, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         AccountsStore accountsStore = getAccountsStoreDao(request);
         if(accountsStore.isAdmin(username,password) == true){
-            request.getRequestDispatcher("/admin.jsp").forward(request,response);
+            request.getRequestDispatcher("/WEB-INF/admin.jsp").forward(request,response);
             return true;
         }
         return false;

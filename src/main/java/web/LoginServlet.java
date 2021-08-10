@@ -31,10 +31,10 @@ public class LoginServlet extends GeneralServlet {
         //System.out.println("account: " + requiredAccount);
         if(requiredAccount == null || !requiredAccount.isValidPassword(password)){
             request.setAttribute("try-again", true);
-            request.getRequestDispatcher("index.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
         }else{
             request.getSession().setAttribute("current-account", requiredAccount);
-            request.getRequestDispatcher("profile.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/profile.jsp").forward(request, response);
         }
     }
 
