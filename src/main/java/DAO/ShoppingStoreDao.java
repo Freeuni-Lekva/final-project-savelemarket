@@ -32,12 +32,13 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
             int shopItemId = getID(statement);
             LocationStore locationStore = new LocationStoreDao(dataSource);
             List<Location> locs = shoppingItem.getDesiredLocations();
+            PreparedStatement addStatement = connection.prepareStatement("INSERT INTO shop_locations (shop_item_id, location_id)" +
+                    "VALUES (?,?);");
+            addStatement.setInt(1, shopItemId);
             for(Location l : locs){
-                PreparedStatement addStatement = connection.prepareStatement("INSERT INTO shop_locations (shop_item_id, location_id)" +
-                        "VALUES (?,?);");
-                addStatement.setInt(1, shopItemId);
                 int locId = locationStore.getLocationId(l.getName(), l.getSessionNumber());
                 addStatement.setInt(2, locId);
+                System.out.println(addStatement);
                 addStatement.executeUpdate();
             }
         } catch (SQLException throwables) {
@@ -96,18 +97,13 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement getItemsId = connection.prepareStatement("SELECT shop_item_id FROM shop_store WHERE writer_mail = ?;");
-            getItemsId.setString(1, accountMail);
-            ResultSet rs = getItemsId.executeQuery();
-            while(rs.next()){
-                PreparedStatement  removeFromShopLoc = connection.prepareStatement("DELETE from shop_locations WHERE shop_item_id = ?;");
-                int id = rs.getInt(1);
-                removeFromShopLoc.setInt(1,id);
-                removeFromShopLoc.executeUpdate();
-            }
-            PreparedStatement  removeFromShopstore = connection.prepareStatement("DELETE from shop_store WHERE writer_mail = ?;");
-            removeFromShopstore.setString(1, accountMail);
-            removeFromShopstore.executeUpdate();
+            PreparedStatement removeFromShopLocations = connection.prepareStatement("delete sl from shop_store as ss  join shop_locations as sl on ss.shop_item_id = sl.shop_item_id" +
+                    " where ss.writer_mail = ?;");
+            PreparedStatement  removeFromShopStore = connection.prepareStatement("DELETE from shop_store WHERE writer_mail = ?;");
+            removeFromShopLocations.setString(1, accountMail);
+            removeFromShopLocations.executeUpdate();
+            removeFromShopStore.setString(1, accountMail);
+            removeFromShopStore.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {

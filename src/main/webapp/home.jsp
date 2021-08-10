@@ -117,6 +117,7 @@
             }else {
                 for (int i = allItems.size() - 1; i >= 0; i--) {
                     ShoppingItem shoppingItem = allItems.get(i);
+
                     if(!shoppingItem.getWriterAccount().getMail().equals(currentAccount.getMail())) {
                         out.println("<div class=\"post\"><a href =\"profile?id=" + shoppingItem.getWriterAccount().getMail()+"\"class=\"post-author\" id=\"post-author" + i + "\"name=\"post-author\">" +
                                 shoppingItem.getWriterAccount().getMail() + "</a>");
