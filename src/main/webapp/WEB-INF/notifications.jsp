@@ -62,11 +62,10 @@
             }
         %>
             <div class="pending-notification">
-                <%=n.getStatusMessage()%>
                  <div class="notification-text">
                     <a class="sender-mail" href ="profile?id="><%=n.getSenderMail()%></a>
                     <a class="requested-location"><%=locationName%></a>
-                    <a class="amount-type"><%=offerType%><%=n.getPrice()%> ₾</a>
+                    <a class="amount-type"><%=offerType%><%=Math.abs(n.getPrice())%> ₾</a>
                  </div>
                 <form action="/manage-notifications" method="post" >
                     <input type="submit" name="accept <%=n.getNotificationID()%>" value="დათანხმება" class="accsept">
@@ -74,9 +73,27 @@
                 </form>
             </div>
         <%}%>
-            <%for(Notification n : sentByUser){%>
-<%--            აქ იქნება ის კლასი სადაც ჩემი გაგზავნილებია --%>
-            <%}%>
+        <%for(Notification n : sentByUser){
+            String locationName = n.getRequestedLocation().getName() +" " + n.getRequestedLocation().getSessionNumber();
+            String offerType;
+            if(n.getPrice() < 0){
+                offerType = "ვამატებ: ";
+            }else{
+                offerType = "ვითხოვ: ";
+            }
+        %>
+            <div class="pending-notification">
+                <div class="notification-text">
+                    <a class="sender-mail" href ="profile?id="><%=n.getReceiverMail()%></a>
+                    <a class="requested-location"><%=locationName%></a>
+                    <a class="amount-type"><%=offerType%><%=Math.abs(n.getPrice())%> ₾</a>
+                    <a class="amount-type" >მოთხოვნა მოლოდინის რეჟიმშია.</a>
+                </div>
+                <form action="/manage-notifications" method="post" >
+                    <input type="submit" name="delete <%=n.getNotificationID()%>" value="გაუქმება" class="deny">
+                </form>
+            </div>
+        <%}%>
     </section>
 
         <section class="notifications-box">
