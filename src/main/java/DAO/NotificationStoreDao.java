@@ -22,10 +22,33 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
     private static final String addNotification = "INSERT INTO request_notification(notification_status,location_id,sender_mail,receiver_mail,requested_price) VALUES(?,?,?,?,?) ;";
     private static final String changeNotificationStatus = "UPDATE request_notification SET notification_status = ? WHERE notification_id = ?;";
     private static final String getAllSentNotifications = "SELECT * FROM request_notification r INNER JOIN locations l ON (r.location_id = l.location_id) WHERE sender_mail = ? ORDER BY notification_id DESC;";
+    private static final String getParticipantMails = "SELECT sender_mail,receiver_mail FROM request_notification WHERE notification_id = ?;";
     DataSource dataSource;
 
     public NotificationStoreDao(DataSource dataSource) {
         this.dataSource = dataSource;
+    }
+
+    // returns sender_mail at 0th index, receiver at 1st
+    public List<String> getParticipantMails(int id){
+        Connection connection = null;
+        List<String> mails = new ArrayList<>(2);
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement st = connection.prepareStatement(getParticipantMails);
+            st.setInt(1,id);
+            ResultSet rs = st.executeQuery();
+            if(rs.next()){
+                mails.add(rs.getString("sender_mail"));
+                mails.add(rs.getString("receiver_mail"));
+
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally{
+            closeConnection(connection);
+        }
+        return mails;
     }
 
     public boolean hasNotification(Notification n){

@@ -10,6 +10,7 @@ public interface NotificationStore {
     List<Notification> getSentNotifications(String mail);
     void clearAllNotificationsFor(String mail);
     void deleteNotification(int id);
+    List<String> getParticipantMails(int id);
     boolean hasNotification(Notification notification);
     int addNotification(Notification notification);
     void acceptNotification(int id);
