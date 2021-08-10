@@ -67,7 +67,7 @@
                 </a>
             </div>
         </div>
-        <a class="make-post" href="makePost.jsp">განცხადების დამატება</a>
+        <a class="make-post" href="/make-posts">განცხადების დამატება</a>
     </section>
 
     <section class="posts-section" id="posts-section">
