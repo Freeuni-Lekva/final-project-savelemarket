@@ -201,12 +201,12 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
             connection = dataSource.getConnection();
             PreparedStatement statement = connection.prepareStatement(getAppropriateSqlCommand(location_name, sess, wantToBuy));
             setFieldsToStatement(statement, location_name, sess, price);
-            System.out.println(statement);
+            //System.out.println(statement);
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
                 int itemId = rs.getInt("ss.shop_item_id");
                 shoppingItems.add(getItemById(itemId));
-                System.out.println(getItemById(itemId));
+                //System.out.println(getItemById(itemId));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();

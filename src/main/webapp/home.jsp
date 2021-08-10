@@ -24,7 +24,7 @@
         if(request.getSession().getAttribute("filtered-posts") == null){
             allItems = shoppingStore.getAllItems();
         } else{
-            System.out.println("filtered posts");
+//            System.out.println("filtered posts");
             allItems = (List<ShoppingItem>)request.getSession().getAttribute("filtered-posts");
         }
         Account currentAccount = (Account)request.getSession().getAttribute("current-account");
@@ -105,7 +105,14 @@
 
     <section class="posts-section">
         <%
-            if(allItems.size() == 0){
+            boolean allPostsAreMine = true;
+            for(ShoppingItem sI : allItems){
+                if(!sI.getWriterAccount().getMail().equals(currentAccount.getMail())){
+                    allPostsAreMine = false;
+                    break;
+                }
+            }
+            if(allItems.size() == 0 || allPostsAreMine){
                 out.println("<a class=\"no-posts\">პოსტები არ არის</a>");
             }else {
                 for (int i = allItems.size() - 1; i >= 0; i--) {

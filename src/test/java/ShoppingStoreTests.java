@@ -48,7 +48,7 @@ public class ShoppingStoreTests {
         ds.setUser(user);
         ds.setPassword(password);
 
-//        initDbs(ds);
+        initDbs(ds);
 
         shoppingStore = new ShoppingStoreDao(ds);
         locationStore = new LocationStoreDao(ds);
@@ -166,12 +166,12 @@ public class ShoppingStoreTests {
 
 
 
-    @Test
-    public void test(){
-//        shoppingStore.getFilteredItems("Kazbegi", 1, 100);
-    //shoppingStore.getFilteredItems("Svaneti", 1,true, 200);
-    shoppingStore.getFilteredItems(null, -1, false, -900);
-    }
+//    @Test
+//    public void test(){
+////        shoppingStore.getFilteredItems("Kazbegi", 1, 100);
+//    //shoppingStore.getFilteredItems("Svaneti", 1,true, 200);
+//    //hoppingStore.getFilteredItems(null, -1, false, -900);
+//    }
 
 
 

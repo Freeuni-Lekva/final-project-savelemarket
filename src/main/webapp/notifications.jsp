@@ -61,7 +61,7 @@
             <a class="amount-type">ითხოვს: 29 ₾</a>
          </div>
 <%--        <%=n.getPrice()%>--%>
-        <form action="/servletissaxeli" method="post">
+        <form action="/manage-notifications" method="post">
             <input type="submit" value="დათანხმება" class="accsept">
             <input type="submit" value="უარყოფა" class="deny">
         </form>
@@ -83,7 +83,7 @@
                 <a class="requested-location">გიჟიურთა 3</a>
                 <a class="amount-type">მოთხოვნა დადასტურებულია</a>
             </div>
-            <form action="/servletissaxeli" method="post">
+            <form action="/manage-notifications" method="post">
                 <input type="submit" value="წაშლა" class="delete-notification">
             </form>
 <%--            <%=n.getStatusMessage()%>--%>
