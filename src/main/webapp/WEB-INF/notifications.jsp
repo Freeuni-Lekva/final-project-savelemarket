@@ -74,6 +74,7 @@
             </div>
         <%}%>
         <%for(Notification n : sentByUser){
+            if(n.getStatus() != Notification.PENDING) continue;
             String locationName = n.getRequestedLocation().getName() +" " + n.getRequestedLocation().getSessionNumber();
             String offerType;
             if(n.getPrice() < 0){
