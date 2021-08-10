@@ -29,7 +29,7 @@ public class PrivateChat extends Chat{
         this.sender = sender;
         this.receiver = receiver;
         this.id = db.getPrivateChatID(sender.getMail(),receiver.getMail());
-        chatName = sender.getName() + " " + sender.getLastName();
+        chatName = receiver.getName() + " " + receiver.getLastName();
     }
     @Override
     public int getChatID(){
@@ -88,5 +88,10 @@ public class PrivateChat extends Chat{
     @Override
     public int hashCode() {
         return Objects.hash(sender, receiver, id);
+    }
+
+    @Override
+    public String getChatURL(){
+        return receiver.getMail();
     }
 }

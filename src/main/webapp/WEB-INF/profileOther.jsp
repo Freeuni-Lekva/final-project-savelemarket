@@ -61,9 +61,8 @@
                 </a>
             </div>
         </div>
-        <form action="/chat" method="post" class="">
-            <input type="submit" name="send-private-message" class="send-private-message" value ="წერილის გაგზავნა"/>
-        </form>
+            <a href="/chat?id=<%=acc.getMail()%>" class="send-private-message">წერილის გაგზავნა</a>
+<%--            <input type="submit"  id="" class="send-private-message" value ="წერილის გაგზავნა"/>--%>
     </section>
 
     <section class="posts-section">

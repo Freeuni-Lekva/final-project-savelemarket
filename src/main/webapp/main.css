@@ -175,6 +175,7 @@ select{
 .profile-info{
     display: grid;
     grid-template-columns: auto auto;
+    margin-bottom: 20px;
 }
 
 .info-titles, .info-texts{
@@ -426,11 +427,11 @@ select{
     background-color: #00e1ff;
     border: none;
     margin-left: 80px;
-    margin-top: 20px;
+    color: #090707;
     font-size: 20px;
     border-radius: 10px;
     padding: 5px 10px;
-    cursor: pointer;
+    text-decoration: none;
 }
 
 .profile-body{
