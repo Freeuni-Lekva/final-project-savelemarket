@@ -68,9 +68,9 @@
                     <a class="requested-location"><%=locationName%></a>
                     <a class="amount-type"><%=offerType%><%=n.getPrice()%> ₾</a>
                  </div>
-                <form action="/manage-notifications" method="post">
-                    <input type="submit" value="დათანხმება" class="accsept">
-                    <input type="submit" value="უარყოფა" class="deny">
+                <form action="/manage-notifications" method="post" >
+                    <input type="submit" name="accept <%=n.getNotificationID()%>" value="დათანხმება" class="accsept">
+                    <input type="submit" name="deny <%=n.getNotificationID()%>" value="უარყოფა" class="deny">
                 </form>
             </div>
         <%}%>
@@ -85,13 +85,12 @@
             %>
                 <section class="nonpending-notification">
                     <div class="notification-text">
-                        <a class="sender-mail" href ="profile?id="><%=n.getSenderMail()%>></a>
+                        <a class="sender-mail" href ="profile?id="><%=n.getReceiverMail()%>></a>
                         <a class="requested-location"><%=locName%></a>
                         <a class="amount-type"><%=n.getStatusMessage()%></a>
-        <%--                ^ ეს არ უნდა იყოს amount-type :D --%>
                     </div>
-                    <form action="/servletissaxeli" method="post">
-                        <input type="submit" value="წაშლა" class="delete-notification">
+                    <form action="/manage-notifications" method="post">
+                        <input name="delete <%=n.getNotificationID()%>" type="submit" value="წაშლა" class="delete-notification">
                     </form>
                 </section>
             <%}%>
