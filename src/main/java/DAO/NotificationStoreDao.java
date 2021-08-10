@@ -123,7 +123,6 @@ public class NotificationStoreDao extends DAO implements NotificationStore{
             Notification notification = new RequestNotification(
                     rs.getInt("notification_status"),rs.getString("sender_mail"), rs.getString("receiver_mail")
                     ,location,rs.getDouble("requested_price"),rs.getInt("notification_id"));
-            System.out.println(notification);
             notificationList.add(notification);
         }
         return notificationList;
