@@ -13,6 +13,7 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class GeneralServlet extends HttpServlet {
+    public static final int uLen = "id=".length();
 //    void
     public boolean redirectIfNotLogged(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(getCurrentAccount(request) == null){
@@ -29,6 +30,11 @@ public class GeneralServlet extends HttpServlet {
         }
         return false;
     }
+
+    public int getChatID(HttpServletRequest request){
+        return (Integer) request.getSession().getAttribute("chat-id");
+    }
+
     public Account getCurrentAccount(HttpServletRequest request){
         return (Account)request.getSession().getAttribute("current-account");
     }
