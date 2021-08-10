@@ -24,7 +24,7 @@
         if(request.getSession().getAttribute("filtered-posts") == null){
             allItems = shoppingStore.getAllItems();
         } else{
-            System.out.println("filtered posts");
+//            System.out.println("filtered posts");
             allItems = (List<ShoppingItem>)request.getSession().getAttribute("filtered-posts");
         }
         Account currentAccount = (Account)request.getSession().getAttribute("current-account");
@@ -105,12 +105,16 @@
 
     <section class="posts-section">
         <%
+            boolean allPostsAreMine = true;
+            
             if(allItems.size() == 0){
                 out.println("<a class=\"no-posts\">პოსტები არ არის</a>");
             }else {
                 for (int i = allItems.size() - 1; i >= 0; i--) {
                     ShoppingItem shoppingItem = allItems.get(i);
+
                     if(!shoppingItem.getWriterAccount().getMail().equals(currentAccount.getMail())) {
+                        allPostsAreMine = false;
                         out.println("<div class=\"post\"><a href =\"profile?id=" + shoppingItem.getWriterAccount().getMail()+"\"class=\"post-author\" id=\"post-author" + i + "\"name=\"post-author\">" +
                                 shoppingItem.getWriterAccount().getMail() + "</a>");
                         out.println("<a class=\"post-time\" id=\"post-time" + i + " \">" + shoppingItem.getCreateTime() + "</a>");
@@ -131,6 +135,9 @@
                                 "                    <input type=\"submit\" name=\"" + shoppingItem.getItemId() + "\" class=\"send-request\" value =\"გაცვლის მოთხოვნა\"/>\n" +
                                 "                </form>");
                         out.println("</div></div>");
+                    }
+                    if(i == 0 && allPostsAreMine){
+                        out.println("<a class=\"no-posts\">პოსტები არ არის</a>");
                     }
                 }
             }

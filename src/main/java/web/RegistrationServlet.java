@@ -50,7 +50,7 @@ public class RegistrationServlet extends GeneralServlet {
         chatStore.addAccounts(List.of(newAccount),location.getChatID());
         HttpSession session = request.getSession();
         session.setAttribute("current-account", newAccount);
-        request.getRequestDispatcher("profile.jsp").forward(request, response);
+        request.getRequestDispatcher("/profile").forward(request, response);
     }
 
     /** */

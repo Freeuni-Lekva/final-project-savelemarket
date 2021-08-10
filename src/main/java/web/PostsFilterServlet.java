@@ -48,11 +48,11 @@ public class PostsFilterServlet extends GeneralServlet {
             price *= -1;
         }
 
-        System.out.println(locationName + sessionNum + " "+ wantToBuy + " for:"+ price);
+        //System.out.println(locationName + sessionNum + " "+ wantToBuy + " for:"+ price);
 
         List<ShoppingItem> filteredPosts = shoppingStore.getFilteredItems(locationName, sessionNum, wantToBuy, price);
-        System.out.println("---------------------------------");
-        System.out.println(filteredPosts);
+//        System.out.println("---------------------------------");
+//        System.out.println(filteredPosts);
         request.getSession().setAttribute("filtered-posts", filteredPosts);
         response.sendRedirect("/PostsFilter");
     }
