@@ -61,7 +61,7 @@
                 </a>
             </div>
         </div>
-        <form action="/pchat" method="post" class="">
+        <form action="/chat" method="post" class="">
             <input type="submit" name="send-private-message" class="send-private-message" value ="წერილის გაგზავნა"/>
         </form>
     </section>
@@ -94,7 +94,7 @@
                     <%}else if (shoppingItem.getPrice() > 0){%>
                         <a class="post-price">გავყიდი: <%=shoppingItem.getPrice()%> ₾</a>
                     <%}%>
-                    <form action="/serveletissaxeli" method="post" class="">
+                    <form action="/send-request" method="post" class="">
                         <input type="submit" name="send-request" class="send-request" value ="გაცვლის მოთხოვნა"/>
                     </form>
                 </div>

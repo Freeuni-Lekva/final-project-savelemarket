@@ -35,6 +35,9 @@
             </li>
         </form>
     </section>
+</header>
+<body>
+    <section class="messages-box">
     <%
         Account account = (Account) session.getAttribute("current-account");
         ChatStore chatStore = (ChatStore) request.getServletContext().getAttribute("chat-store");
@@ -44,23 +47,20 @@
             if(ch.isPrivate()){
                 List<Account> members = ch.getMembers(chatStore); // members(0) is always the account.getMail();
                 chatName = members.get(1).getMail();
-    %>
-            <section class="private-message">
-                <%=chatName%>  <%-- აქ არი იტოქში სახელიც გვარიც და მეილიც, როგორც გინდა დატოვე რომელიც სჯობს --%>
-                <%=ch.getMemberCount()%> <%-- აქ შეგვიძლია ბოლო მესიჯი გამოვიტანოთ 1 ფუნქციის დაწერა მიწევს ჩატში მარტო--%>
-            </section>
-    <%
-            }else{
+            }else {
                 chatName = account.getLocation().getName() + "-" + account.getLocation().getSessionNumber();
+            }
     %>
-            <section class="public-message">
-                <%=chatName%>
-                <%=ch.getMemberCount()%>
+            <section class="message-item">
+                <a class="message-name"><%=chatName%></a> <%-- აქ არი იტოქში სახელიც გვარიც და მეილიც, როგორც გინდა დატოვე რომელიც სჯობს --%>
+                <form action="/chat" method="post" class="">
+                    <input type="submit" name="open-message" class="open-message" value ="მიმოწერის გახსნა"/>
+                </form>
             </section>
     <%
-            }
         }
     %>
-</header>
+    </section>
+</body>
 </body>
 </html>
