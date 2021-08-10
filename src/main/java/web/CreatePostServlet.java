@@ -15,7 +15,7 @@ public class CreatePostServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(redirectIfNotLogged(request,response)) return;
-        request.getRequestDispatcher("profile.jsp").forward(request, response);
+        request.getRequestDispatcher("/WEB-INF/profile.jsp").forward(request, response);
     }
 
     @Override
@@ -31,7 +31,7 @@ public class CreatePostServlet extends GeneralServlet {
         String[] locationNames = request.getParameterValues("location");
         if(locationNames == null){
             request.setAttribute("location-not-chosen", true);
-            request.getRequestDispatcher("makePost.jsp").forward(request, response);
+            request.getRequestDispatcher("/WEB-INF/makePost.jsp").forward(request, response);
             return;
         }
         List<Location> desiredLocations = new ArrayList<>();

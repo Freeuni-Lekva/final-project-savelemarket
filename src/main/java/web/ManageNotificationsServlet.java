@@ -6,11 +6,14 @@ import DAO.NotificationStore;
 import DAO.ShoppingStore;
 import model.Account;
 import model.Location;
+import model.Notification;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
+import java.util.Enumeration;
+import java.util.List;
 
 
 public class ManageNotificationsServlet extends GeneralServlet{
@@ -31,27 +34,42 @@ public class ManageNotificationsServlet extends GeneralServlet{
         ShoppingStore shoppingStore = getShoppingStoreDao(request);;
         Account currentAccount = getCurrentAccount(request);
 
-        String remove = request.getParameter("remove");
-        String decline = request.getParameter("decline");
-        String accept = request.getParameter("accept");
-
-        String senderMail = request.getParameter("sender-mail");
-
-        int notificationId = Integer.parseInt(request.getParameter("notif_id"));
-        if(remove != null){
-            notificationStore.deleteNotification(notificationId);
-        } else if(decline != null){
-            notificationStore.rejectNotification(notificationId);
-        } else if(accept != null){
-            notificationStore.acceptNotification(notificationId);
-            Account senderAccount = accountsStore.getAccount(senderMail); // შეტყობინების გამომგზავნი ტიპი
-            Location suggestedLocation = locationStore.getLocation(senderMail); // გამომგზავნის მიერ შემოთავაზებული ლოკაცია
-            Location requiredLocation = currentAccount.getLocation(); // გამომგზავნს რა ლოკაციაც უნდა
-            accountsStore.updateLocation(currentAccount, suggestedLocation);
-            accountsStore.updateLocation(senderAccount, requiredLocation);
-            shoppingStore.removeAllItemFor(currentAccount.getMail());
-            shoppingStore.removeAllItemFor(senderMail);
+        Enumeration<String> params = request.getParameterNames();
+        String command = "";
+        if(params.hasMoreElements()){
+            command += params.nextElement();
         }
+
+        int index = command.indexOf(' ') + 1;
+        int notificationId = Integer.parseInt(command.substring(index));
+
+        List<String> participants = notificationStore.getParticipantMails(notificationId);
+
+        String senderMail = participants.get(0);
+        System.out.println("sender: " +senderMail + " length" + senderMail.length());
+        String receiverMail = participants.get(1);
+        System.out.println("receiver: "+receiverMail + " length" + receiverMail.length());
+        System.out.println("command : "+command);
+        System.out.println("notId :"+ notificationId);
+//        if(command.startsWith("delete ")){
+//            notificationStore.deleteNotification(notificationId);
+//        } else if(command.startsWith("deny ")){
+//            notificationStore.rejectNotification(notificationId);
+//        } else if(command.startsWith("accept ")){
+//            notificationStore.acceptNotification(notificationId);
+//            Account senderAccount = accountsStore.getAccount(senderMail); // შეტყობინების გამომგზავნი ტიპი
+//            Location suggestedLocation = locationStore.getLocation(senderMail); // გამომგზავნის მიერ შემოთავაზებული ლოკაცია
+//            System.out.println("sender :"+senderAccount);
+//            System.out.println("reciever :"+currentAccount);
+//            System.out.println("suges "+suggestedLocation);
+//            Location requiredLocation = currentAccount.getLocation(); // გამომგზავნს რა ლოკაციაც უნდა
+//            System.out.println("req "+suggestedLocation);
+//            accountsStore.updateLocation(currentAccount, suggestedLocation);
+//            accountsStore.updateLocation(senderAccount, requiredLocation);
+//            shoppingStore.removeAllItemFor(currentAccount.getMail());
+//            shoppingStore.removeAllItemFor(senderMail);
         response.sendRedirect("/manage-notifications");
+        }
+
     }
-}
+
