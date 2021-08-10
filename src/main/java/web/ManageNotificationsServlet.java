@@ -46,30 +46,24 @@ public class ManageNotificationsServlet extends GeneralServlet{
         List<String> participants = notificationStore.getParticipantMails(notificationId);
 
         String senderMail = participants.get(0);
-        System.out.println("sender: " +senderMail + " length" + senderMail.length());
         String receiverMail = participants.get(1);
-        System.out.println("receiver: "+receiverMail + " length" + receiverMail.length());
-        System.out.println("command : "+command);
-        System.out.println("notId :"+ notificationId);
-//        if(command.startsWith("delete ")){
-//            notificationStore.deleteNotification(notificationId);
-//        } else if(command.startsWith("deny ")){
-//            notificationStore.rejectNotification(notificationId);
-//        } else if(command.startsWith("accept ")){
-//            notificationStore.acceptNotification(notificationId);
-//            Account senderAccount = accountsStore.getAccount(senderMail); // შეტყობინების გამომგზავნი ტიპი
-//            Location suggestedLocation = locationStore.getLocation(senderMail); // გამომგზავნის მიერ შემოთავაზებული ლოკაცია
-//            System.out.println("sender :"+senderAccount);
-//            System.out.println("reciever :"+currentAccount);
-//            System.out.println("suges "+suggestedLocation);
-//            Location requiredLocation = currentAccount.getLocation(); // გამომგზავნს რა ლოკაციაც უნდა
-//            System.out.println("req "+suggestedLocation);
-//            accountsStore.updateLocation(currentAccount, suggestedLocation);
-//            accountsStore.updateLocation(senderAccount, requiredLocation);
-//            shoppingStore.removeAllItemFor(currentAccount.getMail());
-//            shoppingStore.removeAllItemFor(senderMail);
-        response.sendRedirect("/manage-notifications");
-        }
 
+        if(command.startsWith("delete ")){
+            notificationStore.deleteNotification(notificationId);
+        } else if(command.startsWith("deny ")){
+            notificationStore.rejectNotification(notificationId);
+        } else if(command.startsWith("accept ")){
+            notificationStore.acceptNotification(notificationId);
+            Account senderAccount = accountsStore.getAccount(senderMail); // შეტყობინების გამომგზავნი ტიპი
+            Location suggestedLocation = locationStore.getLocation(senderMail); // გამომგზავნის მიერ შემოთავაზებული ლოკაცია
+            Location requiredLocation = locationStore.getLocation(receiverMail); // გამომგზავნს რა ლოკაციაც უნდა
+            accountsStore.updateLocation(currentAccount, suggestedLocation);
+            accountsStore.updateLocation(senderAccount, requiredLocation);
+            shoppingStore.removeAllItemFor(currentAccount.getMail());
+            shoppingStore.removeAllItemFor(senderMail);
+        }
+        response.sendRedirect("/manage-notifications");
     }
+
+}
 

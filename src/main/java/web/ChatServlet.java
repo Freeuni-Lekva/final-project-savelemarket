@@ -1,5 +1,6 @@
 package web;
 
+import DAO.AccountsStore;
 import DAO.ChatStore;
 import model.Account;
 import model.GeneralMessage;
@@ -10,14 +11,33 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 
-
+// /chat
 public class ChatServlet extends GeneralServlet {
     ChatStore chatStore;
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(redirectIfNotLogged(request,response)) return;
+        if(request.getQueryString()== null || request.getQueryString().length()<uLen) {
+            request.getSession().setAttribute("chat-id",getCurrentAccount(request).getLocation().getChatID());
+        }else{
+            String mail = request.getQueryString().substring(uLen);
+            AccountsStore accountsStore = getAccountsStoreDao(request);
+            Account chatAcc = accountsStore.getAccount(mail);
+            if(chatAcc == null){
+                System.out.println("---------------------------------------- NO SUCH ACCOUNT ----------------------------------------");
+                request.getRequestDispatcher("/WEB-INF/profile.jsp");
+                return;
+            }if(chatAcc.equals(getCurrentAccount(request))){
+                System.out.println("---------------------------------------- CANT CHAT YOURSELF ----------------------------------------");
+                request.getRequestDispatcher("/WEB-INF/profile.jsp");
+                return;
+            }
+            request.getSession().setAttribute("profile-account",chatAcc);
+            request.getRequestDispatcher("/pchat").forward(request,response);
+        }
         request.getRequestDispatcher("/WEB-INF/chat.jsp").forward(request, response);
+
     }
 
     @Override

@@ -96,6 +96,12 @@
     <servlet-class>web.MakePostsServlet</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>GoToRegistrationServlet</servlet-name>
+    <servlet-class>web.GoToRegistrationServlet</servlet-class>
+  </servlet>
+
+
   <servlet-mapping>
     <servlet-name>PrivateChatServlet</servlet-name>
     <url-pattern>/pchat</url-pattern>
@@ -105,6 +111,7 @@
     <servlet-name>profile-servlet</servlet-name>
     <url-pattern>/profile</url-pattern>
   </servlet-mapping>
+
   <servlet-mapping>
     <servlet-name>indexjsp</servlet-name>
     <url-pattern>/index.jsp</url-pattern>
@@ -184,5 +191,11 @@
     <servlet-name>MakePostsServlet</servlet-name>
     <url-pattern>/make-posts</url-pattern>
   </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>GoToRegistrationServlet</servlet-name>
+    <url-pattern>/go-to-registration</url-pattern>
+  </servlet-mapping>
+
 
 </web-app>
