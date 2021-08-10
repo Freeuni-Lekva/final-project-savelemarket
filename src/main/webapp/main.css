@@ -853,4 +853,45 @@ select{
     margin-left: 25vw;
 }
 
+.messages-box{
+    height: calc(100vh - 100px);
+    width: 800px;
+    background-color: #daf6b6;
+    display: flex;
+    flex-direction: column;
+    overflow: scroll;
+    overflow-y:scroll;
+    overflow-x:hidden;
+    scroll-behavior: smooth;
+    margin-left: 50px;
+}
 
+.message-item{
+    margin: 10px;
+    padding: 5px;
+    background-color: #e4ee92;
+    border-radius: 15px;
+    box-shadow: #9ff3c0 4px 3px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    height: 50px;
+    border: solid 1px #47d247;
+}
+
+.open-message{
+    background-color: #00e1ff;
+    border: none;
+    font-size: 20px;
+    border-radius: 15px;
+    padding: 5px 10px;
+    cursor: pointer;
+    margin-right: 20px;
+}
+
+.message-name{
+    font-size: 23px;
+    color: green;
+    margin-left: 20px;
+}

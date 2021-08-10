@@ -62,7 +62,6 @@ public class GeneralServlet extends HttpServlet {
         }
         result += "<a href =\"\" class=\"show-more\" onclick=\"return false;\" id=\"show-more\">მეტის ჩვენება</a>";
         PrintWriter out = response.getWriter();
-
         out.print(result);
         out.close();
     }

@@ -36,7 +36,7 @@ public class PrivateChatServlet extends GeneralServlet {
             }
         }
 
-        request.setAttribute("private-chat-id",id);
+        request.setAttribute("chat-id",id);
         request.getRequestDispatcher("/WEB-INF/pchat.jsp").forward(request,response); // არ ვიცი შეიძლება ეს გადავაკეთო და doGet-ში გავუშვა
         // აჯაქსს გააჩნია
     }
