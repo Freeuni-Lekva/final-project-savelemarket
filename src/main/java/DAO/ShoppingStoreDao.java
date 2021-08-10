@@ -38,7 +38,7 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
             for(Location l : locs){
                 int locId = locationStore.getLocationId(l.getName(), l.getSessionNumber());
                 addStatement.setInt(2, locId);
-                System.out.println(addStatement);
+               // System.out.println(addStatement);
                 addStatement.executeUpdate();
             }
         } catch (SQLException throwables) {
