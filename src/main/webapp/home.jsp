@@ -107,7 +107,7 @@
         <%
             boolean allPostsAreMine = true;
             
-            if(allItems.size() == 0 || allPostsAreMine){
+            if(allItems.size() == 0){
                 out.println("<a class=\"no-posts\">პოსტები არ არის</a>");
             }else {
                 for (int i = allItems.size() - 1; i >= 0; i--) {
