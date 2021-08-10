@@ -101,6 +101,7 @@
     <servlet-class>web.GoToRegistrationServlet</servlet-class>
   </servlet>
 
+
   <servlet-mapping>
     <servlet-name>PrivateChatServlet</servlet-name>
     <url-pattern>/pchat</url-pattern>
@@ -195,5 +196,6 @@
     <servlet-name>GoToRegistrationServlet</servlet-name>
     <url-pattern>/go-to-registration</url-pattern>
   </servlet-mapping>
+
 
 </web-app>
