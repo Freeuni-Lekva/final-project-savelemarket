@@ -29,7 +29,7 @@
             <li>
                 <a class="leave-chat" href="/messages">უკან დაბრუნება</a>
             </li>
-            <a class="chat-name"><%=chat.getChatName()%></a>
+            <a class="chat-name"><%=chat.getChatName(currAccount.getMail())%></a>
         </section>
     </header>
     <body>
@@ -75,15 +75,9 @@
         });
 
         function submitForm() {
-
-            // Get the first form with the name
-            // Usually the form name is not repeated
-            // but duplicate names are possible in HTML
-            // Therefore to work around the issue, enforce the correct index
             var frm = document.getElementById('message-inputs');
             frm.submit();// Submit the form
             frm.reset();
-            document.getElementById('message-inputs');
             return false; // Prevent page refresh
         }
 

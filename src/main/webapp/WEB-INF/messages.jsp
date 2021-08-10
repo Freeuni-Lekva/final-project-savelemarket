@@ -43,13 +43,7 @@
         ChatStore chatStore = (ChatStore) request.getServletContext().getAttribute("chat-store");
         List<Chat> chats = chatStore.getUserChats(account.getMail());
         for(Chat ch : chats){
-            String chatName;
-            if(ch.isPrivate()){
-                List<Account> members = ch.getMembers(chatStore); // members(0) is always the account.getMail();
-                chatName = members.get(1).getMail();
-            }else {
-                chatName = account.getLocation().getName() + "-" + account.getLocation().getSessionNumber();
-            }
+            String chatName = ch.getChatName(account.getMail());
     %>
             <section class="message-item">
                 <a class="message-name"><%=chatName%></a> <%-- აქ არი იტოქში სახელიც გვარიც და მეილიც, როგორც გინდა დატოვე რომელიც სჯობს --%>
