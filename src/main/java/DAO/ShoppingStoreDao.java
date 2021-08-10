@@ -226,11 +226,7 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
         if(location_name == null && sess != -1){ stringBuilder.append(" l.sess = ? AND ");}
         if(location_name != null && sess == -1){ stringBuilder.append(" l.location_name = ? AND ");}
         if(location_name != null && sess != -1){ stringBuilder.append(" l.location_name = ? AND l.sess = ? AND ");}
-        if(wantToBuy){
-            stringBuilder.append(" ss.price <= ? AND ss.price >= 0;");
-        }else{
-            stringBuilder.append(" sl.price <= ?;");
-        }
+        stringBuilder.append(" sl.price <= ?;");
         return stringBuilder.toString();
     }
 
