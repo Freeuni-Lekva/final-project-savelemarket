@@ -15,11 +15,12 @@ import java.security.NoSuchAlgorithmException;
 public class LoginServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+        redirectIfNotLogged(request,response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(redirectIfNotLogged(request,response)) return;
         AccountsStore accountsStore = getAccountsStoreDao(request);
         if(getCurrentAccount(request) == null){} //gaakete ragaca
         String username = request.getParameter("username");

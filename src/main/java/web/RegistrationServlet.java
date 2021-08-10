@@ -20,10 +20,13 @@ public class RegistrationServlet extends GeneralServlet {
     ChatStore chatStore;
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        redirectIfNotLogged(request,response);
+
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(redirectIfNotLogged(request,response)) return;
         request.setCharacterEncoding("UTF-8");
         locationStore = getLocationStoreDao(request);
         accountsStore = getAccountsStoreDao(request);

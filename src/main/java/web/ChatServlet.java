@@ -48,7 +48,7 @@ public class ChatServlet extends GeneralServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        redirectIfNotLogged(request,response);
+        if(redirectIfNotLogged(request,response)) return;
         chatStore = getChatStoreDao(request);
         String messageText = (String)(request.getParameter("user-message"));
         messageText = messageText.replaceAll("\\<.*?\\>", "");
