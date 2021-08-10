@@ -101,10 +101,6 @@
     <servlet-class>web.GoToRegistrationServlet</servlet-class>
   </servlet>
 
-  <servlet>
-    <servlet-name>GoToIndexServlet</servlet-name>
-    <servlet-class>web.GoToIndexServlet</servlet-class>
-  </servlet>
 
   <servlet-mapping>
     <servlet-name>PrivateChatServlet</servlet-name>
@@ -201,9 +197,5 @@
     <url-pattern>/go-to-registration</url-pattern>
   </servlet-mapping>
 
-  <servlet-mapping>
-    <servlet-name>GoToIndexServlet</servlet-name>
-    <url-pattern>/go-to-index</url-pattern>
-  </servlet-mapping>
 
 </web-app>
