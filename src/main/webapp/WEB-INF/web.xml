@@ -86,6 +86,11 @@
     <servlet-class>web.ManageNotificationsServlet</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>MakePostsServlet</servlet-name>
+    <servlet-class>web.MakePostsServlet</servlet-class>
+  </servlet>
+
   <servlet-mapping>
     <servlet-name>PrivateChatServlet</servlet-name>
     <url-pattern>/pchat</url-pattern>
@@ -164,6 +169,11 @@
   <servlet-mapping>
     <servlet-name>MessagesServlet</servlet-name>
     <url-pattern>/messages</url-pattern>
+  </servlet-mapping>
+
+  <servlet-mapping>
+    <servlet-name>MakePostsServlet</servlet-name>
+    <url-pattern>/make-posts</url-pattern>
   </servlet-mapping>
 
 </web-app>

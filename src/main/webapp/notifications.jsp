@@ -54,14 +54,21 @@
 
         <%for(Notification n : pendingNotifs){
             String locationName = n.getRequestedLocation().getName() +" " + n.getRequestedLocation().getSessionNumber();
+            String offerType;
+            if(n.getPrice() < 0){
+              offerType = "ითხოვს: ";
+            }else{
+              offerType = "ამატებს: ";
+            }
         %>
             <div class="pending-notification">
                 <%=n.getStatusMessage()%>
 
+    <div class="pending-notification">
                  <div class="notification-text">
                     <a class="sender-mail" href ="profile?id="><%=n.getSenderMail()%></a>
                     <a class="requested-location"><%=locationName%></a>
-                    <a class="amount-type">ითხოვს: <%=n.getPrice()%> ₾</a>
+                    <a class="amount-type"><%=offerType><%=n.getPrice()%> ₾</a>
                  </div>
                 <form action="/servletissaxeli" method="post">
                     <input type="submit" value="დათანხმება" class="accsept">
@@ -73,7 +80,6 @@
 <%--            აქ იქნება ის კლასი სადაც ჩემი გაგზავნილებია --%>
             <%}%>
     </section>
-
 
         <section class="notifications-box">
             <%for(Notification n : nonPendingNotifs){
@@ -91,6 +97,7 @@
                     </form>
                 </section>
             <%}%>
+
         </section>
 </section>
 </body>
