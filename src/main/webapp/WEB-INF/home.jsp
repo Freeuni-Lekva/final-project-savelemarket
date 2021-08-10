@@ -95,6 +95,10 @@
                         <input type="radio" name="buy-or-sell" value="sell">
                         <a class="input_name">გავყიდი მეტად</a>
                     </div>
+                    <div class="buy-or-sell-item">
+                        <input type="checkbox" name="filter-by-my-loc" value = "filter">
+                        <a class="input_name">მხოლოდ ჩემი ლოკაცია</a>
+                    </div>
                 </div>
                 <input type="number" name="amount" class="amount-input" value="0" min="0"/>
                 <a class="gel-symbol">₾</a>
