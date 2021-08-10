@@ -25,7 +25,7 @@
                 <input type="submit" value="შესვლა" class="input_btn"/>
 
             </form>
-            <form method="post" action="/WEB-INF/registration.jsp">
+            <form method="get" action="/go-to-registration">
                 <input type="submit" value="რეგისტრაცია" class="registration_btn"/>
             </form>
             <%
