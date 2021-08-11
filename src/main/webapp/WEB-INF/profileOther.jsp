@@ -93,8 +93,9 @@
                     <%}else if (shoppingItem.getPrice() > 0){%>
                         <a class="post-price">გავყიდი: <%=shoppingItem.getPrice()%> ₾</a>
                     <%}%>
-                    <form action="/send-request" method="post" class="">
-                        <input type="submit" name="send-request" class="send-request" value ="გაცვლის მოთხოვნა"/>
+                    <iframe name="frame" style="display:none;" ></iframe>
+                    <form  target="frame" action="/send-request" method="post" class="" id="<%=shoppingItem.getItemId()%>">
+                        <input type="submit" name="<%=shoppingItem.getItemId()%>" class="send-request" value ="გაცვლის მოთხოვნა"/>
                     </form>
                 </div>
         </div>
