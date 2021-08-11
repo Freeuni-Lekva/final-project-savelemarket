@@ -101,6 +101,10 @@
     <servlet-class>web.GoToRegistrationServlet</servlet-class>
   </servlet>
 
+  <servlet>
+    <servlet-name>AdminResetsServlet</servlet-name>
+    <servlet-class>web.AdminResetsServlet</servlet-class>
+  </servlet>
 
   <servlet-mapping>
     <servlet-name>PrivateChatServlet</servlet-name>
@@ -197,5 +201,9 @@
     <url-pattern>/go-to-registration</url-pattern>
   </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>AdminResetsServlet</servlet-name>
+    <url-pattern>/admin-resets</url-pattern>
+  </servlet-mapping>
 
 </web-app>

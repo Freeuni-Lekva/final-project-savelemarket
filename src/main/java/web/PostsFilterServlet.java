@@ -48,16 +48,13 @@ public class PostsFilterServlet extends GeneralServlet {
             price *= -1;
         }
 
-        //System.out.println(locationName + sessionNum + " "+ wantToBuy + " for:"+ price);
-
         List<ShoppingItem> filteredPosts = shoppingStore.getFilteredItems(locationName, sessionNum, wantToBuy, price);
         String check = request.getParameter("filter-by-my-loc");
         if(check != null && check.equals("filter")){
             filteredPosts = filteredPosts.stream().
                     filter(x -> x.getDesiredLocations().contains(getCurrentAccount(request).getLocation())).toList();
         }
-//        System.out.println("---------------------------------");
-//        System.out.println(filteredPosts);
+
         request.getSession().setAttribute("filtered-posts", filteredPosts);
         response.sendRedirect("/PostsFilter");
     }
