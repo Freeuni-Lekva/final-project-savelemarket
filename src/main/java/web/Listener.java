@@ -47,7 +47,11 @@ public class Listener implements ServletContextListener, HttpSessionListener, Ht
 
     @Override
     public void sessionDestroyed(HttpSessionEvent se) {
-        /* Session is destroyed. */
+        HttpSession session = se.getSession();
+        session.removeAttribute("current-account");
+        session.removeAttribute("profile-account");
+        session.removeAttribute("filtered-posts");
+        session.removeAttribute("chat-id");
     }
 
     @Override
