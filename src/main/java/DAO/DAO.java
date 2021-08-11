@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class DAO {
+    public static String DATABASE_NAME = "myDatabase";
 
     int WRONG_ID = -1;
 
