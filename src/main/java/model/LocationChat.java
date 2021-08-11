@@ -37,7 +37,8 @@ public class LocationChat extends Chat{
     }
 
     @Override
-    public String getChatName() {
+    public String getChatName(String mail) {
+        // doesn't care about mail
         return chatName;
     }
     //needs to be called after alternate constructor

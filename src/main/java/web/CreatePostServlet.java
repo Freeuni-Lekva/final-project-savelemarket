@@ -20,7 +20,7 @@ public class CreatePostServlet extends GeneralServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        redirectIfNotLogged(request,response);
+        if(redirectIfNotLogged(request,response)) return;
         request.setCharacterEncoding("UTF-8");
         /// dao objects
         LocationStore locationStore = getLocationStoreDao(request);

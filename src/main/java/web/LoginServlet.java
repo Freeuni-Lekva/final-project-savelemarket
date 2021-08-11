@@ -15,7 +15,6 @@ import java.security.NoSuchAlgorithmException;
 public class LoginServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
     }
 
     @Override

@@ -16,7 +16,7 @@ import java.util.List;
 public class AjaxServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        redirectIfNotLogged(request,response);
+        if(redirectIfNotLogged(request,response)) return;
         Account current = getCurrentAccount(request);
         response.setContentType("text/html;charset=UTF-8");
         String result = "";

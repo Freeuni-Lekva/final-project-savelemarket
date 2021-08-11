@@ -18,7 +18,7 @@ public abstract class Chat {
     public abstract List<Message> getAllMessages();
     public abstract List<Message> getMessages(int number);
     public abstract int getChatID();
-    public abstract String getChatName();
+    public abstract String getChatName(String currentMail);
     // Removed add members for interface to work in private too (private chat doesn't need add/remove methods)
     //returns id of sent message, might need it for something idk
     public abstract int sendMessage(Message message);
