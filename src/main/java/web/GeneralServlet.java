@@ -17,9 +17,20 @@ public class GeneralServlet extends HttpServlet {
 //    void
     public boolean redirectIfNotLogged(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         AccountsStore accountsStore = getAccountsStoreDao(request);
-        request.getSession().setAttribute("current-account",accountsStore.getAccount(getCurrentAccount(request).getMail()) );
-        if(getCurrentAccount(request) == null){
-            request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request,response);
+        Account newAcc;
+        if(redirectToMain(getCurrentAccount(request),request,response)) {
+            return true;
+        }
+        newAcc = accountsStore.getAccount(getCurrentAccount(request).getMail());
+        if(redirectToMain(newAcc,request,response)){
+            return true;
+        }
+        request.getSession().setAttribute("current-account",newAcc);
+        return false;
+    }
+    public boolean redirectToMain(Account acc,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        if(acc == null) {
+            request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
             return true;
         }
         return false;
