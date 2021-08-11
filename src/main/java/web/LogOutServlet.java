@@ -20,6 +20,7 @@ public class LogOutServlet extends GeneralServlet {
         session.removeAttribute("profile-account");
         session.removeAttribute("filtered-posts");
         session.removeAttribute("chat-id");
+        request.getSession().removeAttribute("current-admin");
         request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request,response);
     }
 }

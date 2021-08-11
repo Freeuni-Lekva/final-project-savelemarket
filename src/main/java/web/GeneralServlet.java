@@ -47,6 +47,7 @@ public class GeneralServlet extends HttpServlet {
     public boolean doAdminRedirect(String username, String password, HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         AccountsStore accountsStore = getAccountsStoreDao(request);
         if(accountsStore.isAdmin(username,password) == true){
+            request.getSession().setAttribute("current-admin",true);
             request.getRequestDispatcher("/WEB-INF/admin.jsp").forward(request,response);
             return true;
         }

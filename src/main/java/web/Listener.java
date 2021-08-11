@@ -52,6 +52,7 @@ public class Listener implements ServletContextListener, HttpSessionListener, Ht
         session.removeAttribute("profile-account");
         session.removeAttribute("filtered-posts");
         session.removeAttribute("chat-id");
+        session.removeAttribute("current-admin");
     }
 
     @Override
