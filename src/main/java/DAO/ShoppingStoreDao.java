@@ -38,7 +38,6 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
             for(Location l : locs){
                 int locId = locationStore.getLocationId(l.getName(), l.getSessionNumber());
                 addStatement.setInt(2, locId);
-               // System.out.println(addStatement);
                 addStatement.executeUpdate();
             }
         } catch (SQLException throwables) {
@@ -53,12 +52,10 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            /// remove from shop_locations
             PreparedStatement statement2 =
                     connection.prepareStatement("DELETE FROM shop_locations WHERE shop_item_id = ?;");
             statement2.setInt(1, shopItemId);
             statement2.executeUpdate();
-            /// remove from shop_store
             PreparedStatement statement1 =
                     connection.prepareStatement("DELETE FROM shop_store WHERE shop_item_id = ?;");
             statement1.setInt(1, shopItemId);
@@ -97,8 +94,8 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement removeFromShopLocations = connection.prepareStatement("delete sl from shop_store as ss  join shop_locations as sl on ss.shop_item_id = sl.shop_item_id" +
-                    " where ss.writer_mail = ?;");
+            PreparedStatement removeFromShopLocations = connection.prepareStatement("DELETE sl FROM shop_store AS ss JOIN shop_locations AS sl ON ss.shop_item_id = sl.shop_item_id" +
+                    " WHERE ss.writer_mail = ?;");
             PreparedStatement  removeFromShopStore = connection.prepareStatement("DELETE from shop_store WHERE writer_mail = ?;");
             removeFromShopLocations.setString(1, accountMail);
             removeFromShopLocations.executeUpdate();
@@ -121,13 +118,7 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
             stm.setString(1, accountMail);
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                int itemId = rs.getInt(1);
-                Account writerAccount = getWriterAccount(conn, itemId);
-                double price = rs.getDouble(2);
-                String time = rs.getString(3);
-                List<Location> desiredLocations = getLocationsFor(conn, itemId);
-                SaveleShoppingItem shoppingItem = new SaveleShoppingItem(itemId,time, writerAccount, desiredLocations, price);
-                ret.add(shoppingItem);
+                ret.add(getShoppingItemFromResultSet(rs, conn));
             }
         } catch (SQLException throwables) { throwables.printStackTrace();
         } finally {
@@ -145,12 +136,7 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
             PreparedStatement stm = conn.prepareStatement("SELECT shop_item_id, price, create_time FROM shop_store;");
             ResultSet rs = stm.executeQuery();
             while (rs.next()) {
-                int itemId = rs.getInt(1);
-                Account writerAccount = getWriterAccount(conn, itemId);
-                List<Location> desiredLocations = getLocationsFor(conn, itemId);
-                double price = rs.getDouble(2);
-                String time = rs.getString(3);
-                SaveleShoppingItem shoppingItem = new SaveleShoppingItem(itemId,time, writerAccount, desiredLocations, price);                ret.add(shoppingItem);
+                ret.add(getShoppingItemFromResultSet(rs, conn));
             }
         } catch (SQLException throwables) { throwables.printStackTrace();
         } finally {
@@ -170,12 +156,7 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
             stm.setInt(1, id);
             ResultSet rs = stm.executeQuery();
             if(rs.next()) {
-                int itemId = rs.getInt(1);
-                Account writerAccount = getWriterAccount(conn, itemId);
-                List<Location> desiredLocations = getLocationsFor(conn, itemId);
-                double price = rs.getDouble(2);
-                String time = rs.getString(3);
-                return new SaveleShoppingItem(itemId,time, writerAccount, desiredLocations, price);
+                return getShoppingItemFromResultSet(rs, conn);
             }
         } catch (SQLException throwables) { throwables.printStackTrace();
         } finally {
@@ -250,8 +231,14 @@ public class ShoppingStoreDao extends DAO implements ShoppingStore {
         }
     }
 
-
-
+    private ShoppingItem getShoppingItemFromResultSet(ResultSet rs, Connection conn) throws SQLException {
+        int itemId = rs.getInt(1);
+        Account writerAccount = getWriterAccount(conn, itemId);
+        List<Location> desiredLocations = getLocationsFor(conn, itemId);
+        double price = rs.getDouble(2);
+        String time = rs.getString(3);
+        return new SaveleShoppingItem(itemId,time, writerAccount, desiredLocations, price);
+    }
 
     private Account getWriterAccount(Connection connection, int itemId) throws SQLException {
         Account result = null;

@@ -107,14 +107,7 @@ public class AccountsStoreDao extends DAO implements AccountsStore {
             statement.setString(1, mail);
             ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                String firstName = rs.getString(1);
-                String lastName = rs.getString(2);
-                String gmail = rs.getString(3);
-                int locationId = rs.getInt(4);
-                byte[] password = rs.getBytes(5);
-                LocationStore locationStore = new LocationStoreDao(dataSource);
-                Location loc = locationStore.getLocationById(locationId);
-                return new StudentAccount(firstName, lastName, password, gmail,loc);
+                return getAccountFromResultSet(rs);
             }
             return null;
         } catch (SQLException throwables) {
@@ -142,13 +135,7 @@ public class AccountsStoreDao extends DAO implements AccountsStore {
             Statement stm = conn.createStatement();
             ResultSet rs = stm.executeQuery("SELECT first_name, last_name, mail, location_id, pass FROM accounts");
             while (rs.next()) {
-                String firstName = rs.getString(1);
-                String lastName = rs.getString(2);
-                String mail = rs.getString(3);
-                int locationId = rs.getInt(4);
-                byte[] password = rs.getBytes(5);
-                LocationStore locationStore = new LocationStoreDao(dataSource);
-                ret.add(new StudentAccount(firstName, lastName, password, mail, locationStore.getLocationById(locationId)));
+                ret.add(getAccountFromResultSet(rs));
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -166,12 +153,7 @@ public class AccountsStoreDao extends DAO implements AccountsStore {
             statement.setString(1, mail);
             ResultSet rs = statement.executeQuery();
             if(rs.next()){
-                String name = rs.getString(1);
-                String lastName = rs.getString(2);
-                int locId = rs.getInt(4);
-                byte[] pass = rs.getBytes(5);
-                LocationStore locStore = new LocationStoreDao(dataSource);
-                result = new StudentAccount(name, lastName, pass, mail, locStore.getLocationById( locId));
+                result = getAccountFromResultSet(rs);
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -204,6 +186,22 @@ public class AccountsStoreDao extends DAO implements AccountsStore {
             closeConnection(connection);
         }
         return false;
+    }
+
+    /**
+     * Creates and returns an account from the given result set.
+     * @param rs
+     * @return
+     * @throws SQLException
+     */
+    private Account getAccountFromResultSet(ResultSet rs) throws SQLException {
+        String firstName = rs.getString(1);
+        String lastName = rs.getString(2);
+        String mail = rs.getString(3);
+        int locationId = rs.getInt(4);
+        byte[] password = rs.getBytes(5);
+        LocationStore locationStore = new LocationStoreDao(dataSource);
+        return new StudentAccount(firstName, lastName, password, mail, locationStore.getLocationById(locationId));
     }
 }
 
