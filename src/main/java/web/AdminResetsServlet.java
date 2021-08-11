@@ -11,7 +11,7 @@ import java.io.IOException;
 public class AdminResetsServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(redirectIfNotLogged(request,response)) return;
+        if(redirectIfNotLoggedAdmin(request,response)) return;
         request.getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
     }
 
