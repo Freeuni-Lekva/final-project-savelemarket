@@ -11,6 +11,7 @@ public interface ChatStore {
     int addMessage(Message message);
     void addAccounts(List<Account> accounts, int id);
     // returns chat id
+    void updatePictureMessage(int id, String filepath);
     List<Account> getChatMembers(int id);
     int createPublicChat();
     int createPrivateChat(String senderMail, String receiverMail); // order doesn't matter here either

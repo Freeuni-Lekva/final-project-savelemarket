@@ -26,6 +26,8 @@ public class ChatStoreDao extends DAO implements ChatStore {
     private static final String createPublicChat = "INSERT INTO chat(is_private) VALUES(false);";
     private static final String createPrivateChat = "INSERT INTO chat(is_private) VALUES(true);";
     private static final String insertIntoChatUsers ="INSERT INTO chat_users(chat_id,account_mail) VALUES(?,?);";
+    private static final String updatePictureMessage = "UPDATE message SET message = ? WHERE message_id = ?;";
+    private static final String createEmptyPicture = "INSERT INTO message(chat_id,is_picture,sent_time,message,sender_mail) VALUES(?,TRUE,?,'',?);";
     //returns chat_id,account_mail,first_name,last_name,mail,location_id,pass blob
     private static final String getChatAccounts = "SELECT * FROM chat_users c INNER JOIN accounts a ON c.account_mail = a.mail INNER JOIN locations l ON (a.location_id = l.location_id) INNER JOIN chat ch ON (c.chat_id = ch.chat_id) WHERE c.chat_id = ?;";
     private static final String getAllChats = "SELECT * FROM message WHERE chat_id = ? ORDER BY message_id DESC;";
@@ -362,6 +364,22 @@ public class ChatStoreDao extends DAO implements ChatStore {
         return null;
     }
 
+//    "UPDATE message SET message = ? WHERE message_id = ?;";
+    @Override
+    public void updatePictureMessage(int id,String filepath){
+        Connection connection = null;
+        try {
+            connection = dataSource.getConnection();
+            PreparedStatement st = connection.prepareStatement(updatePictureMessage);
+            st.setString(1,filepath);
+            st.setInt(2,id);
+            st.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally{
+            closeConnection(connection);
+        }
+    }
     @Override
     // returns chats without messages for now
     // if private 0th element is the mail given.
