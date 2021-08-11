@@ -1,5 +1,4 @@
 import DAO.*;
-import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import model.Account;
 import model.SaveleLocation;
 import model.Location;
@@ -8,16 +7,13 @@ import org.junit.jupiter.api.Test;
 
 import javax.sql.DataSource;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Arrays;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class AccountTest {
 
     @Test
     public void test() throws SQLException {
-        DataSource ds = DatabaseInitializer.createDataSource();
+        DataSource ds = DatabaseInitializer.createDataSource("testDatabase");
         DatabaseInitializer.recreateDatabase(ds);
         AccountsStore accDao = new AccountsStoreDao(ds);
         Location l = new SaveleLocation("lokacia",2);

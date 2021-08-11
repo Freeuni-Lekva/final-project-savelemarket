@@ -4,7 +4,6 @@ import model.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import javax.sql.DataSource;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -31,7 +30,7 @@ public class ChatStoreDaoTest {
 
     @BeforeEach
     public void init(){
-        ds = DatabaseInitializer.createDataSource();
+        ds = DatabaseInitializer.createDataSource("testDatabase");
         DatabaseInitializer.recreateDatabase(ds);
         chatStore = new ChatStoreDao(ds);
         accStore = new AccountsStoreDao(ds);

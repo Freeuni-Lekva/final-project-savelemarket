@@ -2,9 +2,6 @@ import DAO.*;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import model.*;
 
-import javax.sql.DataSource;
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,7 +35,7 @@ public class testHello {
 
     public static void main(String[] args) {
 
-        ds = DatabaseInitializer.createDataSource();
+        ds = DatabaseInitializer.createDataSource("testDatabase");
         DatabaseInitializer.recreateDatabase(ds);
         chatStore = new ChatStoreDao(ds);
         accStore = new AccountsStoreDao(ds);

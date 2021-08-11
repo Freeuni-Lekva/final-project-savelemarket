@@ -1,3 +1,5 @@
+package DAO;
+
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 
 import javax.sql.DataSource;
@@ -89,14 +91,15 @@ public class DatabaseInitializer {
             e.printStackTrace();
         }
     }
-    public static void initialize(){
-        recreateDatabase(createDataSource());
+    public static void initialize(String DataBaseName){
+        recreateDatabase(createDataSource(DataBaseName));
     }
-    public static MysqlConnectionPoolDataSource createDataSource(){
+
+    public static MysqlConnectionPoolDataSource createDataSource(String DataBaseName){
         MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
         ds.setServerName("localhost");
         ds.setPort(3306);
-        ds.setDatabaseName("testDatabase");
+        ds.setDatabaseName(DataBaseName);
         ds.setUser("root");
         ds.setPassword("");
         try {

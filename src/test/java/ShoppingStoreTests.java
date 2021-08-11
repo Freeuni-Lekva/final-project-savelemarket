@@ -179,7 +179,7 @@ public class ShoppingStoreTests {
     private void initDbs(MysqlConnectionPoolDataSource ds){
         try {
             Connection connection = ds.getConnection();
-            DatabaseInitializer.initialize();
+            DatabaseInitializer.initialize("testDatabase");
             for(int i =0; i < locations.length; i++){
                 ChatStore ch = new ChatStoreDao(ds);
                 int num = ch.createPublicChat();

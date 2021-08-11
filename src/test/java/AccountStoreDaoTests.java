@@ -1,17 +1,14 @@
 import DAO.ChatStore;
 import DAO.ChatStoreDao;
+import DAO.DatabaseInitializer;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 import model.Account;
-import model.Location;
 import model.SaveleLocation;
 import model.StudentAccount;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import DAO.AccountsStoreDao;
 
-import javax.sql.DataSource;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.sql.*;
 import java.util.Arrays;
 import java.util.List;
@@ -36,8 +33,8 @@ public class AccountStoreDaoTests {
 
     @BeforeEach
     public void init(){
-        DatabaseInitializer.initialize();
-        MysqlConnectionPoolDataSource ds = DatabaseInitializer.createDataSource();
+        DatabaseInitializer.initialize("testDatabase");
+        MysqlConnectionPoolDataSource ds = DatabaseInitializer.createDataSource("testDatabase");
         ChatStore chatStore = new ChatStoreDao(ds);
         CHAT_ID = chatStore.createPublicChat();
         Arrays.stream(locations).forEach(x -> x.setChatID(CHAT_ID));
