@@ -293,6 +293,7 @@ public class ChatStoreDao extends DAO implements ChatStore {
             e.printStackTrace();
             closeConnection(c);
         }
+        closeConnection(c);
         return messages;
     }
 

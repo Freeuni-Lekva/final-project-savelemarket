@@ -16,9 +16,10 @@ public class LogOutServlet extends GeneralServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(redirectIfNotLogged(request,response)) return;
         HttpSession session = request.getSession();
-        session.setAttribute("current-account", null);
-        session.setAttribute("profile-account",null);
-        session.setAttribute("filtered-posts",null);
+        session.removeAttribute("current-account");
+        session.removeAttribute("profile-account");
+        session.removeAttribute("filtered-posts");
+        session.removeAttribute("chat-id");
         request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request,response);
     }
 }
