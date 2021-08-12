@@ -463,8 +463,8 @@ select{
     flex-direction: column;
     justify-content: center;
     align-items: flex-start;
-    width: 500px;
-    height: 300px;
+    width: auto;
+    height: auto;
     background-color: #ceee6f;
     padding: 10px;
     border-radius: 10px;
@@ -539,6 +539,7 @@ select{
     font-size: 20px;
     margin-left: 10px;
     color: #0d1d69;
+    width: 400px;
 }
 
 .post-price{
@@ -609,8 +610,8 @@ select{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    width: 500px;
-    height: 200px;
+    width: auto;
+    height: auto;
     background-color: #ceee6f;
     padding: 10px;
     border-radius: 10px;
@@ -754,7 +755,7 @@ select{
 }
 
 .post-location-want{
-    width: 100px;
+    width: 400px;
     font-size: 20px;
     margin-left: 10px;
     color: #0d1d69;

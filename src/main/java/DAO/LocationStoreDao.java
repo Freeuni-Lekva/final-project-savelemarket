@@ -42,10 +42,10 @@ public class LocationStoreDao extends DAO implements LocationStore{
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
-            PreparedStatement statement = connection.prepareStatement("select location_name, sess from locations");
+            PreparedStatement statement = connection.prepareStatement("select location_name, sess,chat_id from locations");
             ResultSet rs = statement.executeQuery();
             while(rs.next()){
-                result.add(new SaveleLocation(rs.getString(1), rs.getInt(2)));
+                result.add(new SaveleLocation(rs.getString(1), rs.getInt(2),rs.getInt(3)));
             }
             return result;
         } catch (SQLException throwables) {

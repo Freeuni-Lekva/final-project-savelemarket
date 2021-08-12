@@ -10,7 +10,7 @@ target/
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
-
+/src/main/webapp/Uploaded Files/*
 # Generated files
 .idea/**/contentModel.xml
 
