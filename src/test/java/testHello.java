@@ -34,9 +34,9 @@ public class testHello {
     }
 
     public static void main(String[] args) {
-
-        ds = DatabaseInitializer.createDataSource("testDatabase");
-        DatabaseInitializer.recreateDatabase(ds);
+        DatabaseInitializer dbinit = new DatabaseInitializer();
+        ds = dbinit.createDataSource("testDatabase");
+        dbinit.recreateDatabase(ds);
         chatStore = new ChatStoreDao(ds);
         accStore = new AccountsStoreDao(ds);
         locStore = new LocationStoreDao(ds);

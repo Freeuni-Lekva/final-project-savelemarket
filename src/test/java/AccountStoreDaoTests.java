@@ -33,8 +33,9 @@ public class AccountStoreDaoTests {
 
     @BeforeEach
     public void init(){
-        DatabaseInitializer.initialize("testDatabase");
-        MysqlConnectionPoolDataSource ds = DatabaseInitializer.createDataSource("testDatabase");
+        DatabaseInitializer dbinit = new DatabaseInitializer();
+        dbinit.initialize("testDatabase");
+        MysqlConnectionPoolDataSource ds = dbinit.createDataSource("testDatabase");
         ChatStore chatStore = new ChatStoreDao(ds);
         CHAT_ID = chatStore.createPublicChat();
         Arrays.stream(locations).forEach(x -> x.setChatID(CHAT_ID));

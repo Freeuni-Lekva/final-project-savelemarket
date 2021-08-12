@@ -13,8 +13,9 @@ public class AccountTest {
 
     @Test
     public void test() throws SQLException {
-        DataSource ds = DatabaseInitializer.createDataSource("testDatabase");
-        DatabaseInitializer.recreateDatabase(ds);
+        DatabaseInitializer dbinit = new DatabaseInitializer();
+        DataSource ds = dbinit.createDataSource("testDatabase");
+        dbinit.recreateDatabase(ds);
         AccountsStore accDao = new AccountsStoreDao(ds);
         Location l = new SaveleLocation("lokacia",2);
         ChatStore chatStore = new ChatStoreDao(ds);

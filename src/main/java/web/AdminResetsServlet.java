@@ -18,7 +18,7 @@ public class AdminResetsServlet extends GeneralServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(redirectIfNotLogged(request, response)) return;
-        DatabaseInitializer.initialize(DAO.DATABASE_NAME);
+        (new DatabaseInitializer()).initialize(DAO.DATABASE_NAME);
         response.sendRedirect("/admin-resets");
     }
 }
