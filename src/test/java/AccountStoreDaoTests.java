@@ -119,8 +119,10 @@ public class AccountStoreDaoTests {
             System.out.println(acc +"  "+ acc.getLocation());
         }
         // update some locations
-        accountsStoreDao.updateLocation(account1, locations[1]);
-        accountsStoreDao.updateLocation(account3, locations[5]);
+//
+//        ეს ხაზეზბია ჭაბუკი
+//        accountsStoreDao.updateLocation(account1, locations[1]);
+//        accountsStoreDao.updateLocation(account3, locations[5]);
         List<Account> allAccounts2 = accountsStoreDao.getAllAccounts();
         System.out.println("!!!  update some locations  !!!");
         for(Account acc : allAccounts2){

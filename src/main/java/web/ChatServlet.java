@@ -18,7 +18,6 @@ public class ChatServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         if(redirectIfNotLogged(request,response)) return;
-        System.out.println(request.getQueryString());
         if(request.getQueryString()== null || request.getQueryString().length()<=uLen) {
             request.getSession().setAttribute("chat-id",getCurrentAccount(request).getLocation().getChatID());
         }else{
@@ -52,7 +51,6 @@ public class ChatServlet extends GeneralServlet {
         chatStore = getChatStoreDao(request);
         String messageText = (String)(request.getParameter("user-message"));
         messageText = messageText.replaceAll("\\<.*?\\>", "");
-        System.out.println(messageText);
         if(messageText.trim().length() > 0) {
             Account current = getCurrentAccount(request);
             Message message = new GeneralMessage(current, messageText, false, getChatID(request));

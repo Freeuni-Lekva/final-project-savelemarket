@@ -74,7 +74,9 @@ public class ShoppingStoreTests {
             shoppingStore.removeItem(sI.getItemId());
         }
         System.out.println("-------");
-        accountsStoreDao.updateLocation(accounts[0], locations[1]);
+
+        // ჭაბუკი
+//        accountsStoreDao.updateLocation(accounts[0], locations[1]);
         Account upDtAcc1 = accountsStoreDao.getAccount(accounts[0].getMail());
         ShoppingItem item2 = new SaveleShoppingItem(upDtAcc1,
                 locationStore.getPossibleLocations(locations[5].getName(),locations[5].getSessionNumber()), 200);
@@ -85,7 +87,8 @@ public class ShoppingStoreTests {
             shoppingStore.removeItem(sI.getItemId());
         }
         System.out.println("-------");
-        accountsStoreDao.updateLocation(upDtAcc1, locations[5]);
+        //ჭაბუკი
+//        accountsStoreDao.updateLocation(upDtAcc1, locations[5]);
         Account upDtAcc2 = accountsStoreDao.getAccount(accounts[0].getMail());
         ShoppingItem item3 = new SaveleShoppingItem(upDtAcc2,
                 locationStore.getPossibleLocations(locations[7].getName(),locations[7].getSessionNumber()), 400);

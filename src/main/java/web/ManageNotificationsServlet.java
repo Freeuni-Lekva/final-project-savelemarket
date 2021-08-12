@@ -61,8 +61,10 @@ public class ManageNotificationsServlet extends GeneralServlet{
             Account senderAccount = accountsStore.getAccount(senderMail); // შეტყობინების გამომგზავნი ტიპი
             Location suggestedLocation = locationStore.getLocation(senderMail); // გამომგზავნის მიერ შემოთავაზებული ლოკაცია
             Location requiredLocation = locationStore.getLocation(receiverMail); // გამომგზავნს რა ლოკაციაც უნდა
-            accountsStore.updateLocation(currentAccount, suggestedLocation);
-            accountsStore.updateLocation(senderAccount, requiredLocation);
+            int receiverOldID = requiredLocation.getChatID();
+            int senderOldID = suggestedLocation.getChatID();
+            accountsStore.updateLocation(currentAccount, suggestedLocation,receiverOldID);
+            accountsStore.updateLocation(senderAccount, requiredLocation,senderOldID);
             shoppingStore.removeAllItemFor(receiverMail);
             shoppingStore.removeAllItemFor(senderMail);
             request.getSession().setAttribute("chat-id", suggestedLocation.getChatID());
