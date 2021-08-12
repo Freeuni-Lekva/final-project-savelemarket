@@ -258,6 +258,12 @@ select{
     border-radius: 15px;
     font-size: 23px;
     border: none;
+    cursor: pointer;
+}
+
+.sing-out:hover{
+    background-color: #cb1414;
+    box-shadow: #e08f8f 2px 2px 1px;
 }
 
 .chat-menu-section{
