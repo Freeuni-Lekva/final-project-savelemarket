@@ -21,24 +21,18 @@ public class GeneralServlet extends HttpServlet {
         if(redirectToMain(getCurrentAccount(request),request,response)) {
             return true;
         }
-        newAcc = accountsStore.getAccount(getCurrentAccount(request).getMail());
-        if(redirectToMain(newAcc,request,response)){
-            return true;
+        if(getCurrentAccount(request) != null){
+            newAcc = accountsStore.getAccount(getCurrentAccount(request).getMail());
+            if(redirectToMain(newAcc,request,response)){
+                return true;
+            }
+            request.getSession().setAttribute("current-account",newAcc);
         }
-        request.getSession().setAttribute("current-account",newAcc);
         return false;
     }
     public boolean redirectToMain(Account acc,HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(acc == null) {
+        if(request.getSession().getAttribute("current-admin") == null && acc == null) {
             request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request, response);
-            return true;
-        }
-        return false;
-    }
-
-    public boolean redirectIfNotLoggedAdmin(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(request.getSession().getAttribute("current-admin") == null){
-            request.getRequestDispatcher("/WEB-INF/index.jsp").forward(request,response);
             return true;
         }
         return false;
