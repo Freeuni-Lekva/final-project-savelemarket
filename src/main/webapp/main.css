@@ -258,6 +258,12 @@ select{
     border-radius: 15px;
     font-size: 23px;
     border: none;
+    cursor: pointer;
+}
+
+.sing-out:hover{
+    background-color: #cb1414;
+    box-shadow: #e08f8f 2px 2px 1px;
 }
 
 .chat-menu-section{
@@ -988,3 +994,26 @@ select{
     background-color: #f57979;
     box-shadow: #584a4a 3px 3px 3px;
 }
+
+.file-upload{
+    background-color: #e29858;
+    width: 150px;
+    color: #030ff6;
+    font-size: 15px;
+    margin: 0px 10px;
+    height: 25px;
+}
+
+.file-form{
+    background-color: #47d247;
+    height: 35px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.file-choose{
+    margin-left: 10px;
+}
+
+
