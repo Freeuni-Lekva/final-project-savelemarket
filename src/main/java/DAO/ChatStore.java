@@ -24,5 +24,5 @@ public interface ChatStore {
     Chat getPublicChat(int id);
     Chat getChat(int id);
     List<Chat> getUserChats(String mail);
-    void updatePublicChatID(String mail, int id);
+    void updatePublicChatID(String mail, int newID, int oldID);
 }

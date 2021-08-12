@@ -33,13 +33,11 @@ public class SendRequestServlet extends GeneralServlet {
 
             ShoppingStore postStore = getShoppingStoreDao(request);
             ShoppingItem shoppingItem = postStore.getItemById(itemId);
-            System.out.println(shoppingItem.getDesiredLocations());
             if(shoppingItem == null) return;
             if(shoppingItem.getDesiredLocations().contains(curr.getLocation())){
                 Notification notification = new RequestNotification(0, curr.getMail(), shoppingItem.getWriterAccount().getMail(),
                         curr.getLocation(), shoppingItem.getPrice());
                 if(!notificationStore.hasNotification(notification)){
-                    System.out.println(notification.toString());
                     notificationStore.addNotification(notification);
                 }
 

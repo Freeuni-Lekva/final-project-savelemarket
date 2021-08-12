@@ -180,15 +180,16 @@ public class ChatStoreDao extends DAO implements ChatStore {
         }
         return id;
     }
-    private static final String updateChatUser = "UPDATE chat_users SET chat_id = ? WHERE account_mail = ?;";
+    private static final String updateChatUser = "UPDATE chat_users SET chat_id = ? WHERE account_mail = ? AND chat_id = ?;";
     @Override
-    public void updatePublicChatID(String mail, int id){
+    public void updatePublicChatID(String mail, int newID,int oldID){
         Connection c = null;
         try{
             c = dataSource.getConnection();
             PreparedStatement st = c.prepareStatement(updateChatUser);
-            st.setInt(1,id);
+            st.setInt(1,newID);
             st.setString(2,mail);
+            st.setInt(3,oldID);
             st.executeUpdate();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
@@ -198,7 +199,6 @@ public class ChatStoreDao extends DAO implements ChatStore {
     }
     @Override
     public int createPrivateChat(String senderMail, String receiverMail) {
-        System.out.println("sheqmna chati");
         int id = WRONG_ID;
         Connection c = null;
         try {
@@ -210,7 +210,6 @@ public class ChatStoreDao extends DAO implements ChatStore {
                 PreparedStatement st = c.prepareStatement(createPrivateChat, Statement.RETURN_GENERATED_KEYS);
                 st.executeUpdate();
                 id = getID(st);
-                System.out.println(id);
                 PreparedStatement st1 = c.prepareStatement(insertIntoChatUsers);
                 st1.setInt(1, id);
                 st1.setString(2, senderMail);

@@ -55,7 +55,7 @@ public class AccountsStoreDao extends DAO implements AccountsStore {
     }
 
     @Override
-    public void updateLocation(Account account, Location location) {
+    public void updateLocation(Account account, Location location,int oldID) {
         Connection connection = null;
         try {
             connection = dataSource.getConnection();
@@ -67,7 +67,7 @@ public class AccountsStoreDao extends DAO implements AccountsStore {
             statement.executeUpdate();
             account.setLocation(location);
             ChatStore chatStore = new ChatStoreDao(dataSource);
-            chatStore.updatePublicChatID(account.getMail(),location.getChatID());
+            chatStore.updatePublicChatID(account.getMail(),location.getChatID(),oldID);
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
