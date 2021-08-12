@@ -3,12 +3,13 @@ package DAO;
 import com.mysql.cj.jdbc.MysqlConnectionPoolDataSource;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DatabaseInitializer {
+public class DatabaseInitializer extends DAO{
 
-    public static final String dropAllTables = "DROP TABLE IF EXISTS request_notification;" +
+    public final String dropAllTables = "DROP TABLE IF EXISTS request_notification;" +
             "DROP TABLE IF EXISTS shop_locations;"+
             "DROP TABLE IF EXISTS shop_store;" +
             "DROP TABLE IF EXISTS message;" +
@@ -17,11 +18,11 @@ public class DatabaseInitializer {
             "DROP TABLE IF EXISTS locations;" +
             "DROP TABLE IF EXISTS chat;";
 
-    public static final String createChat = "CREATE TABLE IF NOT EXISTS chat (" +
+    public final String createChat = "CREATE TABLE IF NOT EXISTS chat (" +
             "    `is_private` BOOL NOT NULL, " +
             "`chat_id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY NOT NULL" +
             ");";
-    public static final String createLocations =
+    public final String createLocations =
             "CREATE TABLE IF NOT EXISTS locations (" +
             " `location_name` VARCHAR(64) NOT NULL," +
             "     `sess` TINYINT NOT NULL," +
@@ -29,7 +30,7 @@ public class DatabaseInitializer {
             "     `location_id` INT AUTO_INCREMENT PRIMARY KEY NOT NULL," +
             "FOREIGN KEY (`chat_id`) REFERENCES chat(`chat_id`)" +
              ");";
-    public static final String createAccounts = "CREATE TABLE IF NOT EXISTS accounts (" +
+    public final String createAccounts = "CREATE TABLE IF NOT EXISTS accounts (" +
             "    `first_name` VARCHAR(64) NOT NULL," +
             "    `last_name` VARCHAR(64) NOT NULL," +
             "    `mail` VARCHAR(64) NOT NULL PRIMARY KEY," +
@@ -37,13 +38,13 @@ public class DatabaseInitializer {
             "    `pass` BLOB(64) NOT NULL," +
             "     FOREIGN KEY (`location_id`) REFERENCES locations(`location_id`)" +
             ");";
-    public static final String createChatUsers = "CREATE TABLE IF NOT EXISTS chat_users (" +
+    public final String createChatUsers = "CREATE TABLE IF NOT EXISTS chat_users (" +
             "    `chat_id` INT NOT NULL," +
             "    `account_mail` VARCHAR(64) NOT NULL," +
             "    FOREIGN KEY (`chat_id`) REFERENCES  chat(`chat_id`)," +
             "    FOREIGN KEY (`account_mail`) REFERENCES accounts(`mail`)" +
             ");";
-    public static final String createMessage = "CREATE TABLE IF NOT EXISTS message (\n" +
+    public final String createMessage = "CREATE TABLE IF NOT EXISTS message (\n" +
             "    `chat_id` INT NOT NULL," +
             "    `is_picture` BOOL NOT NULL," +
             "    `message_id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL," +
@@ -53,7 +54,7 @@ public class DatabaseInitializer {
             "    FOREIGN KEY (`chat_id`) REFERENCES chat(`chat_id`)," +
             "    FOREIGN KEY (`sender_mail`) REFERENCES accounts(`mail`)" +
             ");";
-    public static final String createShopStore = "CREATE TABLE IF NOT EXISTS shop_store(" +
+    public final String createShopStore = "CREATE TABLE IF NOT EXISTS shop_store(" +
             "    `shop_item_id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL," +
             "    `writer_mail` VARCHAR(64) NOT NULL," +
             "    `price` DOUBLE NOT NULL," +
@@ -61,13 +62,13 @@ public class DatabaseInitializer {
             "    FOREIGN KEY (`writer_mail`) REFERENCES accounts(`mail`)" +
             ");";
 
-    public static final String createShopLoc = "CREATE TABLE IF NOT EXISTS shop_locations(" +
+    public final String createShopLoc = "CREATE TABLE IF NOT EXISTS shop_locations(" +
             "    `shop_item_id` INT NOT NULL," +
             "    `location_id` INT NOT NULL," +
             "    FOREIGN KEY (`shop_item_id`) REFERENCES shop_store(`shop_item_id`)," +
             "    FOREIGN KEY (`location_id`) REFERENCES locations(`location_id`)" +
             ");";
-    public static final String createRequestNotif = "CREATE TABLE IF NOT EXISTS request_notification(" +
+    public final String createRequestNotif = "CREATE TABLE IF NOT EXISTS request_notification(" +
             "   `notification_id` INT PRIMARY KEY AUTO_INCREMENT NOT NULL," +
             "   `notification_status` INT NOT NULL," +
             "   `location_id` INT NOT NULL," +
@@ -78,24 +79,28 @@ public class DatabaseInitializer {
             "   FOREIGN KEY (`sender_mail`) REFERENCES accounts(`mail`)," +
             "   FOREIGN KEY (`receiver_mail`) REFERENCES accounts(`mail`));";
 
-    public static final String initializeDatabase = createChat + createLocations + createAccounts + createChatUsers +
+    public final String initializeDatabase = createChat + createLocations + createAccounts + createChatUsers +
             createMessage + createShopStore + createShopLoc + createRequestNotif;
 
-    public static final String recreateDatabase = dropAllTables + initializeDatabase;
+    public final String recreateDatabase = dropAllTables + initializeDatabase;
 
-    public static void recreateDatabase(DataSource ds){
+    public void recreateDatabase(DataSource ds){
+        Connection c = null;
         try {
-            Statement c = ds.getConnection().createStatement();
-            c.execute(recreateDatabase);
+            c = ds.getConnection();
+            Statement st = c.createStatement();
+            st.execute(recreateDatabase);
         } catch (SQLException e) {
             e.printStackTrace();
+        } finally{
+            closeConnection(c);
         }
     }
-    public static void initialize(String DataBaseName){
+    public void initialize(String DataBaseName){
         recreateDatabase(createDataSource(DataBaseName));
     }
 
-    public static MysqlConnectionPoolDataSource createDataSource(String DataBaseName){
+    public MysqlConnectionPoolDataSource createDataSource(String DataBaseName){
         MysqlConnectionPoolDataSource ds = new MysqlConnectionPoolDataSource();
         ds.setServerName("localhost");
         ds.setPort(3306);
