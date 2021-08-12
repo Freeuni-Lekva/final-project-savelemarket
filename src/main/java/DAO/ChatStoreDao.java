@@ -180,6 +180,22 @@ public class ChatStoreDao extends DAO implements ChatStore {
         }
         return id;
     }
+    private static final String updateChatUser = "UPDATE chat_users SET chat_id = ? WHERE account_mail = ?;";
+    @Override
+    public void updatePublicChatID(String mail, int id){
+        Connection c = null;
+        try{
+            c = dataSource.getConnection();
+            PreparedStatement st = c.prepareStatement(updateChatUser);
+            st.setInt(1,id);
+            st.setString(2,mail);
+            st.executeUpdate();
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        } finally{
+            closeConnection(c);
+        }
+    }
     @Override
     public int createPrivateChat(String senderMail, String receiverMail) {
         System.out.println("sheqmna chati");
@@ -336,7 +352,11 @@ public class ChatStoreDao extends DAO implements ChatStore {
     @Override
     public Chat getPublicChat(int id){
         List<Account> accounts = getChatMembers(id);
-        Chat ch = new LocationChat(this,accounts,id);
+        String name = "";
+        if(!accounts.isEmpty()){
+            name = accounts.get(0).getLocation().getName() + " " + accounts.get(0).getLocation().getSessionNumber();
+        }
+        Chat ch = new LocationChat(this,name,accounts,id);
         return ch;
     }
 

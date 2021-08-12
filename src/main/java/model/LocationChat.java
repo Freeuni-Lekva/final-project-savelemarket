@@ -9,26 +9,26 @@ public class LocationChat extends Chat{
 
 
     private ChatStore db;
-    private List<Account> accounts;
+    public List<Account> accounts;
     private int id;
     private String chatName;
 
     // for this one need to create new public chat and give id here before making new LocationChat
-    public LocationChat(ChatStore db,List<Account> accounts,String locationName, int id) {
+//    public LocationChat(ChatStore db,List<Account> accounts, int id) {
+//        this.db = db;
+//        this.accounts = accounts;
+//        this.id = id;
+//        addAccounts(accounts);
+//        if(accounts.size() != 0)
+//            chatName = accounts.get(0).getLocation().getName() + " " + accounts.get(0).getLocation().getSessionNumber();
+//    }
+
+    // alternate constructor for fetching from database
+    public LocationChat(ChatStore db,String locationName, List<Account> accounts,int id){
         this.db = db;
         this.accounts = accounts;
         this.id = id;
         chatName = locationName;
-        addAccounts(accounts);
-    }
-
-    // alternate constructor for fetching from database
-    public LocationChat(ChatStore db, List<Account> accounts,int id){
-        this.db = db;
-        this.accounts = accounts;
-        this.id = id;
-        if(accounts.size() != 0)
-            chatName = accounts.get(0).getLocation().getName() + " " + accounts.get(0).getLocation().getSessionNumber();
     }
 
     @Override
@@ -42,7 +42,10 @@ public class LocationChat extends Chat{
         return chatName;
     }
     //needs to be called after alternate constructor
-
+    @Override
+    public void setChatName(String locName, int sessNum){
+        chatName = locName + " " + sessNum;
+    }
     @Override
     public boolean isPrivate() {
         return false;

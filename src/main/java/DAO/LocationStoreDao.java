@@ -202,8 +202,11 @@ public class LocationStoreDao extends DAO implements LocationStore{
             ResultSet rs = statement.executeQuery();
             ChatStore chatStore = new ChatStoreDao(dataSource);
             if (rs.next()) {
-                Chat ch = chatStore.getPublicChat(rs.getInt("chat_id"));
-                result = new SaveleLocation(rs.getString(1), rs.getInt(2), ch); // needs to get chat too
+                Chat ch = chatStore.getChat(rs.getInt("chat_id"));
+                String locName = rs.getString(1);
+                int sessNum = rs.getInt(2);
+                ch.setChatName(locName,sessNum);
+                result = new SaveleLocation(locName,sessNum, ch); // needs to get chat too
             }
         } catch (SQLException throwables) {
             throwables.printStackTrace();
