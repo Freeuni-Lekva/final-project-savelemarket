@@ -44,13 +44,17 @@ public class ManageNotificationsServlet extends GeneralServlet{
         int notificationId = Integer.parseInt(command.substring(index));
 
         List<String> participants = notificationStore.getParticipantMails(notificationId);
-
+        if(participants.size() == 0) {
+            response.sendRedirect("/manage-notifications");
+            return;
+        }
         String senderMail = participants.get(0);
         String receiverMail = participants.get(1);
 
         if(command.startsWith("delete ")){
             notificationStore.deleteNotification(notificationId);
         } else if(command.startsWith("deny ")){
+
             notificationStore.rejectNotification(notificationId);
         } else if(command.startsWith("accept ")){
             notificationStore.acceptNotification(notificationId);
@@ -61,6 +65,7 @@ public class ManageNotificationsServlet extends GeneralServlet{
             accountsStore.updateLocation(senderAccount, requiredLocation);
             shoppingStore.removeAllItemFor(receiverMail);
             shoppingStore.removeAllItemFor(senderMail);
+            request.getSession().setAttribute("chat-id", suggestedLocation.getChatID());
         }
         response.sendRedirect("/manage-notifications");
     }

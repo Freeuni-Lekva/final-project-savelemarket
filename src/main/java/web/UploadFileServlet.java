@@ -38,7 +38,7 @@ public class UploadFileServlet extends GeneralServlet {
             Files.copy(input, file.toPath());
         }
         chatStore.updatePictureMessage(messageID,newFileName);
-        response.sendRedirect("/chat");
+        response.sendRedirect("/chat?id=" + request.getSession().getAttribute("chat-pref"));
     }
     private static String getSubmittedFileName(Part part) {
         for (String cd : part.getHeader("content-disposition").split(";")) {

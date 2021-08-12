@@ -22,6 +22,9 @@
     Account currAccount = ((Account)session.getAttribute("current-account"));
     int chat_id = (Integer) session.getAttribute("chat-id");
     Chat  chat = chatStore.getChat(chat_id);
+    if(chat.isPrivate())
+        session.setAttribute("chat-pref", chat.getMembers(chatStore).get(0).equals(currAccount) ? chat.getMembers(chatStore).get(1).getMail() : chat.getMembers(chatStore).get(0).getMail());
+    else session.setAttribute("chat-pref", "");
 %>
 <body>
     <header>
@@ -36,7 +39,6 @@
     <section class="chat-section">
         <div class="members-div">
             <%
-
                 List<Account> accounts = chatStore.getChatMembers(chat_id);
                 for(Account account:accounts){
                     out.println("<a href = \"profile?id=" + account.getMail() + "\"class=\"chat-member\">"+ account.getMail() +"</a>");

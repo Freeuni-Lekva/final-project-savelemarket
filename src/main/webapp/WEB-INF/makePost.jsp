@@ -1,7 +1,8 @@
 <%@ page import="DAO.LocationStore" %>
 <%@ page import="DAO.LocationStoreDao" %>
 <%@ page import="java.util.List" %>
-<%@ page import="model.Location" %><%--
+<%@ page import="model.Location" %>
+<%@ page import="model.Account" %><%--
   Created by IntelliJ IDEA.
   User: Qorbuda
   Date: 7/14/2021
@@ -48,7 +49,11 @@
                     <%
                         LocationStore locationStore = (LocationStoreDao) request.getServletContext().getAttribute("locations-store");
                         List<Location> locationsList = locationStore.getAllLocations();
+                        Account currentAccount = (Account)request.getSession().getAttribute("current-account");
+                        System.out.println(currentAccount.getLocation().getChatID());
                         for(Location location : locationsList){
+                            System.out.println(location.getChatID());
+                            if(!location.equals(currentAccount.getLocation()))
                             out.println("<div class=\"check-item\"><input type=\"checkbox\" class=\"checkbox\" name=\"location\" value=\" " +location.getName() + " " + location.getSessionNumber() + "\">"+
                                     "<a class=\"check-location\">" + location.getName()+ " " + location.getSessionNumber() + "</a></div>");
                         }
