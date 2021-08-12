@@ -11,13 +11,13 @@ import java.io.IOException;
 public class AdminResetsServlet extends GeneralServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(redirectIfNotLoggedAdmin(request,response)) return;
+        if(redirectIfNotLogged(request,response)) return;
         request.getRequestDispatcher("/WEB-INF/admin.jsp").forward(request, response);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        if(redirectIfNotLoggedAdmin(request, response)) return;
+        if(redirectIfNotLogged(request, response)) return;
         DatabaseInitializer.initialize(DAO.DATABASE_NAME);
         response.sendRedirect("/admin-resets");
     }
