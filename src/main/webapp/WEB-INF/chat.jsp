@@ -58,9 +58,11 @@
                     <input type="button" name="send-message" onclick=submitForm() class="send-message" value ="გაგზავნა" id="btnsubmit"/>
                 </div>
             </form>
-            <form action="/upload" method="post" enctype="multipart/form-data">
-                <input type="file" name="file" />
-                <input type="submit" />
+            <form action="/upload" method="post" enctype="multipart/form-data" class="file-form">
+                <label class="file-choose">
+                    <input type="file" name="file"/>
+                </label>
+                <input type="submit" value="ფაილის ატვირთვა" class="file-upload"/>
             </form>
 
         </div>
