@@ -52,6 +52,7 @@ public class ChatServlet extends GeneralServlet {
         chatStore = getChatStoreDao(request);
         String messageText = (String)(request.getParameter("user-message"));
         messageText = messageText.replaceAll("\\<.*?\\>", "");
+        System.out.println(messageText);
         if(messageText.trim().length() > 0) {
             Account current = getCurrentAccount(request);
             Message message = new GeneralMessage(current, messageText, false, getChatID(request));

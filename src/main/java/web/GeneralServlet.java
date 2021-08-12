@@ -78,20 +78,37 @@ public class GeneralServlet extends HttpServlet {
         return (NotificationStore) request.getServletContext().getAttribute("notification-store");
     }
     public void showChats(HttpServletResponse response, Account current, String result, List<Message> messages) throws IOException {
-        for(int i = 0; i < messages.size(); i++){
-            Message message = messages.get(i);
-            if(current.getMail().equals(message.getSender().getMail()))
-                result = result + "<div class=\"my-message-info\">";
-            else result = result + "<div class=\"message-info\">";
-            result = result + "<a class=\"sender-name\">" + message.getSender().getMail()+ "</a>";
-            if(current.getMail().equals(message.getSender().getMail()))
-                result = result + "<a class=\"my-message\">"+ message.getText()+"</a>";
-            else result = result + "<a class=\"message\">"+message.getText()+"</a>";
-            result = result + "<a class=\"send-time\">"+message.getSendTime() +"</a></div>";
+        for (Message message : messages) {
+            String messageType = getMessageType(current, message);
+            result += "<div class=\"" + messageType + "-info\">" +
+                "<a class=\"sender-name\">" + message.getSender().getMail() + "</a>" +
+                getMessageForPicture(current,message) + "</a>" +
+                "<a class=\"send-time\">" + message.getSendTime() + "</a></div>";
         }
         result += "<a href =\"\" class=\"show-more\" onclick=\"return false;\" id=\"show-more\">მეტის ჩვენება</a>";
-        PrintWriter out = response.getWriter();
-        out.print(result);
-        out.close();
+            PrintWriter out = response.getWriter();
+            out.print(result);
+            out.close();
+    }
+
+    private String getMessageType(Account current, Message message){
+        String str = "";
+        if(current.equals(message.getSender())) str +="my-";
+        str+="message";
+        return str;
+    }
+
+    private String getMessageForPicture(Account current, Message message){
+        if(message.isPicture() == false){
+            return "<a class=\"" + getMessageType(current, message) + "\">" + message.getText();
+        }else{
+            String fileName = message.getText();
+            String actualFileName =  fileName.substring(fileName.indexOf('-') + 1);
+            if(fileName.endsWith(".jpg") || fileName.endsWith("png")){
+                return "<a class=\"" + getMessageType(current, message) + "\">" + "<img src=\"Uploaded Files/" + fileName+ "\" style=\"max-width: 300;max-height:300\">";
+            }else{
+                return "<a class=\"" + getMessageType(current,message) + "\"" + "href=\"Uploaded Files/" + fileName + "\">"+ actualFileName + "</a>";
+            }
+        }
     }
 }

@@ -51,12 +51,17 @@
 
                 </div>
             <iframe name="frame" style="display:none;" ></iframe>
-            <form action="/chat" autocomplete="off" method="post" target="frame" class="messages_form" id="message-inputs" >
+            <form action="/chat" accept-charset="ISO-8859-1" autocomplete="off" method="post" target="frame" class="messages_form" id="message-inputs" >
                 <div class="write-text">
                     <input name="user-message" type="text" class="user-message" id="message-text" />
                     <input type="button" name="send-message" onclick=submitForm() class="send-message" value ="გაგზავნა" id="btnsubmit"/>
                 </div>
             </form>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <input type="file" name="file" />
+                <input type="submit" />
+            </form>
+
         </div>
     </section>
     </body>
@@ -93,7 +98,7 @@
                      });
                  }
             fun1();
-            setInterval (fun1, 2500);
+            // setInterval (fun1, 2500);
             $('#chat-box').click(function () {
                 $.ajax({
                     type:"POST",

@@ -105,6 +105,10 @@
     <servlet-name>AdminResetsServlet</servlet-name>
     <servlet-class>web.AdminResetsServlet</servlet-class>
   </servlet>
+    <servlet>
+        <servlet-name>UploadFileServlet</servlet-name>
+        <servlet-class>web.UploadFileServlet</servlet-class>
+    </servlet>
 
   <servlet>
     <servlet-name>AdminAddsLocationServlet</servlet-name>
@@ -116,6 +120,11 @@
     <url-pattern>/pchat</url-pattern>
   </servlet-mapping>
 
+  <servlet-mapping>
+    <servlet-name>UploadFileServlet</servlet-name>
+    <url-pattern>/upload</url-pattern>
+
+  </servlet-mapping>
   <servlet-mapping>
     <servlet-name>profile-servlet</servlet-name>
     <url-pattern>/profile</url-pattern>
