@@ -44,6 +44,10 @@ public class PrivateChat extends Chat{
     }
 
     @Override
+    public void setChatName(String non, int no) {
+    }
+
+    @Override
     public List<Message> getAllMessages() {
         return db.getAllChatMessages(id);
     }

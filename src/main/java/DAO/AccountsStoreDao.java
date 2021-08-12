@@ -66,6 +66,8 @@ public class AccountsStoreDao extends DAO implements AccountsStore {
             statement.setString(2, account.getMail());
             statement.executeUpdate();
             account.setLocation(location);
+            ChatStore chatStore = new ChatStoreDao(dataSource);
+            chatStore.updatePublicChatID(account.getMail(),location.getChatID());
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         } finally {
