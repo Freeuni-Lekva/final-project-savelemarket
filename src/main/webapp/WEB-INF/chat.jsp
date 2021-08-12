@@ -47,6 +47,7 @@
         </div>
 
         <div class="messages-div">
+
                 <div class="chat-box" id="chat-box">
 
                 </div>
@@ -98,8 +99,8 @@
                      });
                  }
             fun1();
-            // setInterval (fun1, 2500);
-            $('#chat-box').click(function () {
+            setInterval (fun1, 2500);
+            $(document).on("click", '.show-more',function () {
                 $.ajax({
                     type:"POST",
                     url:"ShowMoreServlet",
