@@ -1,7 +1,9 @@
 package model;
 
 import java.text.SimpleDateFormat;
+import java.time.ZoneId;
 import java.util.Objects;
+import java.util.TimeZone;
 
 public class GeneralMessage implements Message{
     private int messageID;
@@ -35,6 +37,7 @@ public class GeneralMessage implements Message{
     private String getCurrentTime(){
         java.util.Date dt = new java.util.Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        df.setTimeZone(TimeZone.getTimeZone(ZoneId.of("Asia/Tbilisi")));
         return df.format(dt);
     }
 
