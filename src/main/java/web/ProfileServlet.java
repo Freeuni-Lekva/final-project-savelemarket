@@ -35,7 +35,7 @@ public class ProfileServlet extends GeneralServlet {
         AccountsStore as = getAccountsStoreDao(req);
         Account accToShow = as.getAccount(mail);
         if(accToShow == null) {
-            req.getRequestDispatcher("/WEB-INF/accNotFound.jsp").forward(req,resp);
+            req.getRequestDispatcher("/WEB-INF/profile.jsp").forward(req,resp); // not found so redirecting normally
             return;
         }
         // ეს ექაუნთი უნდა აჩვენო ლევან, რო ნახავ ეს კომენტარი წაშალე
