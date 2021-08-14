@@ -60,7 +60,7 @@ public class ChatStoreDaoTest {
     @Test
     public void privateChatTest(){
         List<Account> accounts = Arrays.asList(acc1,acc2);
-        List<Location> locations = Arrays.asList(loc1_1);
+        List<Location> locations = List.of(loc1_1);
         addLocations(locations);
         addAccounts(accounts);
         int id = chatStore.createPrivateChat(acc1.getMail(),acc2.getMail());
@@ -119,6 +119,9 @@ public class ChatStoreDaoTest {
         assertEquals(2,chatStore.getMessages(id1, 1).size()); // default getMessages size is ChatStoreDao.DEFAULT_FETCH_SIZE
         chatStore.updateMessages(id1);
         assertEquals(List.of(m2,m1),chatStore.getMessages(id1,2));
+        accStore.updateLocation(acc1,loc2,acc1.getLocation().getChatID());
+        Account updatedAcc = accStore.getAccount(acc1.getMail());
+        assertEquals(loc2,updatedAcc.getLocation());
 
     }
 }
