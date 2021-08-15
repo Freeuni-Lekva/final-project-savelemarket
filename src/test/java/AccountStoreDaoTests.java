@@ -120,10 +120,8 @@ public class AccountStoreDaoTests {
             System.out.println(acc +"  "+ acc.getLocation());
         }
         // update some locations
-//
-//        ეს ხაზეზბია ჭაბუკი
-//        accountsStoreDao.updateLocation(account1, locations[1]);
-//        accountsStoreDao.updateLocation(account3, locations[5]);
+        accountsStoreDao.updateLocation(account1, locations[1], 0);
+        accountsStoreDao.updateLocation(account3, locations[5], 0);
         List<Account> allAccounts2 = accountsStoreDao.getAllAccounts();
         System.out.println("!!!  update some locations  !!!");
         for(Account acc : allAccounts2){
@@ -147,6 +145,19 @@ public class AccountStoreDaoTests {
         assertEquals(null, accountsStoreDao.getAccount("lirem18@freeuni.edu.ge"));
     }
 
+
+    /**
+     * There must be admins table in testDatabase and
+     * admin with username "admin" and password "admin" inserted
+     * in the table before
+     * calling this test.
+     */
+    @Test
+    public void testIsAdmin(){
+        assertTrue(accountsStoreDao.isAdmin("admin", "admin"));
+        assertFalse(accountsStoreDao.isAdmin("admin", "admin1"));
+        assertFalse(accountsStoreDao.isAdmin("admin1", "admin"));
+    }
 
 
 
@@ -172,6 +183,5 @@ public class AccountStoreDaoTests {
             }
         } catch (SQLException throwables) { throwables.printStackTrace(); }
     }
-
 
 }

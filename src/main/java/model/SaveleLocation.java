@@ -87,4 +87,5 @@ public class SaveleLocation implements Location{
     public int hashCode() {
         return Objects.hash(sessionNumber, name, chatID);
     }
+
 }

@@ -10,6 +10,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class ShoppingStoreTests {
     private final String serverName = "localhost";
@@ -55,12 +56,6 @@ public class ShoppingStoreTests {
         accountsStoreDao = new AccountsStoreDao(ds);
     }
 
-//    @Test
-//    public void tempRemoveTest(){
-//        int removeId = shoppingStore.getItemId("ttotl18@freeuni.edu.ge", "2021-08-08 02:10:56");
-//        System.out.println(removeId);
-//        shoppingStore.removeItem(removeId);
-//    }
 
     @Test
     public void complexShoppingItemTest(){
@@ -74,9 +69,7 @@ public class ShoppingStoreTests {
             shoppingStore.removeItem(sI.getItemId());
         }
         System.out.println("-------");
-
-        // ჭაბუკი
-//        accountsStoreDao.updateLocation(accounts[0], locations[1]);
+        accountsStoreDao.updateLocation(accounts[0], locations[1], 0);
         Account upDtAcc1 = accountsStoreDao.getAccount(accounts[0].getMail());
         ShoppingItem item2 = new SaveleShoppingItem(upDtAcc1,
                 locationStore.getPossibleLocations(locations[5].getName(),locations[5].getSessionNumber()), 200);
@@ -87,8 +80,7 @@ public class ShoppingStoreTests {
             shoppingStore.removeItem(sI.getItemId());
         }
         System.out.println("-------");
-        //ჭაბუკი
-//        accountsStoreDao.updateLocation(upDtAcc1, locations[5]);
+        accountsStoreDao.updateLocation(upDtAcc1, locations[5], 0);
         Account upDtAcc2 = accountsStoreDao.getAccount(accounts[0].getMail());
         ShoppingItem item3 = new SaveleShoppingItem(upDtAcc2,
                 locationStore.getPossibleLocations(locations[7].getName(),locations[7].getSessionNumber()), 400);
@@ -169,12 +161,38 @@ public class ShoppingStoreTests {
 
 
 
-//    @Test
-//    public void test(){
-////        shoppingStore.getFilteredItems("Kazbegi", 1, 100);
-//    //shoppingStore.getFilteredItems("Svaneti", 1,true, 200);
-//    //hoppingStore.getFilteredItems(null, -1, false, -900);
-//    }
+    @Test
+    public void testFilter(){
+        ShoppingItem item1 = new SaveleShoppingItem(accounts[0],
+                locationStore.getPossibleLocations(locations[1].getName(),locations[1].getSessionNumber()), 100);
+        shoppingStore.addItem(item1);
+        ShoppingItem item2 = new SaveleShoppingItem(accounts[0],
+                locationStore.getPossibleLocations(locations[2].getName(),locations[2].getSessionNumber()), 200);
+        shoppingStore.addItem(item2);
+        ShoppingItem item3 = new SaveleShoppingItem(accounts[0],
+                locationStore.getPossibleLocations(locations[7].getName(),locations[7].getSessionNumber()), 400);
+        shoppingStore.addItem(item3);
+        assertEquals(1, shoppingStore.getFilteredItems(locations[1].getName(), locations[1].getSessionNumber(), false, 100).size());
+        assertEquals(2, shoppingStore.getFilteredItems(locations[2].getName(), -1, false, 200).size());
+    }
+
+    @Test
+    public void testGetItemById(){
+        ShoppingItem item1 = new SaveleShoppingItem(accounts[0],
+                locationStore.getPossibleLocations(locations[1].getName(),locations[1].getSessionNumber()), 100);
+        shoppingStore.addItem(item1);
+        ShoppingItem item2 = new SaveleShoppingItem(accounts[0],
+                locationStore.getPossibleLocations(locations[2].getName(),locations[2].getSessionNumber()), 200);
+        shoppingStore.addItem(item2);
+
+        ShoppingItem s1 = shoppingStore.getItemById(1);
+        ShoppingItem s2 = shoppingStore.getItemById(2);
+
+        assertTrue(s1.getDesiredLocations().get(0).getName().equals(locations[1].getName()));
+        assertTrue(s2.getDesiredLocations().get(0).getName().equals(locations[2].getName()));
+        assertEquals(locations[1].getSessionNumber(), s1.getDesiredLocations().get(0).getSessionNumber());
+        assertEquals(locations[2].getSessionNumber(), s2.getDesiredLocations().get(0).getSessionNumber());
+    }
 
 
 
@@ -201,5 +219,4 @@ public class ShoppingStoreTests {
             }
         } catch (SQLException throwables) { throwables.printStackTrace(); }
     }
-
 }
