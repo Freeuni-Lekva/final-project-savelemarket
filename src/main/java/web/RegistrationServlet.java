@@ -44,8 +44,11 @@ public class RegistrationServlet extends GeneralServlet {
         // create account
         String password = (String)(request.getParameter("password"));
         String accName = (String)(request.getParameter("name"));
+        accName = accName.replaceAll("\\<.*?\\>", "");
         String lastName = (String)(request.getParameter("second_name"));
+        lastName = lastName.replaceAll("\\<.*?\\>", "");
         String mail = (String)(request.getParameter("mail"));
+        mail = mail.replaceAll("\\<.*?\\>", "");
         Account newAccount = new StudentAccount(accName, lastName, password, mail, location);
         accountsStore.addAccount(newAccount);
         chatStore.addAccounts(List.of(newAccount),location.getChatID());
