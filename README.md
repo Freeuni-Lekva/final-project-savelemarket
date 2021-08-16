@@ -5,3 +5,8 @@ or chat with people going with you, or private chat with anyone.
 
 Default Ajax interval for chat is 2.5 seconds, which can be changed
 in webapp/WEB-INF/chat.jsp "setInterval(fun1,2500);"
+
+....
+DAO კლასი ექსთენდდება სხვა Dao-ების მიერ და
+GeneralServlet კლასი ექსთენდდება სხვა სერვლეტების მიერ გამარტივებული
+ფუნქციონალისთვის
