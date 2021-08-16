@@ -1017,4 +1017,9 @@ select{
     margin-left: 10px;
 }
 
+input[type=submit]:active{
+    color: red;
+    background-color: blue;
+}
+
 

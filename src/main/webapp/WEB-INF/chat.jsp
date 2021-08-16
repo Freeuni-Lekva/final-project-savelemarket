@@ -103,7 +103,7 @@
                      });
                  }
             fun1();
-            setInterval (fun1, 2500);
+            setInterval (fun1, 1500);
             $(document).on("click", '.show-more',function () {
                 $.ajax({
                     type:"POST",

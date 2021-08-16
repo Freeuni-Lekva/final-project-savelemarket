@@ -121,7 +121,6 @@
     $(document).ready(function () {
         $(document).on("click", '.post-delete-div', function (e){
             var itemId = $(this).attr('id');
-            console.log("aqaneee");
             $.ajax({
                 type:"POST",
                 url:"PostDelete",

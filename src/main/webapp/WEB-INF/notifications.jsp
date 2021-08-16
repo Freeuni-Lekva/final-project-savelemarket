@@ -103,7 +103,7 @@
             %>
                 <section class="nonpending-notification">
                     <div class="notification-text">
-                        <a class="sender-mail" href ="profile?id="><%=n.getReceiverMail()%>></a>
+                        <a class="sender-mail" href ="profile?id="><%=n.getReceiverMail()%></a>
                         <a class="requested-location"><%=locName%></a>
                         <a class="amount-type"><%=n.getStatusMessage()%></a>
                     </div>
